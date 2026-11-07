@@ -410,7 +410,7 @@ Kee-Youn Yoo
 <td style="text-align: center;">0.15894023</td>
 <td style="text-align: center;">0.15894023</td>
 <td style="text-align: center;">0.17350042</td>
-<td style="text-align: center;">0.17350028</td>
+<td style="text-align: center;">0.17350042</td>
 <td style="text-align: center;"></td>
 </tr>
 <tr class="odd">
@@ -418,14 +418,14 @@ Kee-Youn Yoo
 <td style="text-align: center;">0.13800210</td>
 <td style="text-align: center;">0.13800210</td>
 <td style="text-align: center;">0.13936859</td>
-<td style="text-align: center;">0.13801536</td>
+<td style="text-align: center;">0.13936859</td>
 <td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>
 <ul>
 <li>Agreement to 8 digits — the formulation, not the mesh, decides here.</li>
-<li>The wrong inlet condition: +61 % at <span class="math inline">Pe_L=2</span>. At <span class="math inline">Pe_L=200</span> the Dirichlet run is also <strong>under-resolved</strong>: its inlet layer (<span class="math inline">\sim1/Pe=0.05</span>) is thinner than a cell; Danckwerts has no such layer.</li>
+<li>The wrong inlet condition: +61 % at <span class="math inline">Pe_L=2</span>, +9 % at 20, +1 % at 200 — for large <span class="math inline">Pe_L</span> the excess is <span class="math inline">\approx Da_L/Pe_L</span>, the extra diffusive inflow that <span class="math inline">c=1</span> forces in.</li>
 </ul>
 </section>
 <section id="laminar-flow-the-field-and-the-integral" class="slide level2">

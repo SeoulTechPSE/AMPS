@@ -134,11 +134,11 @@ Plug flow, $Da_L=2$, P2, 100 × 4 cells:
 | $Pe_L$ | Danckwerts FE | exact | Dirichlet FE | exact (Dirichlet) | plug flow |
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | 2 | 0.24855163 | 0.24855163 | 0.39975057 | 0.39975057 | 0.13534 |
-| 20 | 0.15894023 | 0.15894023 | 0.17350042 | 0.17350028 | |
-| 200 | 0.13800210 | 0.13800210 | 0.13936859 | 0.13801536 | |
+| 20 | 0.15894023 | 0.15894023 | 0.17350042 | 0.17350042 | |
+| 200 | 0.13800210 | 0.13800210 | 0.13936859 | 0.13936859 | |
 
 - Agreement to 8 digits — the formulation, not the mesh, decides here.
-- The wrong inlet condition: +61 % at $Pe_L=2$. At $Pe_L=200$ the Dirichlet run is also **under-resolved**: its inlet layer ($\sim1/Pe=0.05$) is thinner than a cell; Danckwerts has no such layer.
+- The wrong inlet condition: +61 % at $Pe_L=2$, +9 % at 20, +1 % at 200 — for large $Pe_L$ the excess is $\approx Da_L/Pe_L$, the extra diffusive inflow that $c=1$ forces in.
 
 ## Laminar flow: the field and the integral
 
