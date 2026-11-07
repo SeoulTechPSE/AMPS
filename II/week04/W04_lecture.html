@@ -471,6 +471,7 @@ J(\delta\mathbf u,\mathbf v)=\int_\Omega\big(\mathbb C^{\rm alg}\boldsymbol\vare
 <li>The state is committed <strong>once per step</strong>, after convergence. Iterates never touch <span class="math inline">(\boldsymbol\sigma_n,p_n)</span>.</li>
 <li><code>ref</code> = the largest first residual seen so far: a small last increment near <span class="math inline">p_{\rm lim}</span> must not tighten the tolerance below round-off.</li>
 <li>The function returns whether it converged. A non-converged step is <strong>not an exception</strong> — the caller must look.</li>
+<li><code>plas.py</code> adds one safeguard (not shown): a failed step is solved once more from <span class="math inline">\Delta u=0</span> with halved corrections where <span class="math inline">|R|</span> grows. Near <span class="math inline">p_{\rm lim}</span> the 2D tangent is almost singular, and threaded MUMPS round-off sent about 1 in 8 runs of the step to <span class="math inline">50\,u_y</span> astray (16×48); the retry recovers all of them. It is not the default: halving whenever <span class="math inline">|R|</span> grows breaks quadratic convergence, since <span class="math inline">|R|</span> grows in the first iteration when the plastic zone changes.</li>
 </ul>
 </section>
 <section id="displacement-control-and-the-reaction" class="slide level2">
@@ -611,7 +612,7 @@ J(\delta\mathbf u,\mathbf v)=\int_\Omega\big(\mathbb C^{\rm alg}\boldsymbol\vare
 <section id="loaddisplacement-and-newton" class="slide level2">
 <h2>Load–displacement and Newton</h2>
 
-<img data-src="figs/w04_tube.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><p>Left: 2D and 1D curves coincide; displacement control (green) follows the plateau at <span class="math inline">p_{\rm lim}</span>. Right: one load step <span class="math inline">0.90\to0.95\,p_{\rm lim}</span> — consistent tangent <span class="math inline">1,\,4.3,\,1.2,\,6.8\times10^{-3},\,1.4\times10^{-6},\,5\times10^{-13}</span> (quadratic); elastic tangent a factor 0.74 per iteration (238 iterations to <span class="math inline">10^{-8}</span>).</p>
+<img data-src="figs/w04_tube.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><p>Left: 2D and 1D curves coincide; displacement control (green) follows the plateau at <span class="math inline">p_{\rm lim}</span>. Right: one load step <span class="math inline">0.90\to0.95\,p_{\rm lim}</span> — consistent tangent <span class="math inline">1,\,4.3,\,1.1,\,4.2\times10^{-3},\,2.8\times10^{-7},\,5\times10^{-13}</span> (quadratic; one thread — threaded MUMPS moves the middle values by tens of %); elastic tangent a factor 0.74 per iteration (238 iterations to <span class="math inline">10^{-8}</span>).</p>
 </section>
 <section id="iterations-per-load-step" class="slide level2">
 <h2>Iterations per load step</h2>
@@ -739,19 +740,19 @@ J(\delta\mathbf u,\mathbf v)=\int_\Omega\big(\mathbb C^{\rm alg}\boldsymbol\vare
 <tbody>
 <tr class="odd">
 <td>1D 400</td>
-<td style="text-align: center;">75.73799</td>
+<td style="text-align: center;">75.7380394</td>
 </tr>
 <tr class="even">
 <td>2D <span class="math inline">4\times12</span> / <span class="math inline">8\times24</span> / <span class="math inline">16\times48</span></td>
-<td style="text-align: center;">75.7388 / 75.7381 / 75.73804</td>
+<td style="text-align: center;">75.73878 / 75.73811 / 75.738045</td>
 </tr>
 <tr class="odd">
 <td>exact <span class="math inline">p_{\rm lim}</span></td>
-<td style="text-align: center;">75.73804</td>
+<td style="text-align: center;">75.738039</td>
 </tr>
 </tbody>
 </table>
-<p>Exact: <span class="math inline">75.738039</span>. Coarse 2D meshes come out <strong>above</strong> it (a displacement model is too stiff: <span class="math inline">+10^{-5}</span> on <span class="math inline">4\times12</span>); <span class="math inline">16\times48</span> agrees to 7 digits. The 1D curve at <span class="math inline">50\,u_y</span> is still <span class="math inline">5\times10^{-5}</span> MPa below the asymptote.</p>
+<p><code>rtol=1e-12</code> here. 2D comes out <strong>above</strong> <span class="math inline">p_{\rm lim}</span> (a displacement model is too stiff): <span class="math inline">+7.5\times10^{-4}</span>, <span class="math inline">+6.9\times10^{-5}</span>, <span class="math inline">+5.2\times10^{-6}</span> — a discretisation error. At the default <code>rtol=1e-8</code> the same steps give 1D 75.73799 (<span class="math inline">-4.7\times10^{-5}</span>; other step sequences <span class="math inline">-2</span> to <span class="math inline">-12\times10^{-5}</span>, not monotone in the step count): the lifting puts the prescribed jump into the first residual, so <code>ref</code> grows to <span class="math inline">6\times10^5</span>–<span class="math inline">2\times10^7</span> and final residuals of <span class="math inline">2</span>–<span class="math inline">9\times10^{-3}</span> pass. The pressure read from the reaction carries that error.</p>
 </section>
 <section id="the-plastic-zone" class="slide level2">
 <h2>The plastic zone</h2>

@@ -216,6 +216,9 @@ def step(load):
 - The state is committed **once per step**, after convergence. Iterates never touch $(\boldsymbol\sigma_n,p_n)$.
 - `ref` = the largest first residual seen so far: a small last increment near $p_{\rm lim}$ must not tighten the tolerance below round-off.
 - The function returns whether it converged. A non-converged step is **not an exception** — the caller must look.
+- `plas.py` adds one safeguard (not shown): a failed step is solved once more from $\Delta u=0$ with halved corrections where $|R|$ grows.
+  Near $p_{\rm lim}$ the 2D tangent is almost singular, and threaded MUMPS round-off sent about 1 in 8 runs of the step to $50\,u_y$ astray (16×48); the retry recovers all of them.
+  It is not the default: halving whenever $|R|$ grows breaks quadratic convergence, since $|R|$ grows in the first iteration when the plastic zone changes.
 
 ## Displacement control and the reaction
 
@@ -280,7 +283,7 @@ The textbook formula is not "approximately right" here — the model shows it is
 ![](figs/w04_tube.png){width=88% fig-align="center"}
 
 Left: 2D and 1D curves coincide; displacement control (green) follows the plateau at $p_{\rm lim}$. Right: one load step $0.90\to0.95\,p_{\rm lim}$ —
-consistent tangent $1,\,4.3,\,1.2,\,6.8\times10^{-3},\,1.4\times10^{-6},\,5\times10^{-13}$ (quadratic); elastic tangent a factor 0.74 per iteration (238 iterations to $10^{-8}$).
+consistent tangent $1,\,4.3,\,1.1,\,4.2\times10^{-3},\,2.8\times10^{-7},\,5\times10^{-13}$ (quadratic; one thread — threaded MUMPS moves the middle values by tens of %); elastic tangent a factor 0.74 per iteration (238 iterations to $10^{-8}$).
 
 ## Iterations per load step
 
@@ -317,12 +320,13 @@ $u_r(a)$ at $p=71.95$ MPa ($0.95\,p_{\rm lim}$), load steps as in the original s
 
 | Displacement control, $u_r(a)=50\,u_y$ | $p$ from the reaction [MPa] |
 |---|:---:|
-| 1D 400 | 75.73799 |
-| 2D $4\times12$ / $8\times24$ / $16\times48$ | 75.7388 / 75.7381 / 75.73804 |
-| exact $p_{\rm lim}$ | 75.73804 |
+| 1D 400 | 75.7380394 |
+| 2D $4\times12$ / $8\times24$ / $16\times48$ | 75.73878 / 75.73811 / 75.738045 |
+| exact $p_{\rm lim}$ | 75.738039 |
 
-Exact: $75.738039$. Coarse 2D meshes come out **above** it (a displacement model is too stiff: $+10^{-5}$ on $4\times12$); $16\times48$ agrees to 7 digits.
-The 1D curve at $50\,u_y$ is still $5\times10^{-5}$ MPa below the asymptote.
+`rtol=1e-12` here. 2D comes out **above** $p_{\rm lim}$ (a displacement model is too stiff): $+7.5\times10^{-4}$, $+6.9\times10^{-5}$, $+5.2\times10^{-6}$ — a discretisation error.
+At the default `rtol=1e-8` the same steps give 1D 75.73799 ($-4.7\times10^{-5}$; other step sequences $-2$ to $-12\times10^{-5}$, not monotone in the step count): the lifting puts the prescribed jump into the first residual,
+so `ref` grows to $6\times10^5$–$2\times10^7$ and final residuals of $2$–$9\times10^{-3}$ pass. The pressure read from the reaction carries that error.
 
 ## The plastic zone
 
