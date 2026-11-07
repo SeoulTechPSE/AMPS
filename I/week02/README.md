@@ -7,7 +7,7 @@
 | `W02_HW2.ipynb` | HW2 — unisolvence proofs, your own nodal basis vs Basix, a non-unisolvent node set, cubic Hermite with an LLM | due before Week 3 |
 | `../dolfinx_0.11_api_reference.md` | DOLFINx 0.11 API reference sheet — paste it into your LLM | always |
 
-**Open a notebook in Colab:** upload it to Google Drive → right-click → *Open with → Google Colaboratory*.
+**Open a notebook in Colab:** click its link on the course page or below — it opens in Colab; then *File → Save a copy in Drive* and work on that copy. (Or upload the `.ipynb` to Google Drive → right-click → *Open with → Google Colaboratory*.)
 Run the setup cell first (≈ 3–5 min); re-run it after every runtime restart.
 
 **Where code can run:** `basix`, `ufl` and `dolfinx` exist only inside `%%fenicsx` cells. Ordinary cells have NumPy and matplotlib only.

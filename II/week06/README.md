@@ -7,7 +7,7 @@
 | `W06_HW6.ipynb` | HW6 — Newmark stability and Rayleigh damping (theory), the explicit stability limit, a numerically damped scheme, slenderness against Euler–Bernoulli, element order and slenderness in buckling, which geometric stiffness, an LLM-generated Newmark script with defects | due before Week 7 |
 | `../dolfinx_0.11_api_reference.md` | DOLFINx 0.11 API reference sheet — **§16l** dynamics (mass matrix, Newmark with PETSc vectors, modes with SLEPc) · **§16m** linear buckling — paste it into your LLM | always |
 
-**Open a notebook in Colab:** upload it to Google Drive → right-click → *Open with → Google Colaboratory*.
+**Open a notebook in Colab:** click its link on the course page or below — it opens in Colab; then *File → Save a copy in Drive* and work on that copy. (Or upload the `.ipynb` to Google Drive → right-click → *Open with → Google Colaboratory*.)
 Run the setup cell first (≈ 3–5 min); re-run it after every runtime restart.
 
 **Where code can run:** `basix`, `ufl`, `dolfinx`, `petsc4py`, `slepc4py` are used only inside `%%fenicsx` cells. Ordinary cells have NumPy and matplotlib only —

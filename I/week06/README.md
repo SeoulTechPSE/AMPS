@@ -7,7 +7,7 @@
 | `W06_HW6.ipynb` | HW6 — proofs (pure Neumann, Robin, lifting), a composite wall with a convective boundary, coercivity constants for Robin and for one pinned DOF, an LLM-generated mixed-BC solver with planted bugs | due before Week 7 |
 | `../dolfinx_0.11_api_reference.md` | DOLFINx 0.11 API reference sheet (§7 `LinearProblem`, §8 manual assembly + KSP, §11 parallel-safe norms) — paste it into your LLM | always |
 
-**Open a notebook in Colab:** upload it to Google Drive → right-click → *Open with → Google Colaboratory*.
+**Open a notebook in Colab:** click its link on the course page or below — it opens in Colab; then *File → Save a copy in Drive* and work on that copy. (Or upload the `.ipynb` to Google Drive → right-click → *Open with → Google Colaboratory*.)
 Run the setup cell first (≈ 3–5 min); re-run it after every runtime restart.
 
 **Where code can run:** `basix`, `ufl`, `dolfinx`, `petsc4py`, `gmsh` (and SciPy for the small dense eigenvalue problems) are used only inside `%%fenicsx` cells.

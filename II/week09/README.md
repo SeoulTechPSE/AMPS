@@ -7,7 +7,7 @@
 | `W09_HW8.ipynb` | HW8 — drilling, the mean-strain theorem and bounding cell BCs (theory), the flat-facet error of a tube, what a clamping marker selects, the Scordelis–Lo roof on a quarter with symmetry conditions, the checkerboard singularity and a graded mesh, cell BCs and window size for a porous medium, an LLM-generated homogenization script with defects | due before Week 10 |
 | `../dolfinx_0.11_api_reference.md` | DOLFINx 0.11 API reference sheet — **§16q** shells on surface meshes · **§16r** periodic cells with `dolfinx_mpc` — paste it into your LLM | always |
 
-**Open a notebook in Colab:** upload it to Google Drive → right-click → *Open with → Google Colaboratory*.
+**Open a notebook in Colab:** click its link on the course page or below — it opens in Colab; then *File → Save a copy in Drive* and work on that copy. (Or upload the `.ipynb` to Google Drive → right-click → *Open with → Google Colaboratory*.)
 Run the setup cell first (≈ 3–5 min); re-run it after every runtime restart. **This week the setup cell also installs `dolfinx_mpc` 0.11** (≈ 1 more minute; two packages, nothing else changes).
 
 **Where code can run:** `basix`, `ufl`, `dolfinx`, `dolfinx_mpc`, `petsc4py` are used only inside `%%fenicsx` cells. Ordinary cells have NumPy and matplotlib only.

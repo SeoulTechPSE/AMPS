@@ -7,7 +7,7 @@
 | `W02_HW2.ipynb` | HW2 — plane stress and orthotropic compliance, plate size and fibre angle (quarter vs full model), a rotating shaft and its axis, an LLM-generated pressure-vessel script with defects | due before Week 3 |
 | `../dolfinx_0.11_api_reference.md` | DOLFINx 0.11 API reference sheet — **§16e** plane stress, orthotropy, Gmsh plate · **§16f** axisymmetry — paste it into your LLM | always |
 
-**Open a notebook in Colab:** upload it to Google Drive → right-click → *Open with → Google Colaboratory*.
+**Open a notebook in Colab:** click its link on the course page or below — it opens in Colab; then *File → Save a copy in Drive* and work on that copy. (Or upload the `.ipynb` to Google Drive → right-click → *Open with → Google Colaboratory*.)
 Run the setup cell first (≈ 3–5 min); re-run it after every runtime restart.
 
 **Where code can run:** `basix`, `ufl`, `dolfinx`, `petsc4py`, `gmsh` are used only inside `%%fenicsx` cells. Ordinary cells have NumPy and matplotlib only.

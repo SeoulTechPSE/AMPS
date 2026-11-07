@@ -7,7 +7,7 @@
 | `W01_HW1.ipynb` | HW1 — rigid-body motions and compatibility, what controls locking, multigrid, force and moment equilibrium, an LLM-generated hyperelastic script with defects | due before Week 2 |
 | `../dolfinx_0.11_api_reference.md` | DOLFINx 0.11 API reference sheet — **§16 solid mechanics** (elasticity, near-nullspace + GAMG, consistent reactions, neo-Hookean + load steps) — paste it into your LLM | always |
 
-**Open a notebook in Colab:** upload it to Google Drive → right-click → *Open with → Google Colaboratory*.
+**Open a notebook in Colab:** click its link on the course page or below — it opens in Colab; then *File → Save a copy in Drive* and work on that copy. (Or upload the `.ipynb` to Google Drive → right-click → *Open with → Google Colaboratory*.)
 Run the setup cell first (≈ 3–5 min); re-run it after every runtime restart.
 
 **Where code can run:** `basix`, `ufl`, `dolfinx`, `petsc4py` are used only inside `%%fenicsx` cells. Ordinary cells have NumPy and matplotlib only.

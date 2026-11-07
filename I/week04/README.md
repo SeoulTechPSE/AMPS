@@ -7,7 +7,7 @@
 | `W04_HW4.ipynb` | HW4 — 1D interpolation estimates and scaling, convergence study (smooth and singular functions, graded meshes), harmful triangle shapes, transfer between non-matching meshes with an LLM | due before Week 5 |
 | `../dolfinx_0.11_api_reference.md` | DOLFINx 0.11 API reference sheet (updated §4: vectorised callables, `cells0=`, non-matching interpolation) — paste it into your LLM | always |
 
-**Open a notebook in Colab:** upload it to Google Drive → right-click → *Open with → Google Colaboratory*.
+**Open a notebook in Colab:** click its link on the course page or below — it opens in Colab; then *File → Save a copy in Drive* and work on that copy. (Or upload the `.ipynb` to Google Drive → right-click → *Open with → Google Colaboratory*.)
 Run the setup cell first (≈ 3–5 min); re-run it after every runtime restart.
 
 **Where code can run:** `basix`, `ufl` and `dolfinx` exist only inside `%%fenicsx` cells. Ordinary cells have NumPy and matplotlib only.

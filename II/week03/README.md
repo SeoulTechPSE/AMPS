@@ -7,7 +7,7 @@
 | `W03_HW3.ipynb` | HW3 — thermal stress in the 2D reductions, generalized plane strain with bending (a bimetal cross-section), the coupling number for real metals, an LLM-generated coupled thermoelastic script with defects | due before Week 4 |
 | `../dolfinx_0.11_api_reference.md` | DOLFINx 0.11 API reference sheet — **§16g** generalized plane strain and static condensation · **§16h** thermoelasticity, mixed $(\theta,\mathbf u)$ space — paste it into your LLM | always |
 
-**Open a notebook in Colab:** upload it to Google Drive → right-click → *Open with → Google Colaboratory*.
+**Open a notebook in Colab:** click its link on the course page or below — it opens in Colab; then *File → Save a copy in Drive* and work on that copy. (Or upload the `.ipynb` to Google Drive → right-click → *Open with → Google Colaboratory*.)
 Run the setup cell first (≈ 3–5 min); re-run it after every runtime restart.
 
 **Where code can run:** `basix`, `ufl`, `dolfinx`, `petsc4py` are used only inside `%%fenicsx` cells. Ordinary cells have NumPy and matplotlib only.

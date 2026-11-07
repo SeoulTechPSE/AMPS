@@ -7,7 +7,7 @@
 | `W12_HW11.ipynb` | HW11 — the axisymmetric weak form, Danckwerts, the mixing cup and SUPG consistency (theory), second-order kinetics, SUPG variants and the outlet, Graetz with axial diffusion, Navier–Stokes in the tube and one-way coupling, Taylor–Aris dispersion, an LLM-generated reactor script with defects | due before Week 13 |
 | `../dolfinx_0.11_api_reference.md` | DOLFINx 0.11 API reference sheet — **§16u** axisymmetric advection–diffusion–reaction, Danckwerts, SUPG, the mixing cup — paste it into your LLM | always |
 
-**Open a notebook in Colab:** upload it to Google Drive → right-click → *Open with → Google Colaboratory*.
+**Open a notebook in Colab:** click its link on the course page or below — it opens in Colab; then *File → Save a copy in Drive* and work on that copy. (Or upload the `.ipynb` to Google Drive → right-click → *Open with → Google Colaboratory*.)
 Run the setup cell first (≈ 3–5 min); re-run it after every runtime restart.
 
 **Where code can run:** `basix`, `ufl`, `dolfinx`, `petsc4py` are used only inside `%%fenicsx` cells. Ordinary cells have NumPy and matplotlib only.
