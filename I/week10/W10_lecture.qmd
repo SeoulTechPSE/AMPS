@@ -336,7 +336,7 @@ Checks with a known answer even without an exact solution: energy decay, mass co
 |---|---|---|
 | **Rebinding** | `u_n = uh` at the end of the step | the form still holds the **old** `u_n` object: every step restarts from $u_0$ |
 | **Time as `float`** | `t = 0.0` inside $f$ or $g$, then `t += dt` | data frozen at $t=0$ (Week 9's `lam` bug, again) |
-| **Stale boundary data** | `g.interpolate(...)` once, before the loop | boundary values stay at $t=0$ |
+| **Stale boundary data** | `g.interpolate(...)` once, before the loop | boundary values stay at $t=0$ — **invisible** to the Gaussian benchmark ($<10^{-3}$ on $\partial\Omega$: error $5.2\times10^{-3}$ with or without the bug); test with an MMS whose boundary data change |
 | **Float loop** | `while t < T: t += dt` | one extra step (11 instead of 10 for $\Delta t=0.1$) |
 | **Data at the wrong time** | $f(t_n)$ or $f(t_{n+1})$ in Crank–Nicolson | first order instead of second (HW9) |
 | **Cost** | `LinearProblem(...)` or `fem.form(...)` inside the loop | re-assembly and re-factorisation of a constant matrix every step |

@@ -234,7 +234,7 @@ Rule (Weeks 5–6, again): finish the vector — assemble, lift, `ghostUpdate`, 
 | Check | Expected | Catches |
 |---|---|---|
 | $\|\delta u_k\|$ history | quadratic: $\|\delta u_{k+1}\|/\|\delta u_k\|^2\approx$ const | wrong Jacobian (→ linear) |
-| Taylor test $\|F(u+\varepsilon w)-F(u)-\varepsilon J(u)w\|$ | $O(\varepsilon^2)$ | hand-written Jacobians |
+| Taylor test $\|F(u+\varepsilon w)-F(u)-\varepsilon J(u)w\|$ | $O(\varepsilon^2)$; measured order **2.00** (exact $J$) vs **1.00** ($q'(u)$ term dropped) | hand-written Jacobians |
 | iterations vs $N$ | constant | mesh-dependent stopping criteria |
 | MMS rates of the converged $u_h$ | $k+1$ / $k$ | everything else (Weeks 5–7) |
 | `-np 1` vs `-np 2` | identical histories | ghost/sign errors (§B3) |
