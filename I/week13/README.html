@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>AMPS I · Week 13 — Advection–Diffusion: Péclet Number ·
+Galerkin Oscillations · Upwinding · SUPG</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <style>
+  body { max-width: 980px; margin: 0 auto; padding: 32px 24px 64px; color: #1f2933; line-height: 1.6;
+         font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif; }
+  h1 { font-size: 1.6rem; line-height: 1.3; } a { color: #1f4e9c; }
+  table { border-collapse: collapse; margin: 1em 0; width: 100%; } th, td { border: 1px solid #e4e7eb; padding: 6px 10px; vertical-align: top; text-align: left; }
+  th { background: #f5f7fa; } code { background: #f5f7fa; padding: 1px 4px; border-radius: 4px; font-size: .92em; }
+  nav.home { font-size: .9rem; margin-bottom: 8px; }
+  </style>
+  <script defer=""
+  src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css" />
+</head>
+<body>
+<nav class="home">
+<a href="../index.html">← AMPS I course home</a>
+</nav>
+<h1
+id="amps-i-week-13-advectiondiffusion-péclet-number-galerkin-oscillations-upwinding-supg">AMPS
+I · Week 13 — Advection–Diffusion: Péclet Number · Galerkin Oscillations
+· Upwinding · SUPG</h1>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th>File</th>
+<th>What</th>
+<th>When</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="W13_lecture.html"><code>W13_lecture.html</code></a>
+(<code>.qmd</code> source)</td>
+<td>Lecture slides — Parts A (theory), B (SUPG in DOLFINx 0.11), C
+(measurements), D (LLM, HW12)</td>
+<td>in class</td>
+</tr>
+<tr>
+<td><a href="W13_lab.ipynb"><code>W13_lab.ipynb</code></a></td>
+<td>Lab: the Galerkin Péclet threshold in 1D, SUPG and nodal exactness,
+errors away from boundary layers in 2D, an interior layer (skew
+advection), a <span class="math inline">\tau</span> that survives <span
+class="math inline">\mathbf b=0</span>, LLM demo</td>
+<td>in class (≈ 80 min), finish at home</td>
+</tr>
+<tr>
+<td><a href="W13_HW12.ipynb"><code>W13_HW12.ipynb</code></a></td>
+<td><strong>HW12</strong> — 1D difference equation and optimal diffusion
+(theory); Péclet sweep with Galerkin, upwind and SUPG on a new problem;
+designing <span class="math inline">\tau</span>; LLM debugging of an
+SUPG script</td>
+<td>due before Week 14</td>
+</tr>
+<tr>
+<td><a
+href="../dolfinx_0.11_api_reference.html"><code>../dolfinx_0.11_api_reference.md</code></a></td>
+<td>DOLFINx 0.11 API reference sheet — paste it into your LLM</td>
+<td>always</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The session starts with a 10-minute quiz on the Week 12
+lecture (closed-AI).</strong></p>
+<p>All cells run in seconds to a minute. Measure errors <strong>away
+from the layers</strong> as well as on the whole domain, and always
+print the range of <span class="math inline">u_h</span>.</p>
+<p><strong>Before submitting:</strong> <em>Runtime → Restart session and
+run all</em>, fill in the AI-usage log, download the
+<code>.ipynb</code>. An error inside a <code>%%fenicsx</code> cell does
+<strong>not</strong> stop <em>Run all</em>, and <code>nan</code> in a
+matrix may only show up as a negative KSP reason — read every
+output.</p>
+<p><strong>Week 14 starts with a 10-minute quiz on this week’s lecture
+(closed-AI).</strong></p>
+</body>
+</html>
