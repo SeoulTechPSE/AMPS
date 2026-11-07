@@ -269,7 +269,7 @@ $\beta_h$ (smallest non-zero) and [zero modes incl. the constant], `right` diago
 ::: {.fragment}
 - **P1–P1, `right` mesh:** $B^\top$ has a kernel beyond the constant; pinning one pressure DOF does not remove it. MUMPS reports a failed factorisation:
   **KSP reason −11** (`DIVERGED_PC_FAILED`) on every mesh, the solution is `inf`. Feeding that `inf` (a pressure mean) into a UFL form even breaks the JIT compiler.
-- **P1–P1, `crossed` mesh:** 3 spurious modes remain, yet LU "succeeds" (reason 4) and returns a checkerboard pressure of size $10^2$–$10^3$ (exact range $-0.25\dots0.75$;
+- **P1–P1, `crossed` mesh:** 3 spurious modes remain, yet LU "succeeds" (reason 4) and returns a checkerboard pressure of size $10^2$–$10^3$ (the exact $p$ lies in $[0,1]$;
   $-420\dots910$ in this run, $\pm5000$ in another — the garbage is not even reproducible). The velocity converges at the right rate — **only the pressure shows it**.
 :::
 
