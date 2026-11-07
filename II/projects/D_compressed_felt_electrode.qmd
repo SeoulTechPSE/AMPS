@@ -1,0 +1,82 @@
+---
+title: "Topic D — A Compressed Felt Electrode in a Redox Flow Battery"
+subtitle: "large-strain compression of a porous electrode → porosity and permeability → Darcy flow · tier: advanced"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: true
+---
+
+## Motivation
+
+In a redox flow battery the carbon-felt electrode is squeezed into its frame to lower the contact resistance. Compression also lowers the porosity
+and the permeability, so the pump has to work harder, and it does so unevenly: the felt is compressed more under the ribs of a flow field than in
+the channels (intrusion). The trade-off — contact vs pressure drop — is a coupled solid–fluid problem: a large-strain porous solid determines the
+permeability field of the flow through it.
+
+**Related fields:** redox flow batteries (electrodes, separators, stacks), water electrolysis, fuel-cell and electrolyser membranes. **Course weeks:** 1 (hyperelasticity, load steps), 2 (plane
+strain), 13 (Darcy/Brinkman flow in porous media).
+
+## Model
+
+2D cross-section of one rib–channel period of an interdigitated or flow-through cell (plane strain), felt of uncompressed thickness $t_0$.
+
+**Solid:** compressible neo-Hookean (or a Blatz–Ko-type foam law) for the felt skeleton; the rib (rigid) pushes the felt down by $\delta$; frictionless
+or bonded contact replaced by prescribed displacement under the rib and traction-free under the channel (first model).
+
+**Porosity and permeability** follow the deformation (solid phase incompressible):
+$$
+\varepsilon=1-\frac{1-\varepsilon_0}{J},\qquad \kappa(\varepsilon)=\kappa_0\Big(\frac{\varepsilon}{\varepsilon_0}\Big)^3\Big(\frac{1-\varepsilon_0}{1-\varepsilon}\Big)^2\ \ \text{(Kozeny–Carman)},
+$$
+in the **deformed** configuration (or pulled back to the reference one — say which and transform consistently).
+
+**Flow:** Darcy in the felt, $\mathbf u=-\frac{\kappa}{\mu}\nabla p$, $\nabla\cdot\mathbf u=0$; one-way coupled (the flow does not deform the felt) in the required
+part, two-way (drag on the skeleton) as a stretch goal.
+
+**Design outputs:** the pressure drop and the flow distribution (rib vs channel) against the compression ratio $\delta/t_0$; the mean porosity.
+
+## Suggested parameters
+
+$t_0=4$ mm, $\varepsilon_0=0.93$, compression 10–50 %, $\kappa_0=5\times10^{-11}$ m², shear modulus of the felt 0.1–1 MPa, $\nu$ = 0.1–0.2
+(highly compressible), electrolyte viscosity 4 mPa s, superficial velocity 1–10 mm/s.
+
+## Required tasks
+
+1. Compression of the felt under a flat plate (homogeneous) and under a rib (inhomogeneous): load–displacement curve, $J$ field.
+2. Porosity and permeability fields; check $\varepsilon\in(0,1)$ everywhere.
+3. Darcy flow on the deformed (or pulled-back) domain; pressure drop and flow split between rib and channel.
+4. Study in $\delta/t_0$; mesh independence of the pressure drop.
+
+## Verification specific to this topic
+
+- **Homogeneous confined compression:** with lateral confinement and a flat plate, $J=1-\delta/t_0$ exactly and the stress follows from the law in
+  closed form — the FE solution must be homogeneous and match.
+- **Uniform Darcy:** in a uniformly compressed felt the pressure drop is $\Delta p=\mu uL/\kappa(\varepsilon)$ (1D, exact).
+- **Mass conservation:** inflow = outflow through the felt to discretisation error (compute both with consistent fluxes, or use a mixed RT×DG Darcy
+  formulation where it is exact cell by cell).
+- **Pull-back check:** solving Darcy on the deformed mesh and the pulled-back problem on the reference mesh must give the same pressure drop.
+- **MMS** for the hyperelastic solid and for Darcy with variable $\kappa$.
+
+## Stretch goals
+
+1. Contact with friction-free rib edges (penalty or Nitsche) instead of prescribed displacement.
+2. Two-way coupling: the drag $-\frac{\mu}{\kappa}\mathbf u$ acts on the skeleton (Biot/Terzaghi), fixed-point iteration.
+3. Electrochemistry: a first-order electrode reaction in the felt with a mass-transfer coefficient depending on the local velocity.
+
+## Milestones
+
+M1 homogeneous compression check · M2 rib compression · M3 permeability field · M4 Darcy with the 1D check and conservation · M5 compression study.
+
+## Pitfalls
+
+- Compression beyond the point where $J\to1-\varepsilon_0$ makes $\varepsilon\to0$: the law must stiffen before that, otherwise elements invert.
+  Load steps and a check on $\min J$ (Week 1: reason −4 from $\ln J$ of an inverted element).
+- Mixing reference and deformed configurations in Darcy (the Piola transformation of the flux: $\mathbf U=J\mathbf F^{-1}\mathbf u$, $\mathbb K=J\mathbf F^{-1}\kappa\mathbf F^{-T}$).
+- Corner singularity at the rib edge: refine there and report the pressure drop, not the local stress.
+
+## References
+
+- D. S. Aaron et al., "Dramatic performance gains in vanadium redox flow batteries through modified cell architecture", *J. Power Sources* 206 (2012) 450–453 — the zero-gap cell with compressed felts.
+- O. Coussy, *Poromechanics*, Wiley 2004 — Lagrangian porosity and permeability.
+- G. A. Holzapfel, *Nonlinear Solid Mechanics*, Wiley 2000.

@@ -1,0 +1,103 @@
+---
+title: "AI-based Materials and Process Simulation II"
+subtitle: "Week 16 — Final Presentations and Course Synthesis"
+author:
+   - name: "Kee-Youn Yoo"
+     affiliation: "Process Systems Laboratory<br>Department of Chemical and Biomolecular Engineering, SeoulTech"
+format:
+  revealjs:
+    theme: default
+    slide-number: true
+    chalkboard: true
+    preview-links: auto
+    html-math-method: katex
+    width: 1280
+    height: 720
+    transition: slide
+    fontsize: 1.5em
+    code-line-numbers: false
+    highlight-style: github
+    logo: assets/seoultech_logo.png
+    css: assets/styles.css
+    scrollable: true
+    menu:
+      numbers: true
+---
+
+## Today
+
+| Part | Topic | Time |
+|---|---|:---:|
+| | **Final presentations** — 12 min per student (8 talk + 4 questions on your code), in the announced order | ≈ 150 min |
+| **A** | Course synthesis: two semesters in one table, five lessons, the verification ladder, the LLM workflow | 15 min |
+| **B** | What comes next: the report, where to learn more | 5 min |
+
+::: {.box}
+No quiz this week. The final report (Quarto) and `project.ipynb` are due **one week after this session** — `W16_final_project.html` has the sections, the code rules and the checklist; `W16_render_report.ipynb` renders the report on Colab.
+:::
+
+# Part A · Course synthesis {background-color="#1f3864"}
+
+## Course II in one table
+
+| Weeks | Models | The numerical issue that mattered | The known answer we checked against |
+|---|---|---|---|
+| 1–3 | (hyper)elasticity, plane stress, axisymmetry, GPS, thermoelasticity | locking, AMG near-nullspace, reactions, $r$-weighting | beams, Kirsch, Lamé, series solutions |
+| 4–5 | plasticity, viscoelasticity, phase-field fracture | return mapping, tangent, staggered loops | limit load, relaxation, strength |
+| 6–9 | dynamics, buckling, frames and rods, plates, shells, homogenization | Newmark, shear locking, reduced integration, periodicity | modes, Euler load, elastica, Navier, bounds |
+| 10 | cohesive interfaces | the `'+'` side, opening control through snap-back | exact strip |
+| 11–13 | natural convection, reactive flow, porous media, conjugate heat | Taylor–Hood, Ra continuation, SUPG, submeshes | de Vahl Davis, Graetz, Taylor–Aris, $\mathrm{Nu}_H=35/13$ |
+| 14 | phase separation, parallel performance | energy-stable schemes, solver scaling, ghosts | linear growth rates, tanh interface, binodal |
+| 15–16 | your project | verification, code review | your topic's check |
+
+## Five lessons that came back every few weeks
+
+| Lesson | Where we met it |
+|---|---|
+| **The element must suit the physics**: low-order elements lock (thin, incompressible), equal-order flow elements violate inf-sup | Weeks 1, 7, 8, 9, 11 |
+| **Stable is not accurate**: an energy-stable scheme or a stabilised advection term can be far from the solution | Weeks 6, 12, 14 |
+| **Nonlinear solves need a path**: load or parameter continuation, a line search that fits the problem, the reason of every step | Weeks 1, 4, 10, 11, 14 |
+| **The first answer of a converged solver is not yet a result**: the converged reason, a mesh study, a balance | every week |
+| **Parallel bugs are partition bugs**: random numbers per rank, unreduced sums, ghost values, arbitrary facet sides, collective destructors | Weeks 9, 10, 14, 15 |
+
+## The verification ladder
+
+| Rung | Question it answers | Tool |
+|---|---|---|
+| 1 · Exact or manufactured solution | is the discretisation implemented as derived? | predicted vs observed rates, errors against the exact expression |
+| 2 · A known limit or benchmark | is it the right model? | analytical limits, published benchmarks, with a citation |
+| 3 · A balance | does the discrete solution conserve what the model conserves? | consistent fluxes, residual reactions |
+| 4 · `-np 1` = `-np 2` | is the code correct in parallel? | `record`, `compare_np` |
+| 5 · Mesh and time-step uncertainty | how many digits of the result can I report? | observed order, Richardson, GCI |
+
+Each rung catches errors the others cannot: a perfect convergence rate (1) of the wrong model fails (2); a matching benchmark on one mesh says nothing about (5).
+
+## The LLM workflow, looking back
+
+What the generated scripts in the homework got wrong — and what caught it:
+
+| Kind of defect | What exposed it |
+|---|---|
+| a factor, an exponent or a coefficient in the physics (the script runs, the numbers look plausible) | a known answer: an exact solution, a growth rate, a limit |
+| a convention: a sign, a facet side, a velocity or unit definition | a symmetry, a balance, a limit with a known value |
+| a partition-dependent construct | the same run with `-np 1` and `-np 2` |
+| a claim of "unconditionally stable" or "verified" | the reason and the energy at every step, a check that can fail |
+
+**The pattern:** LLM code fails quietly. The defence is a test whose answer you know **before** you run it — the habit this course asked for in every homework.
+
+# Part B · What comes next {background-color="#1f3864"}
+
+## The report, and where to learn more
+
+**The report** (due one week after this session): the sections of the template, every number with a source tag, the rates predicted before they are measured, the mesh uncertainty of every result.
+
+| To go further | Where |
+|---|---|
+| DOLFINx: demos, API, the 0.11 changes | the DOLFINx documentation and demos; the FEniCS Discourse forum |
+| finite element theory | Brenner & Scott, *The Mathematical Theory of Finite Element Methods* |
+| saddle-point and preconditioned solvers | Elman, Silvester & Wathen, *Finite Elements and Fast Iterative Solvers* |
+| nonlinear solid mechanics | Wriggers, *Nonlinear Finite Element Methods*; Simo & Hughes, *Computational Inelasticity* |
+| verification and uncertainty | Roache, *Verification and Validation in Computational Science and Engineering*; the GCI procedure (Celik et al. 2008) |
+| packages used in this course | `dolfinx_mpc` (periodic constraints), `fenicsx-pctools` (block preconditioners), `dolfinx-adjoint` (gradients) |
+
+Keep your `project.ipynb`, the weekly modules and the API reference sheet: they are a working starting point for the simulations in your own research.

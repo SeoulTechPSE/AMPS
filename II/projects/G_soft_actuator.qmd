@@ -1,0 +1,79 @@
+---
+title: "Topic G — A Pneumatic Soft Actuator"
+subtitle: "nearly incompressible hyperelasticity · inflation instability (limit point) · a bending actuator · tier: advanced"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: true
+---
+
+## Motivation
+
+Soft robots and stretchable devices move by inflating elastomer chambers. Two things make them hard to model: the rubber is nearly
+incompressible (standard elements lock), and inflation is unstable — a balloon reaches a maximum pressure and then bulges suddenly, which a
+load-controlled Newton solver cannot follow. You will build an actuator model that handles both, verified on the inflation of a cylinder and a
+sphere, and then compute the bending of a fibre-reinforced or two-layer actuator.
+
+**Related fields:** soft materials and soft robotics: stretchable electronics, wearable sensors, adaptive soft actuators. **Course weeks:** 1 (hyperelasticity,
+locking, load steps, SNES), 7 (load control vs displacement control, continuation), 8 (thin structures and locking).
+
+## Model
+
+Incompressible or nearly incompressible neo-Hookean (or Mooney–Rivlin) solid,
+$$
+\Psi=\frac\mu2(\bar I_1-3)+\frac\kappa2(J-1)^2\quad\text{or a mixed }(\mathbf u,p)\text{ formulation with }J=1\text{ enforced weakly},
+$$
+inner pressure $P$ as a follower load on the chamber wall (its work depends on the deformed area: $-P\int J\mathbf F^{-T}\mathbf N\cdot\mathbf v\,dA$).
+
+1. **Thick-walled cylinder** (plane strain or axisymmetric, Week 2) and **sphere** (axisymmetric): pressure–stretch curves, the limit point.
+2. **Bending actuator**: a rectangular elastomer block with a row of chambers (2D plane strain first, then 3D), a stiffer strain-limiting layer
+   (paper/fabric: a stiff thin layer, or a bonded inextensible film) — tip angle against pressure.
+
+**Design outputs:** the limit pressure of the chamber; the tip angle and blocked force of the actuator against pressure.
+
+## Suggested parameters
+
+$\mu$ = 0.1–1 MPa (Ecoflex/PDMS), $\kappa/\mu$ = 10³ (or exact incompressibility), wall thickness/radius 0.05–0.5, pressures up to the limit
+point, strain-limiting layer 100–1000 times stiffer.
+
+## Required tasks
+
+1. Mixed $(\mathbf u,p)$ or a locking-free alternative, with a test showing that P1 displacements lock at $\kappa/\mu=10^3$.
+2. Inflation of the thin and thick cylinder/sphere up to and past the limit point (volume control or arclength).
+3. Bending actuator in 2D: tip angle vs pressure; mesh independence.
+4. (3D) one chamber of the actuator, comparison with 2D.
+
+## Verification specific to this topic
+
+- **Thin spherical membrane** (incompressible neo-Hookean, wall $H\ll R$): $P=\frac{2\mu H}{R}\big(\lambda^{-1}-\lambda^{-7}\big)$, maximum at $\lambda=7^{1/6}\approx1.38$.
+  Thin cylinder (plane strain, axial stretch fixed): derive the analogous formula and check that it has **no** maximum — the instability needs the
+  biaxial membrane of the sphere or a free axial stretch.
+- **Thick-walled tube/sphere:** the exact pressure–stretch relation is a one-dimensional integral over the wall (Ogden, *Non-linear Elastic Deformations*):
+  evaluate it with NumPy quadrature and compare the whole curve.
+- **Incompressibility:** report $\max|J-1|$ and its convergence; the mixed solution must not show pressure checkerboards (inf-sup stable pair, e.g. P2–P1).
+- **MMS** for the hyperelastic problem (a smooth isochoric displacement field, body force from UFL).
+
+## Stretch goals
+
+1. Snap-through of a hemispherical cap (a soft "popper") with arclength continuation.
+2. Liquid-metal conductor channel: resistance change of a stretched channel (strain → geometry → conductance).
+3. Fibre-reinforced (anisotropic) chambers: twisting/extension instead of bending.
+
+## Milestones
+
+M1 locking test and mixed formulation · M2 cylinder/sphere against the exact curves · M3 limit point with volume control or arclength · M4 2D
+bending actuator · M5 3D chamber.
+
+## Pitfalls
+
+- Load control stalls at the limit point (SNES diverges just before $P_{\max}$) — that is physics, not a solver bug: switch to volume control (prescribe the
+  enclosed volume, solve for $P$ as an unknown) or pseudo-arclength.
+- The follower pressure makes the Jacobian unsymmetric: use LU (MUMPS) or GMRES, not CG.
+- Inverted elements in the first load step (Week 1, reason −4): smaller steps near zero load where the linear predictor is large.
+
+## References
+
+- R. W. Ogden, *Non-linear Elastic Deformations*, Dover 1997 — inflation of tubes and spheres.
+- G. A. Holzapfel, *Nonlinear Solid Mechanics*, Wiley 2000 — mixed formulations for incompressibility.
+- F. Ilievski, A. D. Mazzeo, R. F. Shepherd, X. Chen, G. M. Whitesides, "Soft robotics for chemists", *Angew. Chem. Int. Ed.* 50 (2011) 1890–1895.

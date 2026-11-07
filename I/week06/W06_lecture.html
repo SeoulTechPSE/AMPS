@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="W06_lecture_files/libs/clipboard/clipboard.min.js"></script>
+<script src="W06_lecture_files/libs/quarto-html/tabby.min.js"></script>
+<script src="W06_lecture_files/libs/quarto-html/popper.min.js"></script>
+<script src="W06_lecture_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="W06_lecture_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="W06_lecture_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="W06_lecture_files/libs/quarto-html/quarto-syntax-highlighting-a06763021a52c43c40a351ac8b799b8f.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.36">
+
+  <meta name="author" content="Kee-Youn Yoo">
+  <title>AI-based Materials and Process Simulation I</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="W06_lecture_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="W06_lecture_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="W06_lecture_files/libs/revealjs/dist/theme/quarto-7af60fb36352a8d2af996e24a7cdd28d.css">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="W06_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="W06_lecture_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="W06_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="W06_lecture_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="W06_lecture_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="W06_lecture_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">AI-based Materials and Process Simulation I</h1>
+  <p class="subtitle">Week 06 — Boundary Conditions: Mean Estimate · Pure Neumann · Trace Inequality · Partial Dirichlet · Robin · Dirichlet Lifting in DOLFINx · Subdomains, Multi-Material Problems and Gmsh</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Kee-Youn Yoo 
+</div>
+        <p class="quarto-title-affiliation">
+            Process Systems Laboratory<br>Department of Chemical and Biomolecular Engineering, SeoulTech
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="today" class="slide level2">
+<h2>Today</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Topic</th>
+<th style="text-align: center;">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Quiz</strong></td>
+<td>Week 5 material (closed-AI)</td>
+<td style="text-align: center;">10 min</td>
+</tr>
+<tr class="even">
+<td><strong>A</strong></td>
+<td>Theory — weak forms with mixed boundary conditions, mean estimate, pure Neumann, trace inequality, partial Dirichlet, Robin</td>
+<td style="text-align: center;">65 min</td>
+</tr>
+<tr class="odd">
+<td><strong>B</strong></td>
+<td>Dirichlet conditions in DOLFINx — locating DOFs, <code>dirichletbc</code>, lifting, the assembly pipeline</td>
+<td style="text-align: center;">35 min</td>
+</tr>
+<tr class="even">
+<td><strong>C</strong></td>
+<td>Neumann and Robin terms, pure Neumann in PETSc, subdomains, multi-material problems, Gmsh</td>
+<td style="text-align: center;">45 min</td>
+</tr>
+<tr class="odd">
+<td><strong>D</strong></td>
+<td>LLM pitfalls with boundary conditions · assignment</td>
+<td style="text-align: center;">15 min</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p>Lab notebook: <code>W06_lab.ipynb</code> · Assignment: <code>W06_HW6.ipynb</code> (due before Week 7)</p>
+</div>
+</section>
+<section id="week-5-in-one-slide" class="slide level2">
+<h2>Week 5 in one slide</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Lax–Milgram</td>
+<td><span class="math inline">b</span> continuous (<span class="math inline">M</span>) + coercive (<span class="math inline">\gamma</span>) on a Hilbert space ⇒ unique <span class="math inline">u</span>, <span class="math inline">\|u\|\le\|F\|_{V'}/\gamma</span> — the same on every <span class="math inline">V_h</span></td>
+</tr>
+<tr class="even">
+<td>On <span class="math inline">V_h</span></td>
+<td><span class="math inline">\gamma_h=\lambda_{\min}(K,G)</span> with the Gram matrix <span class="math inline">G=M+K</span></td>
+</tr>
+<tr class="odd">
+<td>Helmholtz</td>
+<td><span class="math inline">M=\gamma=1</span>; Neumann condition is natural</td>
+</tr>
+<tr class="even">
+<td>Poisson</td>
+<td><span class="math inline">b(v,v)=|v|^2_{H^1}</span> — a <strong>seminorm</strong>; <span class="math inline">\gamma_h\approx0</span> with natural BCs, <span class="math inline">0.952</span> with <span class="math inline">u=0</span> on <span class="math inline">\partial\Omega</span></td>
+</tr>
+<tr class="odd">
+<td>MMS</td>
+<td><span class="math inline">\tilde u</span> with the BC, <span class="math inline">f</span> by UFL, rates over ≥ 3 meshes</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><strong>This week:</strong> <em>which</em> boundary conditions remove the constants, and how much of the boundary is enough?</p>
+<ul>
+<li>Pure Neumann (mean estimate), partial Dirichlet (trace inequality), Robin</li>
+<li>Then the implementation: Dirichlet lifting, boundary markers, nullspaces, subdomains and Gmsh meshes</li>
+</ul>
+</div>
+</section>
+<section>
+<section id="part-a-boundary-conditions-in-the-theory" class="title-slide slide level1 center">
+<h1>Part A — Boundary Conditions in the Theory</h1>
+
+</section>
+<section id="a1-three-kinds-of-boundary-conditions" class="slide level2">
+<h2>§A1 Three kinds of boundary conditions</h2>
+<div class="columns">
+<div class="column" style="width:42%;">
+<p><img data-src="figs/w06_bcs.png" style="width:100.0%"></p>
+</div><div class="column" style="width:58%;">
+<p><span class="math inline">\partial\Omega=\Gamma_D\cup\Gamma_N\cup\Gamma_R</span>, <span class="math inline">\;\mathbf n</span> = outward unit normal.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Condition</th>
+<th>Name</th>
+<th>Where it goes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">u=g_D</span> on <span class="math inline">\Gamma_D</span></td>
+<td>essential (Dirichlet)</td>
+<td>in the <strong>space</strong>: <span class="math inline">u\in g_D+V_D</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\partial_nu=g_N</span> on <span class="math inline">\Gamma_N</span></td>
+<td>natural (Neumann)</td>
+<td>in <span class="math inline">F</span>: <span class="math inline">\int_{\Gamma_N}g_Nv</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\partial_nu+\alpha u=r</span> on <span class="math inline">\Gamma_R</span></td>
+<td>Robin</td>
+<td>in <span class="math inline">b</span>: <span class="math inline">\alpha\!\int_{\Gamma_R}\!uv</span>; in <span class="math inline">F</span>: <span class="math inline">\int_{\Gamma_R}rv</span></td>
+</tr>
+</tbody>
+</table>
+</div></div>
+<div class="fragment">
+<p>Robin is the convective (Newton cooling) condition <span class="math inline">-k\partial_nT=h(T-T_\infty)</span>: <span class="math inline">\alpha=h/k</span>, <span class="math inline">r=hT_\infty/k</span>. <span class="math inline">\alpha\to0</span>: Neumann; <span class="math inline">\alpha\to\infty</span>: Dirichlet <span class="math inline">u=r/\alpha</span>.</p>
+</div>
+</section>
+<section id="a2-the-weak-form-with-mixed-conditions" class="slide level2">
+<h2>§A2 The weak form with mixed conditions</h2>
+<p>Multiply <span class="math inline">-\Delta u=f</span> by <span class="math inline">v</span> with <span class="math inline">v=0</span> on <span class="math inline">\Gamma_D</span> and integrate by parts: <span class="math display">\int_\Omega\nabla u\cdot\nabla v-\int_{\partial\Omega}\partial_nu\,v=\int_\Omega fv .</span></p>
+<div class="fragment">
+<p>On <span class="math inline">\Gamma_D</span> the boundary term vanishes because <span class="math inline">v=0</span>; on <span class="math inline">\Gamma_N</span> and <span class="math inline">\Gamma_R</span> insert the condition:</p>
+<div title="Weak form">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Weak form</strong></p>
+</div>
+<div class="callout-content">
+<p>Find <span class="math inline">u\in H^1(\Omega)</span> with <span class="math inline">u=g_D</span> on <span class="math inline">\Gamma_D</span> such that for all <span class="math inline">v\in V_D=\{v\in H^1(\Omega):v=0\text{ on }\Gamma_D\}</span> <span class="math display">\underbrace{\int_\Omega\nabla u\cdot\nabla v+\alpha\int_{\Gamma_R}uv}_{b(u,v)}=\underbrace{\int_\Omega fv+\int_{\Gamma_N}g_Nv+\int_{\Gamma_R}rv}_{F(v)} .</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Lifting:</strong> write <span class="math inline">u=u_0+u_g</span> with any <span class="math inline">u_g\in H^1</span>, <span class="math inline">u_g=g_D</span> on <span class="math inline">\Gamma_D</span>. Then <span class="math inline">u_0\in V_D</span> solves <span class="math inline">b(u_0,v)=F(v)-b(u_g,v)</span> — a problem on the <strong>linear space</strong> <span class="math inline">V_D</span>, where Lax–Milgram applies. Two questions remain: is <span class="math inline">F</span> bounded (boundary integrals!), and is <span class="math inline">b</span> coercive on <span class="math inline">V_D</span>?</p>
+</div>
+</section>
+<section id="a3-the-key-inequality" class="slide level2">
+<h2>§A3 The key inequality</h2>
+<p><span class="math inline">b(v,v)\ge|v|^2_{H^1}</span>, but coercivity needs the <strong>full</strong> norm <span class="math inline">\|v\|^2_{H^1}=\|v\|^2_{L^2}+|v|^2_{H^1}</span>. It is enough to have, on the space we work in, <span class="math display">\|v\|_{L^2}\le C\,|v|_{H^1}\quad\Longrightarrow\quad \|v\|^2_{H^1}\le(1+C^2)\,|v|^2_{H^1}\le(1+C^2)\,b(v,v),\qquad \gamma=\frac{1}{1+C^2}.</span></p>
+<div class="fragment">
+<p>A <strong>Poincaré-type inequality</strong>. It fails on all of <span class="math inline">H^1</span> (<span class="math inline">v=1</span>), so the space must exclude constants:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Space</th>
+<th>What excludes the constants</th>
+<th>Tool</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\bar V=\{v:\int_\Omega v=0\}</span></td>
+<td>zero mean</td>
+<td>mean estimate (§A4)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">V_D=\{v:v=0\text{ on }\Gamma_D\}</span>, <span class="math inline">|\Gamma_D|&gt;0</span></td>
+<td>zero on part of the boundary</td>
+<td>mean estimate + trace inequality (§A6–A7)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">H^1</span> with Robin, <span class="math inline">\alpha&gt;0</span></td>
+<td><span class="math inline">\alpha\int_{\Gamma_R}v^2</span> in <span class="math inline">b</span></td>
+<td>trace inequality (§A9)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>On <span class="math inline">V_h</span> the best constant is again an eigenvalue: <span class="math inline">C_h^2=\max\frac{\mathbf v^TM\mathbf v}{\mathbf v^TK\mathbf v}</span> over the space <span class="math inline">=1/\lambda_{\min}</span>.</p>
+</div>
+</section>
+<section id="a4-the-mean-estimate" class="slide level2">
+<h2>§A4 The mean estimate</h2>
+<div title="Lemma — mean estimate">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Lemma — mean estimate</strong></p>
+</div>
+<div class="callout-content">
+<p>For <span class="math inline">u\in H^1(\Omega)</span> (in particular any <span class="math inline">C^0</span> finite element function), <span class="math inline">\Omega</span> convex, <span class="math inline">\bar u=\frac1{|\Omega|}\int_\Omega u</span>: <span class="math display">\|u-\bar u\|_{L^2(\Omega)}\le C\,|u|_{H^1(\Omega)},\qquad C\text{ depends only on }\Omega .</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Proof sketch.</strong> <span class="math inline">u(x)-u(y)=\int_0^1(x-y)\cdot\nabla u(y+s(x-y))\,ds</span> (FE fundamental theorem of calculus on segments). Average over <span class="math inline">y</span>: <span class="math inline">u(x)-\bar u=\frac1{|\Omega|}\int_\Omega\!\int_0^1(x-y)\cdot\nabla u(\cdots)\,ds\,dy</span>. Square, Cauchy–Schwarz, split the <span class="math inline">s</span>-integral at <span class="math inline">\frac12</span> and change variables in each half — the same structure as the averaged Taylor polynomial of Week 4. <span class="math inline">\square</span></p>
+</div>
+<div class="fragment">
+<p><strong>Best constant on the unit square:</strong> <span class="math inline">C=1/\sqrt{\lambda_2}</span>, where <span class="math inline">\lambda_2=\pi^2</span> is the first non-zero Neumann eigenvalue of <span class="math inline">-\Delta</span> (<span class="math inline">\cos\pi x</span>).</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>P1, <span class="math inline">C_h=1/\sqrt{\lambda_2(K,M)}</span></th>
+<th style="text-align: center;"><span class="math inline">N=4</span></th>
+<th style="text-align: center;"><span class="math inline">N=8</span></th>
+<th style="text-align: center;"><span class="math inline">N=16</span></th>
+<th style="text-align: center;"><span class="math inline">N=32</span></th>
+<th style="text-align: center;">limit <span class="math inline">1/\pi</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td style="text-align: center;">0.3107</td>
+<td style="text-align: center;">0.3163</td>
+<td style="text-align: center;">0.3178</td>
+<td style="text-align: center;">0.3182</td>
+<td style="text-align: center;">0.3183</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="a5-pure-neumann" class="slide level2">
+<h2>§A5 Pure Neumann</h2>
+<p><span class="math inline">-\Delta u=f</span> in <span class="math inline">\Omega</span>, <span class="math inline">\partial_nu=g</span> on all of <span class="math inline">\partial\Omega</span>: <span class="math inline">\;b(u,v)=\int\nabla u\cdot\nabla v</span>, <span class="math inline">\;F(v)=\int fv+\int_{\partial\Omega}gv</span>.</p>
+<div class="fragment">
+<ul>
+<li><strong>Compatibility.</strong> Take <span class="math inline">v=1</span>: <span class="math inline">b(u,1)=0</span>, so a solution exists <strong>only if</strong> <span class="math inline">\displaystyle\int_\Omega f+\int_{\partial\Omega}g=0</span> (sources = outflow).</li>
+<li><strong>Non-uniqueness.</strong> If <span class="math inline">u</span> solves, so does <span class="math inline">u+c</span>. Fix the constant by working in <span class="math inline">\bar V=\{v:\int v=0\}</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<div title="Theorem — pure Neumann">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Theorem — pure Neumann</strong></p>
+</div>
+<div class="callout-content">
+<p>On <span class="math inline">\bar V</span> (and on <span class="math inline">\bar V_h=V_h\cap\bar V</span>) <span class="math inline">b</span> is coercive with <span class="math inline">\gamma=1/(1+C^2)</span>, <span class="math inline">C</span> from the mean estimate. With compatible data the solution <span class="math inline">u\in\bar V</span> satisfies <span class="math inline">b(u,v)=F(v)</span> for <strong>all</strong> <span class="math inline">v\in H^1</span> (split <span class="math inline">v=(v-\bar v)+\bar v</span>; the constant part gives <span class="math inline">0=0</span>).</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Unit square: <span class="math inline">\gamma=\pi^2/(1+\pi^2)=0.908</span>, independent of <span class="math inline">h</span>. <span class="math inline">F</span> contains <span class="math inline">\int_{\partial\Omega}gv</span> — bounded on <span class="math inline">H^1</span> only thanks to the <strong>trace inequality</strong>.</p>
+</div>
+</section>
+<section id="a6-trace-inequality" class="slide level2">
+<h2>§A6 Trace inequality</h2>
+<div title="Lemma — FE divergence theorem">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Lemma — FE divergence theorem</strong></p>
+</div>
+<div class="callout-content">
+<p>For a <span class="math inline">C^1</span> vector field <span class="math inline">\boldsymbol\xi</span> and <span class="math inline">u</span> in a <span class="math inline">C^0</span> FE space: <span class="math inline">\int_\Omega\nabla\cdot(\boldsymbol\xi u)=\int_{\partial\Omega}\boldsymbol\xi\cdot\mathbf n\,u</span> — the interior facet terms cancel because <span class="math inline">u</span> is continuous and <span class="math inline">\mathbf n^+=-\mathbf n^-</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div title="Theorem — trace inequality">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Theorem — trace inequality</strong></p>
+</div>
+<div class="callout-content">
+<p>On a polygon, <span class="math inline">\;\|u\|_{L^2(\partial\Omega)}\le C_T\,\|u\|_{H^1(\Omega)}</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<p><strong>Proof.</strong> Take <span class="math inline">\boldsymbol\xi</span> with <span class="math inline">\boldsymbol\xi\cdot\mathbf n=1</span> on <span class="math inline">\partial\Omega</span>, apply the lemma to <span class="math inline">u^2</span>: <span class="math inline">\int_{\partial\Omega}u^2=\int_\Omega(\nabla\cdot\boldsymbol\xi)u^2+2u\,\boldsymbol\xi\cdot\nabla u\le c\bigl(\|u\|^2_{L^2}+\|u\|_{L^2}|u|_{H^1}\bigr)\le c'\|u\|^2_{H^1}</span> (<span class="math inline">2ab\le a^2+b^2</span>). <span class="math inline">\square</span></p>
+</div>
+<div class="fragment">
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>P1, <span class="math inline">C_{T,h}^2=\lambda_{\max}(B,G)</span>, <span class="math inline">B_{ij}=\int_{\partial\Omega}\phi_j\phi_i</span></th>
+<th style="text-align: center;"><span class="math inline">N=4</span></th>
+<th style="text-align: center;"><span class="math inline">N=8</span></th>
+<th style="text-align: center;"><span class="math inline">N=16</span></th>
+<th style="text-align: center;"><span class="math inline">N=32</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>unit square</td>
+<td style="text-align: center;">4.156</td>
+<td style="text-align: center;">4.163</td>
+<td style="text-align: center;">4.165</td>
+<td style="text-align: center;">4.165</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Bounded.</strong> Compare Week 5 (HW5 Q3): the dual norm of a <em>point</em> value grows like <span class="math inline">\log(1/h)</span> in 2D. Lines carry <span class="math inline">H^1</span> functions; points do not.</p>
+</div>
+</section>
+<section id="a7-partial-dirichlet" class="slide level2">
+<h2>§A7 Partial Dirichlet</h2>
+<div title="Theorem — partial Dirichlet (Brenner &amp; Scott)">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Theorem — partial Dirichlet (Brenner &amp; Scott)</strong></p>
+</div>
+<div class="callout-content">
+<p>If <span class="math inline">\Gamma_D\subset\partial\Omega</span> has positive length, then <span class="math inline">\|v\|_{L^2}\le C|v|_{H^1}</span> on <span class="math inline">V_D</span>, so Poisson is coercive on <span class="math inline">V_D</span> and on <span class="math inline">V_h\cap V_D</span>, uniformly in <span class="math inline">h</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Proof.</strong> <span class="math inline">\|v\|_{L^2}\le\|v-\bar v\|_{L^2}+\|\bar v\|_{L^2}</span>. First term: mean estimate. Second: since <span class="math inline">v=0</span> on <span class="math inline">\Gamma_D</span>, <span class="math display">\|\bar v\|_{L^2}=\frac{|\Omega|^{1/2}}{|\Gamma_D|}\Bigl|\int_{\Gamma_D}(\bar v-v)\Bigr|\le\frac{|\Omega|^{1/2}}{|\Gamma_D|^{1/2}}\|v-\bar v\|_{L^2(\partial\Omega)}\le\frac{|\Omega|^{1/2}C_T}{|\Gamma_D|^{1/2}}\|v-\bar v\|_{H^1}\le C|v|_{H^1}. \ \square</span></p>
+</div>
+<div class="fragment">
+<p><span class="math inline">\gamma_h</span> for <span class="math inline">\Gamma_D=\{x=0,\ 0\le y\le\ell\}</span> (P1):</p>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\ell</span></th>
+<th style="text-align: center;">all of <span class="math inline">\partial\Omega</span></th>
+<th style="text-align: center;">1 (one side)</th>
+<th style="text-align: center;">1/2</th>
+<th style="text-align: center;">1/4</th>
+<th style="text-align: center;">1/8</th>
+<th style="text-align: center;">1/16</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">N=16</span></td>
+<td style="text-align: center;">0.9522</td>
+<td style="text-align: center;">0.7118</td>
+<td style="text-align: center;">0.6283</td>
+<td style="text-align: center;">0.5135</td>
+<td style="text-align: center;">0.4317</td>
+<td style="text-align: center;">0.3767</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">N=32</span></td>
+<td style="text-align: center;">0.9519</td>
+<td style="text-align: center;">0.7116</td>
+<td style="text-align: center;">0.6240</td>
+<td style="text-align: center;">0.5069</td>
+<td style="text-align: center;">0.4227</td>
+<td style="text-align: center;">0.3643</td>
+</tr>
+</tbody>
+</table>
+<p>Smaller <span class="math inline">\Gamma_D</span> → smaller <span class="math inline">\gamma</span> (the constant has <span class="math inline">|\Gamma_D|^{-1/2}</span>), but for fixed <span class="math inline">\ell&gt;0</span> it settles as <span class="math inline">h\to0</span>.</p>
+</div>
+</section>
+<section id="a8-a-point-is-not-a-boundary-condition" class="slide level2">
+<h2>§A8 A point is not a boundary condition</h2>
+<p>Shrink <span class="math inline">\Gamma_D</span> to <strong>one DOF</strong> (a vertex <span class="math inline">p</span> with <span class="math inline">v(p)=0</span>):</p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><img data-src="figs/w06_pinned.png" style="width:100.0%"></p>
+</div><div class="column" style="width:45%;">
+<p><span class="math inline">1/\gamma_h</span> grows by a <strong>constant</strong> per halving of <span class="math inline">h</span>, <span class="math inline">\approx\log2/\theta</span> (<span class="math inline">\theta</span> = interior angle at <span class="math inline">p</span>: <span class="math inline">\pi/2</span>, <span class="math inline">\pi</span>, <span class="math inline">2\pi</span>). So <span class="math inline">\gamma_h\sim\theta/\log(1/h)\to0</span>: no <span class="math inline">h</span>-uniform stability.</p>
+<div class="fragment">
+<ul>
+<li>2D: <span class="math inline">v</span> can be pulled to <span class="math inline">0</span> at a point at an energy cost <span class="math inline">\to0</span>. The theorem needs <span class="math inline">|\Gamma_D|&gt;0</span>.</li>
+<li>1D: <span class="math inline">H^1\subset C^0</span>, one point <strong>is</strong> enough.</li>
+<li>“Pin one DOF” for pure Neumann works <strong>only</strong> with compatible data (§C4).</li>
+</ul>
+</div>
+</div></div>
+</section>
+<section id="a9-robin-conditions" class="slide level2">
+<h2>§A9 Robin conditions</h2>
+<p><span class="math inline">b(u,v)=\int_\Omega\nabla u\cdot\nabla v+\alpha\int_{\partial\Omega}uv</span>, <span class="math inline">\alpha&gt;0</span>, on all of <span class="math inline">H^1</span>:</p>
+<div class="fragment">
+<ul>
+<li><strong>Continuous:</strong> <span class="math inline">|b(u,v)|\le|u|_{H^1}|v|_{H^1}+\alpha\|u\|_{L^2(\partial\Omega)}\|v\|_{L^2(\partial\Omega)}\le(1+\alpha C_T^2)\|u\|_{H^1}\|v\|_{H^1}</span> — trace inequality.</li>
+<li><strong>Coercive:</strong> <span class="math inline">b(v,v)=|v|^2_{H^1}+\alpha\|v\|^2_{L^2(\partial\Omega)}</span> controls <span class="math inline">\|v\|^2_{L^2}</span> by a Friedrichs-type inequality — HW6 Q1.</li>
+</ul>
+</div>
+<div class="fragment">
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>P1, <span class="math inline">N=32</span></th>
+<th style="text-align: center;"><span class="math inline">\alpha=0.01</span></th>
+<th style="text-align: center;"><span class="math inline">0.1</span></th>
+<th style="text-align: center;"><span class="math inline">1</span></th>
+<th style="text-align: center;"><span class="math inline">10</span></th>
+<th style="text-align: center;"><span class="math inline">100</span></th>
+<th style="text-align: center;"><span class="math inline">10^4</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\gamma_h=\lambda_{\min}(K+\alpha B,\,G)</span></td>
+<td style="text-align: center;">0.0399</td>
+<td style="text-align: center;">0.3893</td>
+<td style="text-align: center;">0.9405</td>
+<td style="text-align: center;">0.9510</td>
+<td style="text-align: center;">0.9518</td>
+<td style="text-align: center;">0.9519</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><span class="math inline">\alpha\to0</span>: <span class="math inline">\gamma\approx\alpha|\partial\Omega|/|\Omega|=4\alpha</span> (attained by constants) — Neumann.</li>
+<li><span class="math inline">\alpha\to\infty</span>: <span class="math inline">\gamma\to2\pi^2/(1+2\pi^2)=0.9518</span> — the Dirichlet value of §A7.</li>
+</ul>
+</div>
+</section>
+<section id="a10-summary-and-exercises" class="slide level2">
+<h2>§A10 Summary and exercises</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Problem</th>
+<th>Space</th>
+<th>Coercivity from</th>
+<th><span class="math inline">F</span> bounded by</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Helmholtz, Neumann</td>
+<td><span class="math inline">H^1</span></td>
+<td><span class="math inline">b=(\cdot,\cdot)_{H^1}</span></td>
+<td>Cauchy–Schwarz + trace (for <span class="math inline">g</span>)</td>
+</tr>
+<tr class="even">
+<td>Poisson, pure Neumann</td>
+<td><span class="math inline">\int v=0</span></td>
+<td>mean estimate; data must satisfy <span class="math inline">\int f+\int g=0</span></td>
+<td>trace</td>
+</tr>
+<tr class="odd">
+<td>Poisson, partial Dirichlet</td>
+<td><span class="math inline">v=0</span> on <span class="math inline">\Gamma_D</span>, <span class="math inline">|\Gamma_D|&gt;0</span></td>
+<td>mean estimate + trace</td>
+<td>trace</td>
+</tr>
+<tr class="even">
+<td>Poisson, Robin</td>
+<td><span class="math inline">H^1</span></td>
+<td>trace + Friedrichs-type</td>
+<td>trace</td>
+</tr>
+</tbody>
+</table>
+<div title="Exercise A.1 — Compatibility">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exercise A.1 — Compatibility</strong></p>
+</div>
+<div class="callout-content">
+<p>For <span class="math inline">-\Delta u+cu=f</span>, <span class="math inline">\partial_nu=g</span> with a constant <span class="math inline">c&gt;0</span>, is a compatibility condition needed? Why not?</p>
+</div>
+</div>
+</div>
+</div>
+<div title="Exercise A.2 — One dimension">
+<div class="callout callout-tip callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Exercise A.2 — One dimension</strong></p>
+</div>
+<div class="callout-content">
+<p>On <span class="math inline">(0,1)</span> with <span class="math inline">v(0)=0</span> show <span class="math inline">|v(x)|\le\sqrt x\,\|v'\|_{L^2}</span> and hence <span class="math inline">\|v\|_{L^2}\le\tfrac1{\sqrt2}|v|_{H^1}</span>. Why does this argument fail in 2D for a single point?</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="part-b-dirichlet-conditions-in-dolfinx" class="title-slide slide level1 center">
+<h1>Part B — Dirichlet Conditions in DOLFINx</h1>
+
+</section>
+<section id="b1-essential-conditions-in-the-linear-system" class="slide level2">
+<h2>§B1 Essential conditions in the linear system</h2>
+<p>Split the DOFs into free (<span class="math inline">I</span>) and Dirichlet (<span class="math inline">D</span>) ones, <span class="math inline">\mathbf u_D=\mathbf g</span>: <span class="math display">\begin{bmatrix}A_{II}&amp;A_{ID}\\A_{DI}&amp;A_{DD}\end{bmatrix}\begin{bmatrix}\mathbf u_I\\\mathbf u_D\end{bmatrix}=\begin{bmatrix}\mathbf b_I\\\mathbf b_D\end{bmatrix}
+\quad\longrightarrow\quad A_{II}\,\mathbf u_I=\mathbf b_I-A_{ID}\,\mathbf g .</span> The rows of <span class="math inline">D</span> are <strong>test functions that are not in <span class="math inline">V_D</span></strong> — they are dropped; the columns of <span class="math inline">D</span> multiply known values and move to the right.</p>
+<div class="fragment">
+<p>DOLFINx keeps the full size and solves the <strong>symmetric</strong> system <span class="math display">\begin{bmatrix}A_{II}&amp;0\\0&amp;I\end{bmatrix}\begin{bmatrix}\mathbf u_I\\\mathbf u_D\end{bmatrix}=\begin{bmatrix}\mathbf b_I-A_{ID}\mathbf g\\\mathbf g\end{bmatrix}</span></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Step</th>
+<th>Function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>zero rows <strong>and</strong> columns of <span class="math inline">D</span>, put 1 on the diagonal</td>
+<td><code>assemble_matrix(a, bcs=[bc])</code></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\mathbf b_I\leftarrow\mathbf b_I-A_{ID}\mathbf g</span> (“lifting”)</td>
+<td><code>apply_lifting(b, [a], bcs=[[bc]])</code></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\mathbf b_D\leftarrow\mathbf g</span></td>
+<td><code>set_bc(b, [bc])</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="b2-finding-the-boundary-dofs" class="slide level2">
+<h2>§B2 Finding the boundary DOFs</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># by DOF coordinates (Lagrange elements: DOFs are point values)</span></span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>dofs <span class="op">=</span> fem.locate_dofs_geometrical(V, <span class="kw">lambda</span> x: np.isclose(x[<span class="dv">0</span>], <span class="fl">0.0</span>))</span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># by mesh entities: all DOFs on the given facets (vertices, edge midpoints, ...)</span></span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>fdim <span class="op">=</span> msh.topology.dim <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>msh.topology.create_connectivity(fdim, msh.topology.dim)</span>
+<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a>facets <span class="op">=</span> mesh.locate_entities_boundary(msh, fdim, <span class="kw">lambda</span> x: np.isclose(x[<span class="dv">0</span>], <span class="fl">0.0</span>))</span>
+<span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a>dofs <span class="op">=</span> fem.locate_dofs_topological(V, fdim, facets)          <span class="co"># or ft.find(tag) from facet tags</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Left side of the <span class="math inline">8\times8</span> unit square:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>marker</th>
+<th style="text-align: center;">P1</th>
+<th style="text-align: center;">P2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>np.isclose(x[0], 0)</code></td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">17</td>
+</tr>
+<tr class="even">
+<td>topological, left facets</td>
+<td style="text-align: center;">9</td>
+<td style="text-align: center;">17</td>
+</tr>
+<tr class="odd">
+<td><code>x[0] == 0.0</code></td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;"><strong>0</strong></td>
+</tr>
+<tr class="even">
+<td><code>x[0] == 1.0</code> (right side)</td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;"><strong>8</strong></td>
+</tr>
+</tbody>
+</table>
+<p>The DOF coordinates on <span class="math inline">x=0</span> are <span class="math inline">\pm2.7\times10^{-18}</span>, not <span class="math inline">0</span> (Week 4: <code>x**a</code> gave <code>nan</code> for the same reason). Exact float comparison finds nothing — <strong>no error</strong>, just a missing boundary condition.</p>
+</div>
+</section>
+<section id="b3-fem.dirichletbc-in-0.11" class="slide level2">
+<h2>§B3 <code>fem.dirichletbc</code> in 0.11</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>bc <span class="op">=</span> fem.dirichletbc(<span class="fl">0.0</span>, dofs, V)                         <span class="co"># constant value: pass V</span></span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>bc <span class="op">=</span> fem.dirichletbc(fem.Constant(msh, <span class="fl">1.0</span>), dofs, V)      <span class="co"># Constant: pass V</span></span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> fem.Function(V)                                        <span class="co"># space-dependent value</span></span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>g.interpolate(<span class="kw">lambda</span> x: np.sin(np.pi <span class="op">*</span> x[<span class="dv">1</span>]))              <span class="co"># NumPy callable, or</span></span>
+<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>g.interpolate(fem.Expression(u_ex, V.element.interpolation_points))   <span class="co"># a UFL expression (MMS)</span></span>
+<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a>bc <span class="op">=</span> fem.dirichletbc(g, dofs)                              <span class="co"># Function: V is taken from g</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Call</th>
+<th>0.11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>dirichletbc(g, dofs)</code> with <code>g</code> a <code>Function</code></td>
+<td>✅</td>
+</tr>
+<tr class="even">
+<td><code>dirichletbc(g, dofs, V)</code> with <code>g</code> a <code>Function</code></td>
+<td><code>TypeError: __init__(): incompatible function arguments</code></td>
+</tr>
+<tr class="odd">
+<td>several boundary parts</td>
+<td>one <code>bc</code> per part, <code>bcs=[bc_left, bc_right]</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>For a sub-space (vector or mixed problems, Week 11) the DOFs come from <code>locate_dofs_topological((V.sub(0), V0), ...)</code> — geometrical location needs DOF coordinates, the topological one always works.</p>
+</div>
+</section>
+<section id="b4-the-assembly-pipeline" class="slide level2">
+<h2>§B4 The assembly pipeline</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>a, L <span class="op">=</span> fem.form(a_ufl), fem.form(L_ufl)</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> assemble_matrix(a, bcs<span class="op">=</span>[bc])<span class="op">;</span> A.assemble()                 <span class="co"># rows and columns of D zeroed, diagonal 1</span></span>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> assemble_vector(L)</span>
+<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>apply_lifting(b, [a], bcs<span class="op">=</span>[[bc]])                              <span class="co"># b_I -= A_ID g   (each rank, incl. ghosts)</span></span>
+<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a>b.ghostUpdate(addv<span class="op">=</span>PETSc.InsertMode.ADD, mode<span class="op">=</span>PETSc.ScatterMode.REVERSE)   <span class="co"># ghosts → owners</span></span>
+<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>set_bc(b, [bc])                                                <span class="co"># b_D = g         (owned entries only)</span></span>
+<span id="cb3-7"><a href="" aria-hidden="true" tabindex="-1"></a>ksp.solve(b, uh.x.petsc_vec)<span class="op">;</span> uh.x.scatter_forward()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>LinearProblem(a_ufl, L_ufl, bcs=[bc], petsc_options_prefix=..., ...)</code> performs exactly these steps.</p>
+<div class="fragment">
+<p><strong>The order matters.</strong> <code>set_bc</code> writes <span class="math inline">\mathbf g</span> into owned entries. A later <code>ghostUpdate(ADD)</code> <em>adds</em> the other rank’s contributions on top of it — the Dirichlet values are corrupted, but only in DOFs that are also ghosts on another rank.</p>
+</div>
+</section>
+<section id="b5-pipeline-mistakes-measured" class="slide level2">
+<h2>§B5 Pipeline mistakes, measured</h2>
+<p>Mixed problem of §C2 (Dirichlet + Neumann + Robin), P1, <code>-np 2</code>, <span class="math inline">L^2</span> error:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 19%">
+<col style="width: 19%">
+<col style="width: 19%">
+<col style="width: 19%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;"><span class="math inline">N=8</span></th>
+<th style="text-align: center;"><span class="math inline">16</span></th>
+<th style="text-align: center;"><span class="math inline">32</span></th>
+<th style="text-align: center;"><span class="math inline">64</span></th>
+<th>symptom</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>correct</td>
+<td style="text-align: center;">1.9e-2</td>
+<td style="text-align: center;">4.9e-3</td>
+<td style="text-align: center;">1.2e-3</td>
+<td style="text-align: center;">3.1e-4</td>
+<td>rate 2</td>
+</tr>
+<tr class="even">
+<td>no <code>apply_lifting</code></td>
+<td style="text-align: center;">0.55</td>
+<td style="text-align: center;">0.57</td>
+<td style="text-align: center;">0.59</td>
+<td style="text-align: center;">0.60</td>
+<td>stagnates</td>
+</tr>
+<tr class="odd">
+<td><code>assemble_matrix(a)</code> without <code>bcs</code></td>
+<td style="text-align: center;">15</td>
+<td style="text-align: center;">26</td>
+<td style="text-align: center;">47</td>
+<td style="text-align: center;">90</td>
+<td>grows</td>
+</tr>
+<tr class="even">
+<td><code>set_bc</code> before <code>ghostUpdate</code></td>
+<td style="text-align: center;">1.9e-2</td>
+<td style="text-align: center;"><strong>1.6e-2</strong></td>
+<td style="text-align: center;">1.2e-3</td>
+<td style="text-align: center;">3.1e-4</td>
+<td>one mesh only (here <span class="math inline">N=16</span>; on Colab <span class="math inline">N=64</span>), only with <code>-np 2</code></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li>Without lifting the free rows still “see” <span class="math inline">\mathbf u_D=0</span>: the solution is that of <span class="math inline">g_D=0</span> in the interior, glued to <span class="math inline">g_D</span> on <span class="math inline">\Gamma_D</span>.</li>
+<li>The ordering bug is invisible with <code>-np 1</code>, and which mesh it hits depends on the partition — only a rate table <strong>and</strong> a parallel run catch it.</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="part-c-neumann-robin-subdomains" class="title-slide slide level1 center">
+<h1>Part C — Neumann, Robin, Subdomains</h1>
+
+</section>
+<section id="c1-boundary-markers-and-dsi" class="slide level2">
+<h2>§C1 Boundary markers and <code>ds(i)</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>LEFT, RIGHT, BOTTOM, TOP <span class="op">=</span> <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span></span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>facets, values <span class="op">=</span> [], []</span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> tag, marker <span class="kw">in</span> ((LEFT,   <span class="kw">lambda</span> x: np.isclose(x[<span class="dv">0</span>], <span class="dv">0</span>)), (RIGHT, <span class="kw">lambda</span> x: np.isclose(x[<span class="dv">0</span>], <span class="dv">1</span>)),</span>
+<span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a>                    (BOTTOM, <span class="kw">lambda</span> x: np.isclose(x[<span class="dv">1</span>], <span class="dv">0</span>)), (TOP,   <span class="kw">lambda</span> x: np.isclose(x[<span class="dv">1</span>], <span class="dv">1</span>))):</span>
+<span id="cb4-5"><a href="" aria-hidden="true" tabindex="-1"></a>    f <span class="op">=</span> mesh.locate_entities_boundary(msh, fdim, marker)</span>
+<span id="cb4-6"><a href="" aria-hidden="true" tabindex="-1"></a>    facets.append(f)<span class="op">;</span> values.append(np.full(<span class="bu">len</span>(f), tag, dtype<span class="op">=</span>np.int32))</span>
+<span id="cb4-7"><a href="" aria-hidden="true" tabindex="-1"></a>facets, values <span class="op">=</span> np.hstack(facets), np.hstack(values)</span>
+<span id="cb4-8"><a href="" aria-hidden="true" tabindex="-1"></a>order <span class="op">=</span> np.argsort(facets)                                   <span class="co"># meshtags expects sorted indices</span></span>
+<span id="cb4-9"><a href="" aria-hidden="true" tabindex="-1"></a>ft <span class="op">=</span> mesh.meshtags(msh, fdim, facets[order], values[order])</span>
+<span id="cb4-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> ufl.Measure(<span class="st">"ds"</span>, domain<span class="op">=</span>msh, subdomain_data<span class="op">=</span>ft)</span>
+<span id="cb4-12"><a href="" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> f <span class="op">*</span> v <span class="op">*</span> ufl.dx <span class="op">+</span> g_N <span class="op">*</span> v <span class="op">*</span> ds(TOP) <span class="op">+</span> g_N <span class="op">*</span> v <span class="op">*</span> ds(BOTTOM) <span class="op">+</span> r <span class="op">*</span> v <span class="op">*</span> ds(RIGHT)</span>
+<span id="cb4-13"><a href="" aria-hidden="true" tabindex="-1"></a>bc <span class="op">=</span> fem.dirichletbc(g_D, fem.locate_dofs_topological(V, fdim, ft.find(LEFT)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p><strong>Check the tags:</strong> <span class="math inline">\int 1\,ds(i)</span> must be the length of side <span class="math inline">i</span>. Without <code>subdomain_data</code> the same code runs, and <span class="math inline">\int1\,ds(1)=0</span> — every <code>ds(i)</code> term <strong>silently disappears</strong> (§D1).</p>
+</div>
+</section>
+<section id="c2-mms-with-all-three-conditions" class="slide level2">
+<h2>§C2 MMS with all three conditions</h2>
+<p><span class="math inline">\tilde u=1+\sin(\pi x)e^{y}+xy^2</span> — no special boundary behaviour needed: <strong>all boundary data are computed from <span class="math inline">\tilde u</span></strong>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> ufl.FacetNormal(msh)</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>f   <span class="op">=</span> <span class="op">-</span>ufl.div(ufl.grad(u_ex))</span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>g_N <span class="op">=</span> ufl.dot(ufl.grad(u_ex), n)                     <span class="co"># Neumann data on top and bottom (normal from UFL)</span></span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a>r   <span class="op">=</span> ufl.dot(ufl.grad(u_ex), n) <span class="op">+</span> alpha <span class="op">*</span> u_ex      <span class="co"># Robin data on the right, alpha = 10</span></span>
+<span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a>g_D <span class="op">=</span> fem.Function(V)<span class="op">;</span> g_D.interpolate(fem.Expression(u_ex, V.element.interpolation_points))   <span class="co"># left</span></span>
+<span id="cb5-6"><a href="" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> inner(grad(u), grad(v)) <span class="op">*</span> dx <span class="op">+</span> alpha <span class="op">*</span> u <span class="op">*</span> v <span class="op">*</span> ds(RIGHT)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p><code>-np 2</code>, LU:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th><span class="math inline">\|e\|_{L^2}</span>, <span class="math inline">N=8\to64</span></th>
+<th style="text-align: center;">rates</th>
+<th style="text-align: center;"><span class="math inline">|e|_{H^1}</span> rates</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P1</td>
+<td>1.94e-2 → 3.08e-4</td>
+<td style="text-align: center;">1.98, 2.00, 2.00</td>
+<td style="text-align: center;">0.99, 1.00, 1.00</td>
+</tr>
+<tr class="even">
+<td>P2</td>
+<td>4.68e-4 → 9.36e-7</td>
+<td style="text-align: center;">2.98, 2.99, 2.99</td>
+<td style="text-align: center;">1.98, 1.99, 2.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>Week 5 had to pick <span class="math inline">\tilde u</span> with <span class="math inline">\partial_n\tilde u=0</span> because <span class="math inline">g=0</span> was hard-wired. With boundary terms in <span class="math inline">F</span>, <strong>any</strong> smooth <span class="math inline">\tilde u</span> works.</p>
+</div>
+</section>
+<section id="c3-pure-neumann-in-petsc" class="slide level2">
+<h2>§C3 Pure Neumann in PETSc</h2>
+<p><span class="math inline">K</span> is singular, <span class="math inline">K\mathbf 1=\mathbf 0</span>. Tell the solver:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>ns <span class="op">=</span> PETSc.NullSpace().create(constant<span class="op">=</span><span class="va">True</span>, comm<span class="op">=</span>msh.comm)</span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>A.setNullSpace(ns)                   <span class="co"># Krylov methods work orthogonal to the constant vector</span></span>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>ns.remove(b)                         <span class="co"># project b: sum_i b_i = 0</span></span>
+<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a>ksp.setType(<span class="st">"cg"</span>)<span class="op">;</span> ksp.getPC().setType(<span class="st">"hypre"</span>)</span>
+<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>ksp.solve(b, uh.x.petsc_vec)<span class="op">;</span> uh.x.scatter_forward()</span>
+<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a>mean <span class="op">=</span> msh.comm.allreduce(fem.assemble_scalar(fem.form(uh <span class="op">*</span> ufl.dx)), op<span class="op">=</span>MPI.SUM)</span>
+<span id="cb6-7"><a href="" aria-hidden="true" tabindex="-1"></a>uh.x.array[:] <span class="op">-=</span> mean                <span class="co"># the nullspace fixes sum_i u_i, not the integral of u_h</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<p>Compatible data (<span class="math inline">\tilde u=\cos\pi x\cos\pi y+x^2y</span>, <span class="math inline">f</span>, <span class="math inline">g</span> by UFL), <code>-np 2</code>: CG + hypre needs 7–8 iterations for every <span class="math inline">N</span>; rates P1 1.95, 1.99, 2.00 and P2 2.98, 2.99, 3.00 (<span class="math inline">L^2</span>). Without the last two lines, <span class="math inline">\int u_h</span> is of order <span class="math inline">10^{-3}</span> instead of <span class="math inline">0</span>: harmless for gradients, wrong for a comparison with <span class="math inline">\tilde u</span>.</p>
+</div>
+</section>
+<section id="c4-pure-neumann-with-incompatible-data" class="slide level2">
+<h2>§C4 Pure Neumann with incompatible data</h2>
+<p><span class="math inline">f\to f+1</span>, so <span class="math inline">\int f+\int g=1</span>. P1, <code>-np 2</code>; error of <span class="math inline">u_h-\bar u_h</span> against <span class="math inline">\tilde u-\bar{\tilde u}</span>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 35%">
+<col style="width: 21%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Strategy</th>
+<th style="text-align: center;">KSP reason</th>
+<th><span class="math inline">\|e\|_{L^2}</span>, <span class="math inline">N=8\to64</span></th>
+<th><span class="math inline">\max|u_h|</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>nullspace + <code>remove(b)</code>, CG</td>
+<td style="text-align: center;">2</td>
+<td>2.4e-2 → 9.4e-4, rates 1.79, 1.59, <strong>1.31</strong></td>
+<td>1.8</td>
+</tr>
+<tr class="even">
+<td>nullspace, <code>b</code> not projected, CG</td>
+<td style="text-align: center;"><strong>−8, −8, −8, −4</strong></td>
+<td>4.8e-2 → <span class="math inline">5.7\times10^4</span></td>
+<td>up to <span class="math inline">2\times10^{11}</span></td>
+</tr>
+<tr class="odd">
+<td>pin one DOF (corner), LU</td>
+<td style="text-align: center;">4</td>
+<td>0.26 → 0.25, stagnates</td>
+<td>4.2 → 5.5, grows</td>
+</tr>
+<tr class="even">
+<td>plain LU</td>
+<td style="text-align: center;">4</td>
+<td>erratic</td>
+<td><span class="math inline">10^{12}</span>–<span class="math inline">10^{14}</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li><code>remove(b)</code> subtracts the <strong>same number from every entry</strong> of <span class="math inline">\mathbf b</span> — that is not the load vector of a constant (boundary DOFs carry less weight), so it solves a nearby problem.</li>
+<li>Pinning turns the defect into a <strong>point source</strong> at the pinned corner: <span class="math inline">\max|u_h|</span> grows by 0.44 per halving of <span class="math inline">h</span> <span class="math inline">=\log2/(\pi/2)</span>, the <span class="math inline">\log(1/r)</span> of §A8.</li>
+<li>With compatible data all four strategies give the same errors. <strong>Print <span class="math inline">\int f+\int g</span> before solving.</strong></li>
+</ul>
+</div>
+</section>
+<section id="c5-subdomains-and-multi-material-problems" class="slide level2">
+<h2>§C5 Subdomains and multi-material problems</h2>
+<p><span class="math inline">-\nabla\cdot(k\nabla u)=f</span> with <span class="math inline">k=k_1</span> in <span class="math inline">\Omega_1</span>, <span class="math inline">k=k_2</span> in <span class="math inline">\Omega_2</span>. Weak form unchanged: <span class="math inline">\int_\Omega k\nabla u\cdot\nabla v</span>.</p>
+<div class="fragment">
+<p>Interface conditions on <span class="math inline">\Gamma=\partial\Omega_1\cap\partial\Omega_2</span>:</p>
+<ul>
+<li><span class="math inline">[u]=0</span> — built into <span class="math inline">V_h\subset H^1</span> (continuous elements)</li>
+<li><span class="math inline">[k\,\partial_nu]=0</span> (flux continuity) — <strong>natural</strong>: comes out of the integration by parts, nothing to impose</li>
+</ul>
+<p><span class="math inline">u</span> has a kink on <span class="math inline">\Gamma</span>: it is smooth on each side, but not in <span class="math inline">H^2(\Omega)</span>.</p>
+</div>
+<div class="fragment">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="" aria-hidden="true" tabindex="-1"></a>Q <span class="op">=</span> fem.functionspace(msh, (<span class="st">"DG"</span>, <span class="dv">0</span>))<span class="op">;</span> k <span class="op">=</span> fem.Function(Q)          <span class="co"># one value per cell</span></span>
+<span id="cb7-2"><a href="" aria-hidden="true" tabindex="-1"></a>k.x.array[ct.find(<span class="dv">1</span>)] <span class="op">=</span> <span class="fl">10.0</span><span class="op">;</span> k.x.array[ct.find(<span class="dv">2</span>)] <span class="op">=</span> <span class="fl">1.0</span>           <span class="co"># from cell tags (Gmsh)</span></span>
+<span id="cb7-3"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># or: cells = mesh.locate_entities(msh, tdim, lambda x: x[0] &lt;= 0.5 + 1e-12)</span></span>
+<span id="cb7-4"><a href="" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> k <span class="op">*</span> ufl.inner(ufl.grad(u), ufl.grad(v)) <span class="op">*</span> ufl.dx</span>
+<span id="cb7-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="" aria-hidden="true" tabindex="-1"></a>dx <span class="op">=</span> ufl.Measure(<span class="st">"dx"</span>, domain<span class="op">=</span>msh, subdomain_data<span class="op">=</span>ct)               <span class="co"># alternative: one term per material</span></span>
+<span id="cb7-7"><a href="" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="fl">10.0</span> <span class="op">*</span> ufl.inner(ufl.grad(u), ufl.grad(v)) <span class="op">*</span> dx(<span class="dv">1</span>) <span class="op">+</span> <span class="fl">1.0</span> <span class="op">*</span> ufl.inner(ufl.grad(u), ufl.grad(v)) <span class="op">*</span> dx(<span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="c6-the-mesh-must-follow-the-interface" class="slide level2">
+<h2>§C6 The mesh must follow the interface</h2>
+<p>Layered square, <span class="math inline">k=1</span> for <span class="math inline">x&lt;s</span>, <span class="math inline">k=10</span> for <span class="math inline">x&gt;s</span>; <span class="math inline">\tilde u=\cos(\pi y)\cdot\{\sin(\pi x)/k_i+c_i\}</span> has continuous <span class="math inline">u</span> and <span class="math inline">k\,\partial_xu</span>. <code>-np 2</code>, LU:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 31%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>interface</th>
+<th>element</th>
+<th style="text-align: center;"><span class="math inline">L^2</span> rates (<span class="math inline">N=8\to64</span>)</th>
+<th style="text-align: center;"><span class="math inline">H^1</span> rates</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">s=1/2</span> — on mesh lines</td>
+<td>P1</td>
+<td style="text-align: center;">1.98, 1.99, 2.00</td>
+<td style="text-align: center;">1.00, 1.00, 1.00</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>P2</td>
+<td style="text-align: center;">3.01, 3.00, 3.00</td>
+<td style="text-align: center;">1.99, 2.00, 2.00</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">s=1/3</span> — cuts through cells</td>
+<td>P1</td>
+<td style="text-align: center;">0.57, 1.84, 0.26</td>
+<td style="text-align: center;">1.07, 0.47, 0.92</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>P2</td>
+<td style="text-align: center;">1.02, 0.94, 1.03</td>
+<td style="text-align: center;">1.68, −0.65, 1.71</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li>On a fitted mesh, <span class="math inline">u</span> is smooth <strong>on every cell</strong>: the interpolation estimate of Week 4 applies cell by cell → full rates.</li>
+<li>On a cut mesh, cells contain the kink: rate about 1 in <span class="math inline">L^2</span>, erratic, and P2 is no better than P1. Fix the mesh, not the element.</li>
+</ul>
+</div>
+</section>
+<section id="c7-gmsh-geometry-tagged-mesh" class="slide level2">
+<h2>§C7 Gmsh: geometry → tagged mesh</h2>
+<div class="columns">
+<div class="column" style="width:66%;">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> gmsh</span>
+<span id="cb8-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> dolfinx.io <span class="im">import</span> gmsh <span class="im">as</span> gmshio</span>
+<span id="cb8-3"><a href="" aria-hidden="true" tabindex="-1"></a>gmsh.initialize()</span>
+<span id="cb8-4"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> comm.rank <span class="op">==</span> <span class="dv">0</span>:                               <span class="co"># build the model on one rank</span></span>
+<span id="cb8-5"><a href="" aria-hidden="true" tabindex="-1"></a>    outer <span class="op">=</span> gmsh.model.occ.addDisk(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb8-6"><a href="" aria-hidden="true" tabindex="-1"></a>    inner <span class="op">=</span> gmsh.model.occ.addDisk(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>)</span>
+<span id="cb8-7"><a href="" aria-hidden="true" tabindex="-1"></a>    gmsh.model.occ.fragment([(<span class="dv">2</span>, outer)], [(<span class="dv">2</span>, inner)])   <span class="co"># conforming interface</span></span>
+<span id="cb8-8"><a href="" aria-hidden="true" tabindex="-1"></a>    gmsh.model.occ.synchronize()</span>
+<span id="cb8-9"><a href="" aria-hidden="true" tabindex="-1"></a>    gmsh.model.addPhysicalGroup(<span class="dv">2</span>, [s_in], <span class="dv">1</span>)<span class="op">;</span> gmsh.model.addPhysicalGroup(<span class="dv">2</span>, [s_out], <span class="dv">2</span>)   <span class="co"># → cell tags</span></span>
+<span id="cb8-10"><a href="" aria-hidden="true" tabindex="-1"></a>    gmsh.model.addPhysicalGroup(<span class="dv">1</span>, outer_curves, <span class="dv">10</span>)                                        <span class="co"># → facet tag</span></span>
+<span id="cb8-11"><a href="" aria-hidden="true" tabindex="-1"></a>    gmsh.option.setNumber(<span class="st">"Mesh.CharacteristicLengthMax"</span>, <span class="fl">0.1</span>)</span>
+<span id="cb8-12"><a href="" aria-hidden="true" tabindex="-1"></a>    gmsh.model.mesh.generate(<span class="dv">2</span>)</span>
+<span id="cb8-13"><a href="" aria-hidden="true" tabindex="-1"></a>md <span class="op">=</span> gmshio.model_to_mesh(gmsh.model, comm, <span class="dv">0</span>, gdim<span class="op">=</span><span class="dv">2</span>)   <span class="co"># every rank</span></span>
+<span id="cb8-14"><a href="" aria-hidden="true" tabindex="-1"></a>gmsh.finalize()</span>
+<span id="cb8-15"><a href="" aria-hidden="true" tabindex="-1"></a>msh, ct, ft <span class="op">=</span> md.mesh, md.cell_tags, md.facet_tags</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:34%;">
+<p><img data-src="figs/w06_disk_mesh.png" style="width:80.0%"></p>
+<p><span class="math inline">h=0.1</span>: 817 cells (212 inclusion, 605 matrix), 63 outer facets (Gmsh 4.15; counts depend on the version).</p>
+<p>Only entities in a <strong>physical group</strong> become part of the mesh; the group tags become <code>cell_tags</code> / <code>facet_tags</code>.</p>
+</div></div>
+</section>
+<section id="c8-gmsh-disk-geometry-limits-the-rate" class="slide level2">
+<h2>§C8 Gmsh disk: geometry limits the rate</h2>
+<p><span class="math inline">k_1=10</span> for <span class="math inline">r&lt;\tfrac12</span>, <span class="math inline">k_2=1</span>; <span class="math inline">u=0</span> on <span class="math inline">r=1</span>; exact <span class="math inline">u=\cos(\pi r/2)/k_i+c_i</span>. <code>-np 2</code>, <span class="math inline">L^2</span> error, Gmsh size <span class="math inline">h=0.2\to0.025</span>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>mesh</th>
+<th>element</th>
+<th style="text-align: center;"><span class="math inline">L^2</span> rates</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>interface meshed (<code>fragment</code>)</td>
+<td>P1</td>
+<td style="text-align: center;">2.04, 1.99, 2.00</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>P2, straight-sided triangles</td>
+<td style="text-align: center;">2.01, 2.02, 2.01</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>P2, curved triangles (<code>gmsh.model.mesh.setOrder(2)</code>)</td>
+<td style="text-align: center;">3.28, 2.97, 3.02</td>
+</tr>
+<tr class="even">
+<td>interface not meshed (<span class="math inline">k</span> from cell midpoints)</td>
+<td>P1</td>
+<td style="text-align: center;">1.46, 0.74, 1.28</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li>Straight-sided cells replace the circles by polygons: an <span class="math inline">O(h^2)</span> <strong>geometry error</strong> that P2 cannot beat. Curved (isoparametric) cells restore <span class="math inline">h^3</span>.</li>
+<li>A curved interface that the mesh ignores costs as much as the misaligned layer of §C6.</li>
+</ul>
+</div>
+</section>
+<section id="c9-math-dolfinx" class="slide level2">
+<h2>§C9 Math → DOLFINx</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Math</th>
+<th>DOLFINx 0.11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\Gamma_D,\Gamma_N,\Gamma_R</span></td>
+<td><code>mesh.meshtags(msh, fdim, facets_sorted, tags)</code>, or <code>md.facet_tags</code> from Gmsh</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">u=g_D</span> on <span class="math inline">\Gamma_D</span></td>
+<td><code>fem.dirichletbc(g, fem.locate_dofs_topological(V, fdim, ft.find(i)))</code></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\int_{\Gamma_N}g_Nv</span>, <span class="math inline">\alpha\int_{\Gamma_R}uv</span></td>
+<td><code>g * v * ds(i)</code>, <code>alpha * u * v * ds(j)</code> with <code>ds = Measure("ds", subdomain_data=ft)</code></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\partial_n\tilde u</span></td>
+<td><code>ufl.dot(ufl.grad(u_ex), ufl.FacetNormal(msh))</code></td>
+</tr>
+<tr class="odd">
+<td>lifting <span class="math inline">\mathbf b_I-A_{ID}\mathbf g</span></td>
+<td><code>assemble_matrix(a, bcs)</code>, <code>apply_lifting</code>, <code>ghostUpdate</code>, <code>set_bc</code> — in this order</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\int v=0</span> (pure Neumann)</td>
+<td><code>PETSc.NullSpace().create(constant=True)</code>, <code>A.setNullSpace</code>, <code>ns.remove(b)</code>, subtract the mean</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">k</span> per material</td>
+<td>DG0 <code>Function</code> from <code>cell_tags</code>, or <code>dx(i)</code> with <code>subdomain_data=ct</code></td>
+</tr>
+<tr class="even">
+<td>geometry</td>
+<td>Gmsh physical groups → <code>dolfinx.io.gmsh.model_to_mesh</code></td>
+</tr>
+</tbody>
+</table>
+</section></section>
+<section>
+<section id="part-d-llms-and-boundary-conditions-assignment" class="title-slide slide level1 center">
+<h1>Part D — LLMs and Boundary Conditions · Assignment</h1>
+
+</section>
+<section id="d1-where-llm-generated-bc-code-goes-wrong" class="slide level2">
+<h2>§D1 Where LLM-generated BC code goes wrong</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Kind</th>
+<th>What it looks like</th>
+<th>Detection</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Stale API</strong></td>
+<td><code>dirichletbc(g_func, dofs, V)</code>; <code>LinearProblem</code> without prefix; <code>from dolfinx.io import gmshio</code>; <code>msh, ct, ft = model_to_mesh(...)</code></td>
+<td><code>TypeError</code>, <code>ImportError</code>, <code>ValueError</code> at once</td>
+</tr>
+<tr class="even">
+<td><strong>Silent location bugs</strong></td>
+<td><code>x[0] == 0</code> — finds 0 DOFs on P1 and P2; the problem stays solvable</td>
+<td>count DOFs, <span class="math inline">\int1\,ds(i)</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Silent measure bugs</strong></td>
+<td><code>ds(i)</code> without <code>subdomain_data</code> (integral = 0); <code>dx</code> instead of <code>ds</code></td>
+<td><span class="math inline">\int1\,ds(i)</span>; rates</td>
+</tr>
+<tr class="even">
+<td><strong>Wrong data</strong></td>
+<td><span class="math inline">\partial_nu</span> written as <span class="math inline">\partial_yu</span> on the bottom side (<span class="math inline">\mathbf n=(0,-1)</span>); Robin term only in <span class="math inline">L</span></td>
+<td>error stagnates</td>
+</tr>
+<tr class="odd">
+<td><strong>Pipeline</strong></td>
+<td>no <code>apply_lifting</code>; <code>set_bc</code> before <code>ghostUpdate</code>; <code>assemble_matrix</code> without <code>bcs</code></td>
+<td>rates; <code>-np 1</code> vs <code>-np 2</code></td>
+</tr>
+<tr class="even">
+<td><strong>Pure Neumann</strong></td>
+<td>LU on the singular matrix; no compatibility check; mean not removed</td>
+<td>reason, <span class="math inline">\max|u_h|</span>, <span class="math inline">\int f+\int g</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="d2-verify-each-boundary-separately" class="slide level2 scrollable">
+<h2>§D2 Verify each boundary separately</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><strong>Checklist for a BC-heavy solver</strong></p>
+<ol type="1">
+<li>Print the number of DOFs on each Dirichlet part and <span class="math inline">\int 1\,ds(i)</span> for each tag.</li>
+<li>MMS with <strong>every</strong> condition active, all data computed from <span class="math inline">\tilde u</span> by UFL (normals from <code>FacetNormal</code>).</li>
+<li>Rates over ≥ 3 meshes, P1 and P2.</li>
+<li>Same numbers with <code>-np 1</code> and <code>-np 2</code>.</li>
+<li>Pure Neumann: <span class="math inline">\int f+\int g</span>, KSP reason, <span class="math inline">\max|u_h|</span>, mean removed.</li>
+<li>Multi-material: look at the mesh — does it follow the interfaces?</li>
+</ol>
+</div><div class="column" style="width:45%;">
+<div class="box">
+<p>A boundary condition that is <strong>missing</strong> usually leaves a solvable problem: wrong, but no error message. A rate table is the only alarm.</p>
+</div>
+</div></div>
+</section>
+<section id="assignment-hw6-due-before-the-week-7-lecture" class="slide level2">
+<h2>Assignment — HW6, due before the Week 7 lecture</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="hw6-multi-material-and-robin-conditions-100">HW6 — Multi-material and Robin conditions (100)</h3>
+<ul>
+<li><strong>Q1</strong> proofs: pure Neumann with boundary data, Robin coercivity, Dirichlet lifting in matrix form (25)</li>
+<li><strong>Q2</strong> composite wall: two materials, Dirichlet + insulated + convective (Robin) sides, heat generation; exactness, rates, fitted vs cut interface (35)</li>
+<li><strong>Q3</strong> coercivity constants: Robin, and one pinned DOF at a corner, an edge and an interior point (20)</li>
+<li><strong>Q4</strong> LLM-generated mixed-BC solver with planted bugs: find, fix, explain (20)</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div class="box">
+<p>Submit the executed <code>.ipynb</code> (restart &amp; run all) with the AI-usage log.</p>
+<p><strong>Reminder:</strong> an error in a <code>%%fenicsx</code> cell does <strong>not</strong> stop <em>Run all</em>. Read every output before you submit.</p>
+</div>
+</div></div>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Key idea</th>
+<th>DOLFINx</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Essential / natural</td>
+<td>Dirichlet in the space; Neumann, Robin in the forms</td>
+<td><code>dirichletbc</code>; <code>ds(i)</code></td>
+</tr>
+<tr class="even">
+<td>Poincaré-type inequality</td>
+<td><span class="math inline">\|v\|_{L^2}\le C|v|_{H^1}</span> on the space ⇒ <span class="math inline">\gamma=1/(1+C^2)</span></td>
+<td><span class="math inline">\gamma_h=\lambda_{\min}</span></td>
+</tr>
+<tr class="odd">
+<td>Pure Neumann</td>
+<td>mean estimate; <span class="math inline">\int f+\int g=0</span>; <span class="math inline">u</span> up to a constant</td>
+<td><code>NullSpace</code>, <code>remove(b)</code>, subtract mean</td>
+</tr>
+<tr class="even">
+<td>Trace inequality</td>
+<td><span class="math inline">\|u\|_{L^2(\partial\Omega)}\le C\|u\|_{H^1}</span>; lines yes, points no</td>
+<td><code>ds</code> data bounded</td>
+</tr>
+<tr class="odd">
+<td>Partial Dirichlet</td>
+<td>needs <span class="math inline">|\Gamma_D|&gt;0</span>; one pinned DOF: <span class="math inline">\gamma_h\sim1/\log(1/h)</span></td>
+<td><code>locate_dofs_topological</code></td>
+</tr>
+<tr class="even">
+<td>Lifting</td>
+<td><span class="math inline">A_{II}\mathbf u_I=\mathbf b_I-A_{ID}\mathbf g</span></td>
+<td><code>apply_lifting</code> → <code>ghostUpdate</code> → <code>set_bc</code></td>
+</tr>
+<tr class="odd">
+<td>Multi-material</td>
+<td>flux continuity is natural; the <strong>mesh</strong> must follow the interface</td>
+<td>DG0 <span class="math inline">k</span>, <code>cell_tags</code>, Gmsh</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<h3 id="next-week-convergence-theory">Next week — Convergence theory</h3>
+<p>Sobolev spaces, Céa’s lemma, elliptic regularity, Aubin–Nitsche: <em>why</em> the rates are <span class="math inline">k</span> and <span class="math inline">k+1</span> — and when they are not.</p>
+</div>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="assets/seoultech_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="W06_lecture_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="W06_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="W06_lecture_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="W06_lecture_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="W06_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="W06_lecture_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="W06_lecture_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="W06_lecture_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="W06_lecture_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="W06_lecture_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true,"numbers":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

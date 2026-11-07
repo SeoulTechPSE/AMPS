@@ -1,0 +1,131 @@
+---
+title: "<Project title>"
+subtitle: "AMPS II — Final project report · Topic <A–J or own>"
+author: "<Name> (<student ID>)"
+date: "<submission date>"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: true
+    number-sections: true
+    fig-cap-location: bottom
+bibliography: references.bib
+---
+
+<!-- Keep every section heading. At most 10 printed pages for Sections 1-8. Every number must come from project.ipynb:
+     add a source tag after each table or figure caption, e.g. "(project.ipynb §5.2)". Delete these comments before submitting. -->
+
+# Problem
+
+<!-- The application and why it matters for your research (a sketch helps). Geometry, governing equations, boundary/initial conditions,
+     parameters WITH UNITS, dimensionless groups, the quantity of interest (QoI). -->
+
+| Parameter | Symbol | Value | Unit |
+|---|---|---|---|
+| | | | |
+
+| Dimensionless group | Definition | Base case | Range studied |
+|---|---|---|---|
+| | | | |
+
+# Model and weak form
+
+<!-- Spaces; essential vs natural conditions; constitutive model and internal variables; residual F(u; v); Jacobian (derived, or ufl.derivative
+     + how you checked it). The reductions (2D, axisymmetric, plane strain, periodic cell, one-way coupling, steady state) and why each is valid. -->
+
+$$
+F(u;v) = \dots = 0 \quad \forall v\in V_0 .
+$$
+
+# Numerical choices
+
+<!-- Elements and why they do not lock / satisfy inf-sup; stabilisation (Peclet argument); time stepping and its stability; Newton,
+     load or parameter continuation; linear solver and preconditioner; Colab cost. Where can these choices fail for your parameters? -->
+
+# Implementation
+
+| Function / cell | Purpose |
+|---|---|
+| | |
+
+<!-- Solver options and the reason for each; what the model module contains; what is saved and where it is plotted. -->
+
+# Verification
+
+## Manufactured or exact solution
+
+<!-- u_exact, the conditions it satisfies, PREDICTED rates (with the reason). Errors against the exact EXPRESSION, raised quadrature (Week 15). -->
+
+| $h$ | $\|u-u_h\|_{L^2}$ | rate | $|u-u_h|_{H^1}$ | rate |
+|---|---|---|---|---|
+| 1/8 | | – | | – |
+| 1/16 | | | | |
+| 1/32 | | | | |
+| 1/64 | | | | |
+
+: Convergence; predicted rates $L^2$: …, $H^1$: …. (project.ipynb §5.1) {#tbl-mms}
+
+<!-- ![Observed convergence with predicted slopes.](figs/rates.png){#fig-rates width=70%} -->
+
+## The topic's physical check
+
+<!-- The check listed on your topic page (or, own topic: a benchmark or analytical limit with a citation [@key]); your value, the deviation in %, on two or more meshes. -->
+
+## Balance or conservation
+
+<!-- Mass / energy / force / flux balance, with the residual relative to the largest term. -->
+
+## Parallel run
+
+<!-- QoI with -np 1 and -np 2 (relative difference). -->
+
+# Results
+
+<!-- The design output and the parameter study. For every reported value: its mesh (and time-step) uncertainty —
+     observed order, Richardson value, GCI [@roache1994gci; @celik2008], or three meshes. Physical interpretation. -->
+
+| Case | QoI (finest mesh) | observed order | Richardson / GCI |
+|---|---|---|---|
+| | | | |
+
+# LLM workflow
+
+<!-- At least three concrete cases: what was generated, what was wrong, which test exposed it, how you fixed and re-verified it. -->
+
+| # | Component | What the LLM produced | Error | Found by | Fix and re-check |
+|---|---|---|---|---|---|
+| 1 | | | | | |
+| 2 | | | | | |
+| 3 | | | | | |
+
+# Limitations and outlook
+
+<!-- What the model and the numerics cannot do; what you would do next. -->
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+## AI-usage log {.unnumbered}
+
+*Required in every assignment and project. Using an LLM is encouraged and never penalized — an empty or vague log is.*
+
+| # | Tool / model | What I asked (key prompt, shortened) | What it got wrong or missed | How I detected it | How I fixed it |
+|---|---|---|---|---|---|
+| 1 | | | | | |
+| 2 | | | | | |
+| 3 | | | | | |
+
+**Code provenance** — which cells/functions were mostly generated, which did you write or substantially change?
+
+> …
+
+**Verification** — how do you know the final result is correct (MMS rates, the topic's physical check, a balance, parallel = serial)?
+
+> …
+
+**Reflection (2–3 sentences)** — what would you do differently when prompting next time?
+
+> …

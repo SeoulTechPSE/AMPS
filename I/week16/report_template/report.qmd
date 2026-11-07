@@ -1,0 +1,118 @@
+---
+title: "<Project title>"
+subtitle: "AMPS I — Final project report"
+author: "<Name> (<student ID>)"
+date: "<submission date>"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: true
+    number-sections: true
+    fig-cap-location: bottom
+bibliography: references.bib
+---
+
+<!-- Keep every section heading. At most 10 printed pages for Sections 1-8. Every number must come from project.ipynb:
+     add a source tag after each table or figure caption, e.g. "(project.ipynb §5.2)". Delete these comments before submitting. -->
+
+# Problem
+
+<!-- Physical setting (a sketch helps), governing equations, boundary/initial conditions, parameters WITH UNITS,
+     dimensionless numbers, the quantity of interest (QoI). Why it matters for your research. -->
+
+| Parameter | Symbol | Value | Unit |
+|---|---|---|---|
+| | | | |
+
+# Weak form and discretisation
+
+<!-- Spaces; essential vs natural conditions; residual F(u; v); Jacobian (derived, or ufl.derivative + how you checked it, e.g. a Taylor test).
+     Elements, stabilisation, time stepping. -->
+
+$$
+F(u;v) = \dots = 0 \quad \forall v\in V_0 .
+$$
+
+# Analysis
+
+<!-- Which theorem (Lax-Milgram, Brezzi/inf-sup, monotone operators, CFL/Peclet argument) gives existence, uniqueness or stability of the
+     (linearised) problem? Constants. Where can it fail for your parameter range? -->
+
+# Implementation
+
+| Function / cell | Purpose |
+|---|---|
+| | |
+
+<!-- Solver choices (SNES options, KSP, preconditioner) and the reason for each. -->
+
+# Verification
+
+## Manufactured solution
+
+<!-- u_exact, the boundary conditions it satisfies, PREDICTED rates (with the reason). -->
+
+| $h$ | $\|u-u_h\|_{L^2}$ | rate | $|u-u_h|_{H^1}$ | rate |
+|---|---|---|---|---|
+| 1/8 | | – | | – |
+| 1/16 | | | | |
+| 1/32 | | | | |
+| 1/64 | | | | |
+
+: MMS convergence; predicted rates $L^2$: …, $H^1$: …. (project.ipynb §5.1) {#tbl-mms}
+
+<!-- ![Observed convergence.](figs/mms_rates.png){#fig-mms width=70%} -->
+
+## Benchmark or analytical check
+
+<!-- Reference value with a citation [@key], your value, deviation in %, on two or more meshes. -->
+
+## Parallel run
+
+<!-- QoI with -np 1 and -np 2. -->
+
+# Results
+
+<!-- QoI, parameter study, mesh (and time-step) independence of the reported values. -->
+
+# LLM workflow
+
+<!-- At least three concrete cases: what was generated, what was wrong, which test exposed it, how you fixed and re-verified it. -->
+
+| # | Component | What the LLM produced | Error | Found by | Fix and re-check |
+|---|---|---|---|---|---|
+| 1 | | | | | |
+| 2 | | | | | |
+| 3 | | | | | |
+
+# Limitations and outlook
+
+<!-- Optional Section 9 "Inverse problem" (bonus): Taylor test, finite-difference check, recovery of the true parameter. -->
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+## AI-usage log {.unnumbered}
+
+*Required in every assignment and project. Using an LLM is encouraged and never penalized — an empty or vague log is.*
+
+| # | Tool / model | What I asked (key prompt, shortened) | What it got wrong or missed | How I detected it | How I fixed it |
+|---|---|---|---|---|---|
+| 1 | | | | | |
+| 2 | | | | | |
+| 3 | | | | | |
+
+**Code provenance** — which cells/functions were mostly generated, which did you write or substantially change?
+
+> …
+
+**Verification** — how do you know the final result is correct (MMS rates, benchmark value, conservation check, parallel = serial)?
+
+> …
+
+**Reflection (2–3 sentences)** — what would you do differently when prompting next time?
+
+> …

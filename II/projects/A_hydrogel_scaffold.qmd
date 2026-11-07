@@ -1,0 +1,80 @@
+---
+title: "Topic A — A 3D-Printed Hydrogel Scaffold"
+subtitle: "periodic homogenization of a printed lattice · large-strain viscoelastic compression · tier: standard"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: true
+---
+
+## Motivation
+
+Bioprinted hydrogel scaffolds (cartilage, bone, vascular tissue) must match the stiffness of the tissue they replace and must not collapse under
+the first loading. Their stiffness comes from two sources: the hydrogel itself (soft, rate-dependent) and the printed architecture (strand
+spacing, layer stacking, porosity). You will separate the two: first the effective stiffness of a printed lattice by periodic homogenization, then
+the time-dependent large-strain response of the scaffold in confined and unconfined compression.
+
+**Related fields:** biomaterials and tissue engineering (injectable and printable hydrogels, 3D bioprinting); rheology of soft materials and porous polymers. **Course weeks:** 1 (hyperelasticity, load steps), 5 (Prony series, internal variables),
+9 (periodic homogenization with `dolfinx_mpc`).
+
+## Model
+
+**Part 1 — homogenization.** A unit cell of the printed lattice: two layers of strands of diameter $d$ at spacing $s$, rotated by 90° (log-pile),
+in 2D first (a square cell with one circular or rectangular strand section, plane strain) and then in 3D. Linear elastic hydrogel ($E_g$, $\nu_g$),
+pores empty (or filled with a much softer phase, $E_p=10^{-3}E_g$, to keep the problem well-posed). Periodic fluctuation $\tilde{\mathbf u}$ with a
+macroscopic strain $\mathbf E$: $\mathbf u=\mathbf E\mathbf x+\tilde{\mathbf u}$; average stress $\langle\boldsymbol\sigma\rangle=\mathbb C^{\rm hom}:\mathbf E$ from six (3D) or three (2D)
+unit load cases.
+
+**Part 2 — compression.** The homogenized scaffold, or a few unit cells resolved, compressed between rigid plates to 20–30 % nominal strain at a
+constant rate, held, released. Compressible neo-Hookean equilibrium response plus one or two Maxwell branches (finite-strain extension of
+Week 5: a multiplicative or a simple additive-in-stress form — justify the choice); friction-free or bonded plates.
+
+**Design outputs:** $E^{\rm hom}/E_g$ against porosity; the peak and relaxed compressive stress at 20 % strain; the relaxation time of the scaffold.
+
+## Suggested parameters
+
+$E_g=50$ kPa, $\nu_g=0.45$ (nearly incompressible — mind locking), strand diameter 200 µm, spacing 400–800 µm (porosity 0.4–0.75); one Prony
+branch with $E_1=E_g$, $\tau=10$ s; compression rate 1 %/s.
+
+## Required tasks
+
+1. 2D unit cell, three load cases, $\mathbb C^{\rm hom}$, convergence in the mesh size; symmetry of $\mathbb C^{\rm hom}$.
+2. $E^{\rm hom}/E_g$ against porosity (at least five spacings); compare 2D and 3D for one spacing.
+3. Large-strain compression of a homogenized block (equilibrium only), then with viscoelasticity: load–time and stress–strain curves.
+4. Mesh and time-step independence of the peak stress.
+
+## Verification specific to this topic
+
+- **Laminate:** a unit cell made of two layers (gel / soft phase) **with equal Poisson ratios** has exact effective Young's moduli — the Voigt average
+  for loading parallel to the layers, the Reuss average across them. The exact fluctuation is piecewise linear, so with the interface on mesh
+  lines your code must reproduce them to round-off. (Unequal Poisson ratios: closed-form laminate formulas in the homogenization literature, e.g. Yvonnet 2019.)
+- **Bounds:** every $E^{\rm hom}$ lies between the Reuss and the Voigt bound of the two phases; check the symmetry of $\mathbb C^{\rm hom}$ and positivity.
+- **Homogeneous compression:** a frictionless block in uniaxial compression has a homogeneous solution; the lateral stretch follows from one scalar
+  equation for the compressible neo-Hookean law (solve it with NumPy) — the FE solution must match to solver tolerance.
+- **Relaxation:** a step strain held constant must relax exactly as the Prony series in the small-strain limit (Week 5).
+- **MMS** for the periodic cell problem (a smooth periodic fluctuation with its body force).
+
+## Stretch goals
+
+1. Layer offset in the log-pile (aligned vs staggered strands) — which is stiffer?
+2. Poroelasticity (fluid flow through the gel network) instead of viscoelasticity: biphasic $(\mathbf u,p)$ mixed formulation.
+3. Inverse problem: identify $E_g$, $E_1$, $\tau$ from a synthetic relaxation curve.
+
+## Milestones
+
+M1 2D periodic cell with the laminate check · M2 porosity study · M3 hyperelastic compression with the homogeneous check · M4 viscoelastic
+compression and relaxation · M5 3D cell or resolved scaffold.
+
+## Pitfalls
+
+- $\nu_g=0.45$: P1 displacements lock in bending of thin strands — use P2 (Week 1) and check against $\nu_g=0.3$.
+- Empty pores make the cell problem singular where strands do not connect (rigid strands floating): keep a soft filler or check connectivity.
+- Periodic constraints with `dolfinx_mpc`: the corner nodes need consistent master–slave pairs (Week 9); a wrong pairing shows up as an
+  unsymmetric $\mathbb C^{\rm hom}$.
+
+## References
+
+- J. Yvonnet, *Computational Homogenization of Heterogeneous Materials with Finite Elements*, Springer 2019.
+- G. A. Holzapfel, *Nonlinear Solid Mechanics*, Wiley 2000 — compressible neo-Hookean, finite viscoelasticity.
+- J. Malda et al., "25th anniversary article: Engineering hydrogels for biofabrication", *Adv. Mater.* 25 (2013) 5011–5028.

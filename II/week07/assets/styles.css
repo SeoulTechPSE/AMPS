@@ -1,0 +1,53 @@
+/* 전체 슬라이드 기본 줄간격 */
+.reveal {
+  line-height: 1.35;
+}
+
+/* 모든 요소 간 기본 간격 */
+.reveal section > * + * {
+  margin-top: 0.8em;
+}
+
+/* 제목과 본문 간 간격 */
+.reveal h1, .reveal h2, .reveal h3 {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+/* 제목 위쪽 여백 강화 (구조 강조용) */
+.section-gap {
+  margin-top: 1.8em !important;
+}
+
+.reveal table {
+  margin-top: 1em;
+  margin-bottom: 1.2em;
+  border-collapse: collapse;
+  font-size: 0.9em;
+}
+
+.reveal .math.display {
+  margin-top: 0.8em;
+  margin-bottom: 0.8em;
+}
+
+.reveal ul, .reveal ol {
+  margin-top: 0.5em;
+  padding-left: 1em;   /* room for list markers: scrollable slides clip anything left of the box */
+}
+
+.reveal li {
+  margin-top: 0.3em;
+}
+
+.box {
+  padding: 0.6em 1em;
+  border-left: 4px solid #3b82f6;
+  background: #f8fafc;
+  margin-top: 1em;
+}
+
+.reveal {
+  max-width: 1100px;
+  margin: auto;
+}

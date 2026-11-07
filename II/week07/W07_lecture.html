@@ -1,0 +1,1196 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="W07_lecture_files/libs/clipboard/clipboard.min.js"></script>
+<script src="W07_lecture_files/libs/quarto-html/tabby.min.js"></script>
+<script src="W07_lecture_files/libs/quarto-html/popper.min.js"></script>
+<script src="W07_lecture_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="W07_lecture_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="W07_lecture_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="W07_lecture_files/libs/quarto-html/quarto-syntax-highlighting-a06763021a52c43c40a351ac8b799b8f.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.36">
+
+  <meta name="author" content="Kee-Youn Yoo">
+  <title>AI-based Materials and Process Simulation II</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="W07_lecture_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="W07_lecture_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="W07_lecture_files/libs/revealjs/dist/theme/quarto-7af60fb36352a8d2af996e24a7cdd28d.css">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="W07_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="W07_lecture_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="W07_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="W07_lecture_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="W07_lecture_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="W07_lecture_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">AI-based Materials and Process Simulation II</h1>
+  <p class="subtitle">Week 07 — Beams: Trusses · 3D Timoshenko Frames · Finite Rotations</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Kee-Youn Yoo 
+</div>
+        <p class="quarto-title-affiliation">
+            Process Systems Laboratory<br>Department of Chemical and Biomolecular Engineering, SeoulTech
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="today" class="slide level2">
+<h2>Today</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Topic</th>
+<th style="text-align: center;">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>Quiz on Week 6 (closed-AI)</td>
+<td style="text-align: center;">10 min</td>
+</tr>
+<tr class="even">
+<td><strong>A</strong></td>
+<td>Trusses — a 1D mesh in 2D/3D without Gmsh, the axial strain from the tangent, the method of joints</td>
+<td style="text-align: center;">35 min</td>
+</tr>
+<tr class="odd">
+<td><strong>B</strong></td>
+<td>3D Timoshenko frames — generalized strains, the local frame, shear locking, torsion</td>
+<td style="text-align: center;">45 min</td>
+</tr>
+<tr class="even">
+<td><strong>C</strong></td>
+<td>Finite rotations — <span class="math inline">\Lambda=\exp\widehat{\boldsymbol\theta}</span>, energy → SNES, exact circle, helix and elastica, Newton</td>
+<td style="text-align: center;">60 min</td>
+</tr>
+<tr class="odd">
+<td><strong>D</strong></td>
+<td>The sources re-run · LLM pitfalls · assignment</td>
+<td style="text-align: center;">20 min</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p>Lab notebook: <code>W07_lab.ipynb</code> · Assignment: <code>W07_HW7.ipynb</code> (due before Week 8) · <strong>Week 8: midterm (first half)</strong></p>
+</div>
+</section>
+<section id="week-6-in-one-slide" class="slide level2">
+<h2>Week 6 in one slide</h2>
+<ul>
+<li>Semi-discrete dynamics: modes decouple; Newmark <span class="math inline">(\tfrac14,\tfrac12)</span> is unconditionally stable and conserves energy; central difference needs <span class="math inline">\omega_{\max}\Delta t\le2</span>.</li>
+<li>Rayleigh damping <span class="math inline">\zeta_i=\alpha_M/2\omega_i+\alpha_K\omega_i/2</span>; SLEPc shift-invert for frequencies; buckling as <span class="math inline">(-K_G)\phi=\theta K\phi</span>.</li>
+</ul>
+<p><strong>Today:</strong> structures whose members are long and thin. Instead of meshing them in 3D, we reduce them to their axis: a <strong>1D mesh in 2D or 3D</strong>. Three models of increasing richness — the truss (axial force only), the Timoshenko beam (six section forces), the geometrically exact rod (any rotation).</p>
+</section>
+<section>
+<section id="part-a-trusses" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part A · Trusses</h1>
+
+</section>
+<section id="three-line-models" class="slide level2">
+<h2>Three line models</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>model</th>
+<th>unknowns at a node</th>
+<th>strains</th>
+<th>valid for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>truss</td>
+<td><span class="math inline">\mathbf u</span> (2 or 3)</td>
+<td><span class="math inline">\varepsilon=\boldsymbol t\cdot\mathbf u'</span></td>
+<td>pin-jointed members, axial force only</td>
+</tr>
+<tr class="even">
+<td>Timoshenko beam / frame</td>
+<td><span class="math inline">\mathbf u</span>, <span class="math inline">\boldsymbol\theta</span> (6)</td>
+<td><span class="math inline">\varepsilon</span>, two shears, two curvatures, twist</td>
+<td>small rotations, rigid or welded joints</td>
+</tr>
+<tr class="odd">
+<td>geometrically exact rod</td>
+<td><span class="math inline">\mathbf u</span>, <span class="math inline">\boldsymbol\theta</span> (6)</td>
+<td><span class="math inline">\boldsymbol\Gamma=\Lambda^\top(\boldsymbol t_0+\mathbf u')-\boldsymbol t_0</span>, <span class="math inline">\mathbf K=T^\top\boldsymbol\theta'</span></td>
+<td>any rotation, small strain</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">'=d/ds</span> along the member. The cross-section enters only through <span class="math inline">ES</span>, <span class="math inline">\kappa GS</span>, <span class="math inline">EI_1</span>, <span class="math inline">EI_2</span>, <span class="math inline">GJ</span> — computed once (Saint-Venant <span class="math inline">J</span> for a rectangle, <span class="math inline">\kappa</span> by Cowper).</p>
+</section>
+<section id="a-1d-mesh-in-2d3d-no-gmsh" class="slide level2">
+<h2>A 1D mesh in 2D/3D — no Gmsh</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>pts, cells <span class="op">=</span> joints <span class="op">+</span> inner points, [(i, j), ...]                 <span class="co"># rank 0 only; empty arrays elsewhere</span></span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>msh <span class="op">=</span> mesh.create_mesh(comm, cells, ufl.Mesh(basix.ufl.element(<span class="st">"Lagrange"</span>, <span class="st">"interval"</span>, <span class="dv">1</span>, shape<span class="op">=</span>(gdim,))), pts)</span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>msh.topology.create_connectivity(<span class="dv">0</span>, <span class="dv">1</span>)                             <span class="co"># vertex -&gt; cell, for locate_dofs_topological(V, 0, vertices)</span></span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>J <span class="op">=</span> ufl.Jacobian(msh)<span class="op">;</span> t <span class="op">=</span> ufl.as_vector([J[i, <span class="dv">0</span>] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(gdim)])<span class="op">;</span> t <span class="op">=</span> t <span class="op">/</span> ufl.sqrt(ufl.dot(t, t))</span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>eps <span class="op">=</span> <span class="kw">lambda</span> w: ufl.dot(ufl.dot(ufl.grad(w), t), t)                 <span class="co"># axial strain  t . grad(u) t</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>ufl.grad</code> on a manifold mesh is the tangential gradient; <span class="math inline">\nabla\mathbf u\,\boldsymbol t=d\mathbf u/ds</span>. The sign of <span class="math inline">\boldsymbol t</span> depends on the cell orientation — use it in even powers.</li>
+<li>Joint loads go straight into the vector at the joint DOFs (<code>locate_dofs_topological(V.sub(c), 0, vertex)</code>): <code>locate_dofs_geometrical</code> refuses sub-spaces in 0.11.</li>
+<li>The source used Gmsh with <code>setTransfiniteCurve(lt, 2)</code> — one cell per member, which matters (next slide).</li>
+</ul>
+</section>
+<section id="the-warren-truss" class="slide level2">
+<h2>The Warren truss</h2>
+
+<img data-src="figs/w07_truss.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><p>13 joints, 23 members, 3 reactions: <span class="math inline">2j=m+r</span> — <strong>statically determinate</strong>. Min <span class="math inline">u_y=-2.1882</span> mm, max <span class="math inline">|u_x|=0.8333</span> mm (the source’s values); member forces = the method of joints to <span class="math inline">\sim10^{-10}</span> N (round-off), whatever <span class="math inline">ES</span> is. Cut each member into two cells: the middle node has <strong>no stiffness across the member</strong> → zero pivot, KSP reason −11, <span class="math inline">|u|=\infty</span>.</p>
+</section>
+<section id="trusses-and-frames-run-serially" class="slide level2">
+<h2>Trusses and frames run serially</h2>
+<p>A vertex shared by <strong>3 or more</strong> cells is duplicated in DOLFINx 0.11 when those cells end up on different ranks:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>mesh</th>
+<th style="text-align: center;">vertices, 1 rank</th>
+<th style="text-align: center;">2 ranks</th>
+<th style="text-align: center;">3 ranks</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Warren truss</td>
+<td style="text-align: center;">13</td>
+<td style="text-align: center;"><strong>21</strong> (Colab: <strong>17</strong>)</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr class="even">
+<td>star of 6 cells</td>
+<td style="text-align: center;">7</td>
+<td style="text-align: center;"><strong>8</strong></td>
+<td style="text-align: center;">7</td>
+</tr>
+<tr class="odd">
+<td>ladder (<span class="math inline">2\times11</span> joints)</td>
+<td style="text-align: center;">22</td>
+<td style="text-align: center;"><strong>25</strong></td>
+<td style="text-align: center;"><strong>30</strong></td>
+</tr>
+<tr class="even">
+<td>chain (every vertex in ≤ 2 cells)</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">21</td>
+<td style="text-align: center;">21</td>
+</tr>
+</tbody>
+</table>
+<p>The structure falls apart (reason −11, <span class="math inline">\infty</span>), with no error message. Run trusses and frames with <code>-np 1</code> (they are small anyway). A <strong>chain</strong> — a single beam or rod — is fine in parallel (the rod of Part C runs on 2 ranks).</p>
+</section></section>
+<section>
+<section id="part-b-3d-timoshenko-frames" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part B · 3D Timoshenko frames</h1>
+
+</section>
+<section id="generalized-strains-in-the-local-frame" class="slide level2">
+<h2>Generalized strains in the local frame</h2>
+<p>Local frame per member: <span class="math inline">\boldsymbol t</span>, <span class="math inline">\mathbf a_1=\dfrac{\mathbf{up}\times\boldsymbol t}{|\mathbf{up}\times\boldsymbol t|}</span>, <span class="math inline">\mathbf a_2=\boldsymbol t\times\mathbf a_1</span>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>strain</th>
+<th>expression</th>
+<th>resultant</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>axial</td>
+<td><span class="math inline">\varepsilon=\boldsymbol t\cdot\mathbf u'</span></td>
+<td><span class="math inline">N=ES\,\varepsilon</span></td>
+</tr>
+<tr class="even">
+<td>shear</td>
+<td><span class="math inline">\gamma_1=\mathbf a_1\cdot\mathbf u'-\mathbf a_2\cdot\boldsymbol\theta</span>, <span class="math inline">\ \gamma_2=\mathbf a_2\cdot\mathbf u'+\mathbf a_1\cdot\boldsymbol\theta</span></td>
+<td><span class="math inline">Q_\alpha=\kappa GS\,\gamma_\alpha</span></td>
+</tr>
+<tr class="odd">
+<td>bending</td>
+<td><span class="math inline">\chi_1=\mathbf a_1\cdot\boldsymbol\theta'</span>, <span class="math inline">\ \chi_2=\mathbf a_2\cdot\boldsymbol\theta'</span></td>
+<td><span class="math inline">M_1=EI_1\chi_1</span> (<span class="math inline">I_1=\int x_2^2dA</span>), <span class="math inline">M_2=EI_2\chi_2</span></td>
+</tr>
+<tr class="even">
+<td>twist</td>
+<td><span class="math inline">\tau=\boldsymbol t\cdot\boldsymbol\theta'</span></td>
+<td><span class="math inline">T=GJ\,\tau</span></td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">a(\mathbf u,\boldsymbol\theta;\mathbf v,\boldsymbol\varphi)=\int\big(N\varepsilon_v+Q_1\gamma_{1v}+Q_2\gamma_{2v}+M_1\chi_{1v}+M_2\chi_{2v}+T\tau_v\big)\,ds</span> on a mixed space <span class="math inline">(\mathbf u,\boldsymbol\theta)</span>. Rectangle <span class="math inline">b\times h</span> with <span class="math inline">h</span> along <span class="math inline">\mathbf a_2</span>: <span class="math inline">I_1=bh^3/12</span> (deflection along <span class="math inline">\mathbf a_2</span>) — the source’s comment “(weak)” for it is wrong for <span class="math inline">h&gt;b</span>.</p>
+</section>
+<section id="shear-locking" class="slide level2">
+<h2>Shear locking</h2>
+
+<img data-src="figs/w07_locking.png" class="quarto-figure quarto-figure-center r-stretch" style="width:84.0%"><p>P1 <span class="math inline">w</span>, P1 <span class="math inline">\theta</span>, exact integration: on a cell the shear strain <span class="math inline">w'-\theta</span> cannot vanish when <span class="math inline">\theta</span> varies, and <span class="math inline">\int\kappa GA\gamma^2</span> adds <span class="math inline">\kappa GA\,\ell^2/12</span> to <span class="math inline">EI</span> — the dotted curves, <strong>exact to 6 digits</strong>. Cure: integrate the shear terms with <strong>one point</strong> (<code>metadata={"quadrature_degree": 0}</code>), or <span class="math inline">\mathbf u</span> in P2.</p>
+</section>
+<section id="locking-in-numbers" class="slide level2">
+<h2>Locking in numbers</h2>
+<p>The source’s cantilever: <span class="math inline">L=10</span>, <span class="math inline">b\times h=0.3\times0.5</span> m, <span class="math inline">F=-1</span> kN; Euler–Bernoulli <span class="math inline">-0.5079</span> mm, <strong>Timoshenko <span class="math inline">-0.5089</span> mm</strong>.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">n</span></th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">5</th>
+<th style="text-align: center;">10</th>
+<th style="text-align: center;">100</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P1/P1 full integration</td>
+<td style="text-align: center;">0.0077</td>
+<td style="text-align: center;">0.030</td>
+<td style="text-align: center;">0.163</td>
+<td style="text-align: center;">0.438</td>
+<td style="text-align: center;">0.98734</td>
+</tr>
+<tr class="even">
+<td>P1/P1 one-point shear = P2/P1</td>
+<td style="text-align: center;">0.7505</td>
+<td style="text-align: center;">0.9376</td>
+<td style="text-align: center;">0.9900</td>
+<td style="text-align: center;">0.9975</td>
+<td style="text-align: center;">0.999975</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The source: “<span class="math inline">n=100</span>: <span class="math inline">-0.5025</span> mm, 1.07 % vs Euler–Bernoulli ✅”. It is 0.98734 of Timoshenko — <strong>still locked</strong>. A Timoshenko result below Euler–Bernoulli is the signature.</li>
+<li>The locking-free elements give exactly <span class="math inline">w_{EB}(1-\frac1{4n^2})+w_{\rm shear}</span>: shear exact, bending second order. P2/P1 = P1-RI to all digits.</li>
+</ul>
+</section>
+<section id="frames-torsion-and-the-reference-vector" class="slide level2">
+<h2>Frames: torsion and the reference vector</h2>
+<p><strong>L-frame</strong> (legs <span class="math inline">a=2</span>, <span class="math inline">b=1</span>, circle <span class="math inline">r=0.05</span>, <span class="math inline">F=-1</span> kN at the end): <span class="math inline">w=\frac{F(a^3+b^3)}{3EI}+\frac{Fab^2}{GJ}+\frac{F(a+b)}{\kappa GA}</span> = 53.5 % bending + <strong>46.4 % torsion</strong> + 0.1 % shear. The torque <span class="math inline">Fb</span> is constant in leg 1 → its twist is linear → exact in P1 for every <span class="math inline">n</span> (<span class="math inline">-2.522227\times10^{-3}</span>). FEM <span class="math inline">n=16</span>: 0.99948 of the exact deflection.</p>
+<p><strong>Portal frame</strong> (columns along <span class="math inline">\mathbf e_z</span>) with <code>up = e_z</code>: <span class="math inline">\mathbf a_1=\mathbf e_z\times\boldsymbol t=\mathbf 0</span>, 0/0 → NaN → MUMPS fails (reason −11) — silently. The source’s <code>cross(ez, t)</code> has this flaw. Take <code>up</code> not parallel to any member, or one per member. With <code>up = e_y</code>: sway / slope–deflection = 0.988 (<span class="math inline">n=8</span>), 1.0023 (<span class="math inline">n=64</span>; FEM also stretches and shears), 0.9997 (rigid).</p>
+</section></section>
+<section>
+<section id="part-c-finite-rotations" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part C · Finite rotations</h1>
+
+</section>
+<section id="rotation-vector-and-exponential-map" class="slide level2">
+<h2>Rotation vector and exponential map</h2>
+<p>Rotation <span class="math inline">\Lambda\in SO(3)</span> of the cross-section, parametrised by <span class="math inline">\boldsymbol\theta</span> (axis × angle), <span class="math inline">\varphi=|\boldsymbol\theta|</span>, <span class="math inline">S=\widehat{\boldsymbol\theta}</span> (<span class="math inline">S\mathbf a=\boldsymbol\theta\times\mathbf a</span>):</p>
+<p><span class="math display">
+\Lambda=I+\frac{\sin\varphi}{\varphi}S+\frac{1-\cos\varphi}{\varphi^2}S^2,\qquad
+T=I+\frac{1-\cos\varphi}{\varphi^2}S+\frac{\varphi-\sin\varphi}{\varphi^3}S^2
+</span></p>
+<p>Material strains (total formulation, reference axis <span class="math inline">\boldsymbol t_0</span>):</p>
+<p><span class="math display">
+\boldsymbol\Gamma=\Lambda^\top(\boldsymbol t_0+\mathbf u')-\boldsymbol t_0\ \ (\text{axial},\ \text{2 shears}),\qquad \mathbf K=T^\top\boldsymbol\theta'\ \ (\text{twist},\ \text{2 curvatures})
+</span></p>
+<p><span class="math inline">\Psi=\tfrac12\boldsymbol\Gamma\cdot C_N\boldsymbol\Gamma+\tfrac12\mathbf K\cdot C_M\mathbf K</span>, <span class="math inline">C_N=\operatorname{diag}(ES,GS,GS)</span>, <span class="math inline">C_M=\operatorname{diag}(GJ,EI,EI)</span>. Small <span class="math inline">\boldsymbol\theta</span>: <span class="math inline">\Lambda\approx I+S</span> and the strains of Part B return. <span class="math inline">\varphi\to0</span>: regularise with <span class="math inline">\sqrt{\boldsymbol\theta\cdot\boldsymbol\theta+10^{-12}}</span>.</p>
+</section>
+<section id="energy-residual-snes" class="slide level2">
+<h2>Energy → residual → SNES</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>w <span class="op">=</span> fem.Function(V)<span class="op">;</span> u, th <span class="op">=</span> ufl.split(w)                          <span class="co"># V = (P2 vector) x (P1 vector), mesh = the x axis in 3D</span></span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>Lam, T <span class="op">=</span> expmap(th)</span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>Gam <span class="op">=</span> Lam.T <span class="op">*</span> (t0 <span class="op">+</span> u.dx(<span class="dv">0</span>)) <span class="op">-</span> t0<span class="op">;</span>  Kap <span class="op">=</span> T.T <span class="op">*</span> th.dx(<span class="dv">0</span>)</span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a>dxN <span class="op">=</span> ufl.Measure(<span class="st">"dx"</span>, domain<span class="op">=</span>msh, metadata<span class="op">=</span>{<span class="st">"quadrature_degree"</span>: <span class="dv">2</span>})          <span class="co"># 2-point rule for the force term</span></span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>Pi <span class="op">=</span> <span class="fl">0.5</span> <span class="op">*</span> ufl.dot(Gam, CN <span class="op">*</span> Gam) <span class="op">*</span> dxN <span class="op">+</span> <span class="fl">0.5</span> <span class="op">*</span> ufl.dot(Kap, CM <span class="op">*</span> Kap) <span class="op">*</span> dx <span class="op">-</span> ufl.dot(F, u) <span class="op">*</span> ds(tip) <span class="op">-</span> ufl.dot(M, th) <span class="op">*</span> ds(tip)</span>
+<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>problem <span class="op">=</span> NonlinearProblem(ufl.derivative(Pi, w, ufl.TestFunction(V)), w, bcs<span class="op">=</span>bcs, petsc_options_prefix<span class="op">=</span><span class="ss">f"rod</span><span class="sc">{</span>k<span class="sc">}</span><span class="ss">_"</span>,</span>
+<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a>                           petsc_options<span class="op">=</span>{<span class="st">"snes_linesearch_type"</span>: <span class="st">"basic"</span>, <span class="st">"snes_divergence_tolerance"</span>: <span class="fl">1e12</span>, ...})</span>
+<span id="cb2-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> steps:  F.value[:] <span class="op">=</span> t <span class="op">*</span> F_max<span class="op">;</span>  problem.solve()              <span class="co"># total loads; each step starts from the last</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>ufl.derivative</code> of <span class="math inline">\Psi</span> is fine: <span class="math inline">\mathbf K</span> contains <span class="math inline">\boldsymbol\theta'</span>, its variation contains <span class="math inline">\delta\boldsymbol\theta'</span> — no second derivative appears. (The source’s “AD would need <span class="math inline">d^2\theta/ds^2</span>” is wrong, and its own code uses <code>derivative</code>.)</li>
+<li>The tip is a boundary vertex of the chain: <code>ds(tip)</code> integrates a point — parallel-safe.</li>
+</ul>
+</section>
+<section id="three-exact-answers" class="slide level2">
+<h2>Three exact answers</h2>
+<ul>
+<li><strong>Circle.</strong> End moment <span class="math inline">M</span> about <span class="math inline">-\mathbf e_y</span>, no force: <span class="math inline">\boldsymbol\Gamma=0</span>, <span class="math inline">\mathbf K=(0,M/EI,0)</span> — an arc, for any <span class="math inline">ES</span>, <span class="math inline">GS</span>. <span class="math inline">M=2\pi EI/L</span> closes it.</li>
+<li><strong>Helix.</strong> <span class="math inline">EI=GJ</span>, dead end moment <span class="math inline">\mathbf m</span>: the spatial curvature is <span class="math inline">\mathbf m/EI</span>, so <span class="math inline">\boldsymbol\theta(s)=s\,\mathbf m/EI</span> <strong>exactly</strong> (linear in <span class="math inline">s</span>!) and the centre line is a helix about <span class="math inline">\mathbf m</span>.</li>
+<li><strong>Elastica.</strong> Dead tip force: shooting on <span class="math inline">EI\varphi'=F(x_{\rm tip}-x)</span> (inextensible), or with <span class="math inline">\varepsilon=N/ES</span>, <span class="math inline">\gamma=Q/GS</span> (Reissner). With <span class="math inline">ES=GS</span>: <span class="math inline">\varepsilon\mathbf d_1+\gamma\mathbf d_2=\frac F{ES}(0,-1)</span> — a <strong>uniform</strong> extra translation, <span class="math inline">w_{\rm Reissner}=w_{\rm elastica}+FL/ES</span> exactly.</li>
+</ul>
+<p>For a rotation about a fixed axis, <span class="math inline">T^\top\mathbf M=\mathbf M</span>: the simple load term <span class="math inline">\mathbf M\cdot\boldsymbol\theta(L)</span> has the same equilibrium as a true dead moment (HW7 Q1c).</p>
+</section>
+<section id="the-rod-verified" class="slide level2">
+<h2>The rod, verified</h2>
+
+<img data-src="figs/w07_rod.png" class="quarto-figure quarto-figure-center r-stretch" style="width:95.0%"><p><span class="math inline">L=10</span>, <span class="math inline">EI=GJ=100</span>, <span class="math inline">ES=GS=10^4</span>, P2P1-RI, <span class="math inline">n=40</span>. Circle: tip errors <span class="math inline">\le1.3\times10^{-7}</span> up to the full turn (2–3 Newton iterations per step). Elastica, <span class="math inline">\alpha=FL^2/EI=10</span>: <span class="math inline">w/L</span> = 0.81150 (Reissner 0.81161, elastica 0.81061); linear theory would say 3.33.</p>
+</section>
+<section id="locking-at-large-rotation" class="slide level2">
+<h2>Locking at large rotation</h2>
+<p>Helix, <span class="math inline">|\mathbf m|L/EI=3\pi</span>, tip error <span class="math inline">|\mathbf u-\mathbf u_{\rm ex}|</span>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>element</th>
+<th style="text-align: center;"><span class="math inline">n=10</span></th>
+<th style="text-align: center;">20</th>
+<th style="text-align: center;">40</th>
+<th style="text-align: center;">80</th>
+<th style="text-align: center;">rate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P1/P1, one-point force term</td>
+<td style="text-align: center;"><span class="math inline">6.4\times10^{-2}</span></td>
+<td style="text-align: center;"><span class="math inline">1.6\times10^{-2}</span></td>
+<td style="text-align: center;"><span class="math inline">3.9\times10^{-3}</span></td>
+<td style="text-align: center;"><span class="math inline">9.8\times10^{-4}</span></td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td>P2/P1, two-point force term</td>
+<td style="text-align: center;"><span class="math inline">3.2\times10^{-4}</span></td>
+<td style="text-align: center;"><span class="math inline">2.0\times10^{-5}</span></td>
+<td style="text-align: center;"><span class="math inline">1.2\times10^{-6}</span></td>
+<td style="text-align: center;"><span class="math inline">7.6\times10^{-8}</span></td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="odd">
+<td>P2/P1, full integration (the source’s)</td>
+<td style="text-align: center;">4.86</td>
+<td style="text-align: center;">1.62</td>
+<td style="text-align: center;">Newton fails</td>
+<td style="text-align: center;">Newton fails</td>
+<td style="text-align: center;">—</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>With the reduced rule <span class="math inline">\boldsymbol\Gamma</span> can vanish at the quadrature points: <span class="math inline">\boldsymbol\theta</span> is then <strong>exact</strong> (<span class="math inline">10^{-15}</span>), and <span class="math inline">\mathbf u</span> is the centre line integrated by the midpoint / 2-point Gauss rule.</li>
+<li>P2/P1 is locking-free in the linear theory only: in a curved state <span class="math inline">\boldsymbol\Gamma</span> is not a polynomial, and the stiff force term locks. P1/P1 full: elastica <span class="math inline">w/L</span> 0.209 instead of 0.302.</li>
+</ul>
+</section>
+<section id="newton-for-rods" class="slide level2">
+<h2>Newton for rods</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>symptom</th>
+<th>cause</th>
+<th>fix</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>reason <strong>−9</strong> (DIVERGED_DTOL) after 1 iteration, stiff rod (<span class="math inline">ES\,L^2/EI=10^7</span>)</td>
+<td>the first update is the <strong>linear</strong> solution: it stretches a near-inextensible rod, residual <span class="math inline">1\to1.3\times10^6</span></td>
+<td><code>snes_divergence_tolerance: 1e12</code> — Newton then converges in 6–8</td>
+</tr>
+<tr class="even">
+<td><code>snes_divergence_tolerance: -1</code></td>
+<td>PETSc 3.25 ignores it (stays <span class="math inline">10^4</span>)</td>
+<td>a large positive value</td>
+</tr>
+<tr class="odd">
+<td>reason −5 after 50 iterations, rod hardly moved</td>
+<td>PETSc’s default <code>bt</code> line search cuts every step to a sliver</td>
+<td><code>snes_linesearch_type: basic</code></td>
+</tr>
+<tr class="even">
+<td>an option of an earlier solver (e.g.&nbsp;<code>snes_monitor</code>) acts on a new one</td>
+<td>options live in a global database under the prefix</td>
+<td>a new prefix per problem</td>
+</tr>
+</tbody>
+</table>
+<p>The source’s rod (<span class="math inline">ES\,L^2/EI=10^4</span>), first step <span class="math inline">\alpha=1</span>: <code>basic</code> 7 iterations, <span class="math inline">w/L=0.3018</span>; <code>bt</code> reason −5 after 50, <span class="math inline">w/L=0.038</span>.</p>
+</section></section>
+<section>
+<section id="part-d-sources-pitfalls-assignment" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part D · Sources · pitfalls · assignment</h1>
+
+</section>
+<section id="the-two-modules" class="slide level2">
+<h2>The two modules</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>frame.py</code></th>
+<th><code>rod.py</code></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>line_mesh(X, members, n)</code> → mesh, member of each cell</td>
+<td><code>Rod(L, n, ES, GS, GJ, EI, elem)</code> — <code>"P1-RI"</code>, <code>"P2P1-RI"</code> (default), <code>"P1"</code>, <code>"P2P1"</code></td>
+</tr>
+<tr class="even">
+<td><code>Truss(X, members, ES, n, eps0)</code>: <code>.fix</code>, <code>.load</code>, <code>.solve</code>, <code>.forces()</code></td>
+<td><code>.solve(F=, M=)</code> (total tip loads) → (reason, its); <code>.tip()</code>, <code>.centerline()</code>, <code>.energy()</code></td>
+</tr>
+<tr class="odd">
+<td><code>Frame(X, members, sec, n, elem, up)</code>: <code>.clamp</code>, <code>.load(F, M)</code>, <code>.at(x)</code>, <code>.resultants()</code></td>
+<td><code>circle_tip</code>, <code>helix_tip</code>, <code>reissner</code> (shooting; <span class="math inline">ES=GS=\infty</span>: elastica)</td>
+</tr>
+<tr class="even">
+<td><code>rect(b, h, E, nu)</code>, <code>circ(r, E, nu)</code> → <span class="math inline">ES</span>, <span class="math inline">\kappa GS</span>, <span class="math inline">EI_{1,2}</span>, <span class="math inline">GJ</span></td>
+<td><code>expmap(th)</code> → <span class="math inline">\Lambda</span>, <span class="math inline">T</span>; <code>rodrigues</code> (NumPy)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="the-original-sources-re-run-on-0.11" class="slide level2">
+<h2>The original sources, re-run on 0.11</h2>
+<ul>
+<li><strong>Truss:</strong> reproduced (<span class="math inline">-2.1882</span>, <span class="math inline">0.8333</span> mm); “midpoint transverse DOFs unconstrained → singular” is right.</li>
+<li><strong>3D Timoshenko:</strong> the <span class="math inline">n=10</span> / <span class="math inline">n=100</span> values (<span class="math inline">-0.2230</span> / <span class="math inline">-0.5025</span> mm) are P1/P1 locking, not “✅ 1.07 % vs EB”. The local frame <span class="math inline">\mathbf e_z\times\boldsymbol t</span> breaks for vertical members. The summary “<code>u_sol.x.array[2::3]</code> (stride 3)” is wrong for the mixed space — the code’s own second extraction uses <code>[2::6]</code>.</li>
+<li><strong>Finite rotations:</strong> step 1 reproduced to every digit, <span class="math inline">u_z=-1.4997</span> m. Its “10 % error = shear locking” compares with <span class="math inline">FL^3/3EI=1.6667</span> m but step 1 also has the moment: the linear answer to <strong>both</strong> loads is <span class="math inline">-1.4749</span> m, and P2/P1 with and without reduced integration agree. The curvature history <code>curv_old</code> is never updated. Force and moment both act in the <span class="math inline">x</span>–<span class="math inline">z</span> plane, so the tip path is planar (<span class="math inline">u_y\equiv0</span>) — not a helix.</li>
+</ul>
+</section>
+<section id="what-goes-wrong-in-beam-codes" class="slide level2">
+<h2>What goes wrong in beam codes</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pitfall</th>
+<th>Measured symptom (this week)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Members cut into several truss cells</td>
+<td>zero pivot, reason −11, <span class="math inline">|u|=\infty</span></td>
+</tr>
+<tr class="even">
+<td>A frame or truss with <code>mpirun -n 2</code></td>
+<td>vertices duplicated (13 → 17–21), reason −11</td>
+</tr>
+<tr class="odd">
+<td>Local frame from <span class="math inline">\mathbf e_z\times\boldsymbol t</span> with a vertical member</td>
+<td>NaN in the matrix, reason −11</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">I_1</span>, <span class="math inline">I_2</span> attached to the wrong local axis</td>
+<td>the bending part off by <span class="math inline">(h/b)^2</span> (HW7: 4×)</td>
+</tr>
+<tr class="odd">
+<td>Polar moment <span class="math inline">I_p</span> instead of Saint-Venant <span class="math inline">J</span> for a rectangle</td>
+<td>torsion too stiff (<span class="math inline">J=4.6\times10^{-5}</span> vs <span class="math inline">I_p=8.3\times10^{-5}</span> m⁴)</td>
+</tr>
+<tr class="even">
+<td>Result compared with Euler–Bernoulli instead of Timoshenko</td>
+<td>locking hidden: “1.07 % ✅” is 1.27 % locked</td>
+</tr>
+<tr class="odd">
+<td>SNES reason not printed</td>
+<td>DTOL after one iteration, or <code>bt</code> stalling, look like answers</td>
+</tr>
+<tr class="even">
+<td><code>snes_divergence_tolerance: -1</code></td>
+<td>ignored in PETSc 3.25</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="prompting-for-a-beam-model" class="slide level2 scrollable">
+<h2>Prompting for a beam model</h2>
+<ol type="1">
+<li>State the model (truss / Timoshenko / geometrically exact) and the element <strong>with its integration rule</strong>; ask for a locking check against Timoshenko, not Euler–Bernoulli.</li>
+<li>Give the section by <span class="math inline">ES</span>, <span class="math inline">\kappa GS</span>, <span class="math inline">EI_1</span>, <span class="math inline">EI_2</span>, <span class="math inline">GJ</span> <strong>and</strong> say which local axis each belongs to; ask for the local frame with a reference vector that cannot be parallel to a member.</li>
+<li>Trusses and frames: one cell per truss member, <code>-np 1</code>, joint loads at vertex DOFs, an independent statics check (method of joints, force method).</li>
+<li>Finite rotations: the strain definitions written out, the SNES options (line search, divergence tolerance), the reason printed every step, and an exact test (circle, helix).</li>
+<li>Keep the exact answers next to the production run: Timoshenko tip, slope–deflection, circle, helix, Reissner.</li>
+</ol>
+</section>
+<section id="assignment-hw7-due-before-week-8" class="slide level2">
+<h2>Assignment HW7 (due before Week 8)</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Q</th>
+<th>Topic</th>
+<th style="text-align: center;">Points</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Truss singularity, the locked Timoshenko element, rotations about a fixed axis (theory)</td>
+<td style="text-align: center;">20</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Linear: an indeterminate truss with lack of fit, a rectangular L-frame, locking vs slenderness</td>
+<td style="text-align: center;">30</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Finite rotations: element convergence on the helix, stiff rods and Newton, the source’s load case</td>
+<td style="text-align: center;">30</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Debugging an LLM-generated rod script</td>
+<td style="text-align: center;">20</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Week 8: midterm (first half) — Weeks 1–7.</strong> No separate quiz; practice questions on this week are handed out for the review.</p>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Key point</th>
+<th>DOLFINx 0.11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1D mesh in 2D/3D</td>
+<td>joints + members, no Gmsh; tangent from the Jacobian</td>
+<td><code>mesh.create_mesh</code> with an <code>interval</code> element of <code>shape=(gdim,)</code></td>
+</tr>
+<tr class="even">
+<td>Truss</td>
+<td>one cell per member; statics checks forces</td>
+<td>vertex DOFs: <code>locate_dofs_topological(V.sub(c), 0, v)</code>; <code>-np 1</code></td>
+</tr>
+<tr class="odd">
+<td>Timoshenko</td>
+<td>6 strains in <span class="math inline">(\boldsymbol t,\mathbf a_1,\mathbf a_2)</span>; P1/P1 locks by <span class="math inline">\kappa GA\ell^2/12</span></td>
+<td>one-point shear <code>quadrature_degree: 0</code>, or <span class="math inline">\mathbf u</span> in P2</td>
+</tr>
+<tr class="even">
+<td>Finite rotations</td>
+<td><span class="math inline">\boldsymbol\Gamma=\Lambda^\top(\boldsymbol t_0+\mathbf u')-\boldsymbol t_0</span>, <span class="math inline">\mathbf K=T^\top\boldsymbol\theta'</span></td>
+<td>energy → <code>ufl.derivative</code> → <code>NonlinearProblem</code></td>
+</tr>
+<tr class="odd">
+<td>Large rotation</td>
+<td>reduced rule for the force term; exact tests</td>
+<td><code>basic</code> line search, divergence tolerance <span class="math inline">10^{12}</span>, a prefix per problem</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Next week:</strong> midterm · Reissner–Mindlin plates · project proposal.</p>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="assets/seoultech_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="W07_lecture_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="W07_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="W07_lecture_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="W07_lecture_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="W07_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="W07_lecture_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="W07_lecture_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="W07_lecture_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="W07_lecture_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="W07_lecture_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true,"numbers":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

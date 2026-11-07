@@ -1,0 +1,74 @@
+---
+title: "Topic F — Film Stress, Wafer Bow and Wrinkling"
+subtitle: "thermal-mismatch stress and Stoney bow · wrinkling of a stiff film on a soft substrate (linear buckling with SLEPc) · tier: standard → advanced"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: true
+---
+
+## Motivation
+
+Thin films deposited at high temperature or cured with shrinkage carry residual stress: on a stiff wafer it bends the wafer (the bow measured by
+wafer-curvature tools), on a soft substrate it makes the film wrinkle — a defect in displays and devices, but also a tool for bio-inspired surfaces
+with controlled wetting, adhesion and optics. You will compute both, from the same film/substrate model.
+
+**Related fields:** thin films for semiconductor and display devices: bio-inspired wrinkled and hierarchical structures, organic semiconductors, solution-processed films. **Course weeks:** 3 (thermal stress, generalized plane strain), 6 (linear buckling with SLEPc), 8 (plates),
+9 (periodic constraints, shells).
+
+## Model
+
+**Part 1 — wafer bow** (standard). Film (thickness $h_f$, $E_f,\nu_f,\alpha_f$) on a substrate ($h_s\gg h_f$), cooled by $\Delta T$. Plane strain / generalized
+plane strain strip (Week 3) or an axisymmetric disk; compute the curvature and the film stress. Compare with Stoney and with the exact bilayer
+(Timoshenko) formula as $h_f/h_s$ grows.
+
+**Part 2 — wrinkling** (advanced). A film on a compliant substrate (thickness $H_s\gg h_f$, $E_s\ll E_f$), in-plane compressive pre-strain $\varepsilon_0$
+in the film (from cooling or swelling). Pre-buckling solve, geometric stiffness, $(-K_G)\phi=\theta K\phi$ (Week 6), on a 2D plane-strain cell of
+width $\ell$ with periodic lateral boundaries (`dolfinx_mpc`, Week 9) — the critical strain $\varepsilon_c(\ell)$, its minimum over $\ell$ gives the
+wrinkle wavelength. Stretch: post-buckling (large-strain, load steps from the mode as an imperfection).
+
+**Design outputs:** bow and film stress against $h_f/h_s$ and $\Delta T$; critical strain and wavelength against $E_f/E_s$.
+
+## Suggested parameters
+
+Bow: Si wafer 500 µm, film 0.5–50 µm, $\Delta T=-300$ K, oxide/metal/polymer films. Wrinkling: $E_f/E_s$ = 10²–10⁵ (PDMS substrate 1–3 MPa,
+polymer or oxide film), $h_f$ = 100 nm–10 µm, substrate depth at least 5 wavelengths, $\nu_s\approx0.48$ (mind locking).
+
+## Required tasks
+
+1. Bilayer strip under $\Delta T$: curvature against $h_f/h_s$; Stoney and Timoshenko comparison.
+2. Wrinkling cell: $\varepsilon_c(\ell)$ for one stiffness ratio, the minimum and the wavelength.
+3. Stiffness-ratio study of $\lambda$ and $\varepsilon_c$; effect of a finite substrate depth.
+4. Mesh independence (elements across the film thickness!).
+
+## Verification specific to this topic
+
+- **Stoney:** $\kappa=\frac{6\,\sigma_fh_f(1-\nu_s)}{E_sh_s^2}$ for $h_f\ll h_s$; the exact bilayer formula (Timoshenko 1925) for any thickness ratio.
+- **Wrinkling (semi-infinite substrate):** $\lambda=2\pi h_f\Big(\frac{\bar E_f}{3\bar E_s}\Big)^{1/3}$, $\varepsilon_c=\frac14\Big(\frac{3\bar E_s}{\bar E_f}\Big)^{2/3}$, $\bar E=E/(1-\nu^2)$
+  (Chen & Hutchinson 2004; Huang, Hong & Suo 2005) — valid for $E_f/E_s\gg1$; report the deviation as the ratio decreases.
+- **Stress-free test:** equal expansion coefficients give no stress and no bow (Week 3).
+- **MMS** for the bilayer elasticity with a discontinuous coefficient (interface aligned with the mesh: optimal rates).
+
+## Stretch goals
+
+1. Post-buckling amplitude $A=h_f\sqrt{\varepsilon_0/\varepsilon_c-1}$ (Huang et al.) from a large-strain computation.
+2. Shell model of the film (Week 9) on a solid substrate.
+3. Delamination of the film edge with a cohesive zone (Week 10).
+
+## Milestones
+
+M1 bilayer bow with Stoney/Timoshenko · M2 periodic cell pre-buckling · M3 SLEPc buckling and $\varepsilon_c(\ell)$ · M4 stiffness-ratio study · M5 depth effect.
+
+## Pitfalls
+
+- One element across the film with P1: the film locks in bending (Week 1) and $\varepsilon_c$ is far too high — P2 and at least two cells across.
+- $\nu_s\to0.5$: volumetric locking in the substrate — P2, or a mixed $(\mathbf u,p)$ formulation, and a check with $\nu_s=0.45$.
+- Without periodic boundary conditions, edge effects select the wavelength — compare with the periodic cell before believing a pattern.
+
+## References
+
+- X. Chen, J. W. Hutchinson, "Herringbone buckling patterns of compressed thin films on compliant substrates", *J. Appl. Mech.* 71 (2004) 597–603.
+- Z. Y. Huang, W. Hong, Z. Suo, "Nonlinear analyses of wrinkles in a film bonded to a compliant substrate", *J. Mech. Phys. Solids* 53 (2005) 2101–2118.
+- L. B. Freund, S. Suresh, *Thin Film Materials*, Cambridge 2003 — Stoney, bilayer curvature.
+- S. Timoshenko, "Analysis of bi-metal thermostats", *J. Opt. Soc. Am.* 11 (1925) 233–255.

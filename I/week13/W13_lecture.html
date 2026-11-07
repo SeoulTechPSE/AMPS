@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="W13_lecture_files/libs/clipboard/clipboard.min.js"></script>
+<script src="W13_lecture_files/libs/quarto-html/tabby.min.js"></script>
+<script src="W13_lecture_files/libs/quarto-html/popper.min.js"></script>
+<script src="W13_lecture_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="W13_lecture_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="W13_lecture_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="W13_lecture_files/libs/quarto-html/quarto-syntax-highlighting-a06763021a52c43c40a351ac8b799b8f.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.36">
+
+  <meta name="author" content="Kee-Youn Yoo">
+  <title>AI-based Materials and Process Simulation I</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="W13_lecture_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="W13_lecture_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="W13_lecture_files/libs/revealjs/dist/theme/quarto-7af60fb36352a8d2af996e24a7cdd28d.css">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="W13_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="W13_lecture_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="W13_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="W13_lecture_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="W13_lecture_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="W13_lecture_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">AI-based Materials and Process Simulation I</h1>
+  <p class="subtitle">Week 13 — Advection–Diffusion: Péclet Number · Galerkin Oscillations · Upwinding · SUPG</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Kee-Youn Yoo 
+</div>
+        <p class="quarto-title-affiliation">
+            Process Systems Laboratory<br>Department of Chemical and Biomolecular Engineering, SeoulTech
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="today" class="slide level2">
+<h2>Today</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Topic</th>
+<th style="text-align: center;">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Quiz</td>
+<td>Week 12 (Schur complement, block preconditioners, Darcy)</td>
+<td style="text-align: center;">10 min</td>
+</tr>
+<tr class="even">
+<td><strong>A</strong></td>
+<td>Theory — Péclet numbers, layers, why Galerkin oscillates, upwinding, SUPG</td>
+<td style="text-align: center;">55 min</td>
+</tr>
+<tr class="odd">
+<td><strong>B</strong></td>
+<td>DOLFINx 0.11 — SUPG forms, <span class="math inline">\tau</span>, test problems with layers</td>
+<td style="text-align: center;">35 min</td>
+</tr>
+<tr class="even">
+<td><strong>C</strong></td>
+<td>Measurements — 1D, 2D boundary layers, <span class="math inline">\tau</span>, internal layers</td>
+<td style="text-align: center;">35 min</td>
+</tr>
+<tr class="odd">
+<td><strong>D</strong></td>
+<td>LLM pitfalls with stabilised methods · HW12</td>
+<td style="text-align: center;">15 min</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p>Lab notebook: <code>W13_lab.ipynb</code> · Homework: <code>W13_HW12.ipynb</code> (due before Week 14)</p>
+</div>
+</section>
+<section id="where-we-are" class="slide level2">
+<h2>Where we are</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Week</th>
+<th>Operator</th>
+<th>What made the discretisation work</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>5–7</td>
+<td><span class="math inline">-\nabla\cdot(k\nabla u)</span></td>
+<td>coercive and symmetric: Galerkin is the best approximation in the energy norm (Céa)</td>
+</tr>
+<tr class="even">
+<td>11–12</td>
+<td>Stokes</td>
+<td>inf-sup: the right pair of spaces</td>
+</tr>
+<tr class="odd">
+<td><strong>13</strong></td>
+<td><span class="math inline">-\varepsilon\Delta u+\mathbf b\cdot\nabla u</span></td>
+<td><strong>coercive, but with constant <span class="math inline">\varepsilon</span> and continuity constant <span class="math inline">\sim|\mathbf b|</span></strong> — Galerkin is stable only on paper</td>
+</tr>
+<tr class="even">
+<td>14–15</td>
+<td>Navier–Stokes</td>
+<td>the same convection term, now nonlinear</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Heat and mass transport in a moving fluid: the reactor, the heat exchanger, the extruder, the Course II tubular reactor (species advection–diffusion–reaction with SUPG). In process equipment <span class="math inline">\varepsilon/(|\mathbf b|L)</span> is often <span class="math inline">10^{-3}</span>–<span class="math inline">10^{-6}</span>.</p>
+</div>
+</section>
+<section>
+<section id="part-a-theory" class="title-slide slide level1 center">
+<h1>Part A — Theory</h1>
+
+</section>
+<section id="a1-the-advectiondiffusion-problem" class="slide level2">
+<h2>§A1 The advection–diffusion problem</h2>
+<p><span class="math display">-\varepsilon\Delta u+\mathbf b\cdot\nabla u=f\ \text{in }\Omega,\qquad u=g\ \text{on }\partial\Omega,\qquad \nabla\cdot\mathbf b=0 .</span></p>
+<p>Weak form: <span class="math inline">a(u,v)=\varepsilon(\nabla u,\nabla v)+(\mathbf b\cdot\nabla u,v)=(f,v)</span> for all <span class="math inline">v\in H^1_0</span>.</p>
+<div class="fragment">
+<ul>
+<li><span class="math inline">(\mathbf b\cdot\nabla v,v)=\tfrac12\int\mathbf b\cdot\nabla(v^2)=-\tfrac12\int(\nabla\cdot\mathbf b)v^2=0</span> ⇒ <span class="math inline">a(v,v)=\varepsilon|v|_1^2</span>: <strong>coercive with constant <span class="math inline">\varepsilon</span></strong>.</li>
+<li><span class="math inline">|a(u,v)|\le(\varepsilon+C_P|\mathbf b|_\infty)|u|_1|v|_1</span>: continuity constant <span class="math inline">\sim|\mathbf b|</span>.</li>
+<li>Céa: <span class="math inline">|u-u_h|_1\le\big(1+C_P|\mathbf b|/\varepsilon\big)\inf_{v_h}|u-v_h|_1</span> — the constant is the <strong>Péclet number</strong>.</li>
+</ul>
+</div>
+<div class="fragment">
+<div title="Definition — Péclet numbers">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definition — Péclet numbers</strong></p>
+</div>
+<div class="callout-content">
+<p>Global <span class="math inline">\mathrm{Pe}=|\mathbf b|L/\varepsilon</span>; <strong>mesh Péclet number</strong> <span class="math inline">\mathrm{Pe}_h=|\mathbf b|h/(2\varepsilon)</span>: advection vs diffusion across one cell.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="a2-layers" class="slide level2">
+<h2>§A2 Layers</h2>
+<p>1D model: <span class="math inline">-\varepsilon u''+u'=1</span>, <span class="math inline">u(0)=u(1)=0</span>: <span class="math display">u(x)=x-\frac{e^{(x-1)/\varepsilon}-e^{-1/\varepsilon}}{1-e^{-1/\varepsilon}} .</span></p>
+<ul>
+<li>Away from <span class="math inline">x=1</span>: <span class="math inline">u\approx x</span>, the solution of the <strong>reduced</strong> problem <span class="math inline">u'=1</span>, <span class="math inline">u(0)=0</span> (one boundary condition — the inflow one).</li>
+<li>At the <strong>outflow</strong> boundary the second condition is enforced in an <strong>exponential boundary layer</strong> of width <span class="math inline">O(\varepsilon/|\mathbf b|)</span>.</li>
+<li>In 2D: outflow layers (exponential), characteristic (parabolic) layers along walls parallel to <span class="math inline">\mathbf b</span>, and <strong>interior layers</strong> where discontinuous inflow data are transported along streamlines.</li>
+</ul>
+<div class="fragment">
+<p>A mesh with <span class="math inline">h\gg\varepsilon/|\mathbf b|</span> cannot resolve the layer. The question is what the method does with what it cannot resolve: pollute the whole domain, or keep the damage inside the layer.</p>
+</div>
+</section>
+<section id="a3-why-galerkin-oscillates-the-1d-stencil" class="slide level2">
+<h2>§A3 Why Galerkin oscillates: the 1D stencil</h2>
+<p>P1 on a uniform mesh, <span class="math inline">f=0</span>, divide by <span class="math inline">\varepsilon/h</span>: central differences <span class="math display">-(1+\mathrm{Pe}_h)\,u_{i-1}+2u_i-(1-\mathrm{Pe}_h)\,u_{i+1}=0 .</span></p>
+<div class="fragment">
+<p>Ansatz <span class="math inline">u_i=r^i</span>: <span class="math inline">(1-\mathrm{Pe}_h)r^2-2r+(1+\mathrm{Pe}_h)=0</span> ⇒ <span class="math inline">r=1</span> or <span class="math inline">r=\dfrac{1+\mathrm{Pe}_h}{1-\mathrm{Pe}_h}</span>, so <span class="math inline">u_i=A+B\,r^i</span>.</p>
+</div>
+<div class="fragment">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">\mathrm{Pe}_h</span></th>
+<th>0.25</th>
+<th>1.25</th>
+<th>2.5</th>
+<th>5</th>
+<th>250</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">r</span></td>
+<td>1.667</td>
+<td>−9.000</td>
+<td>−2.333</td>
+<td>−1.500</td>
+<td>−1.008</td>
+</tr>
+</tbody>
+</table>
+<p><span class="math inline">\mathrm{Pe}_h&gt;1</span> ⇒ <span class="math inline">r&lt;0</span>: the discrete solution <strong>alternates in sign from node to node</strong>, and the oscillation reaches all the way upstream (<span class="math inline">|r|\to1</span>). Equivalently the matrix loses the M-matrix property (positive off-diagonal entry <span class="math inline">-(1-\mathrm{Pe}_h)</span>): no discrete maximum principle.</p>
+</div>
+</section>
+<section id="a4-upwinding-and-the-optimal-diffusion" class="slide level2">
+<h2>§A4 Upwinding and the optimal diffusion</h2>
+<p><strong>Artificial diffusion</strong>: replace <span class="math inline">\varepsilon</span> by <span class="math inline">\varepsilon+\tilde\varepsilon</span>.</p>
+<ul>
+<li><span class="math inline">\tilde\varepsilon=|\mathbf b|h/2</span> (full upwind): effective <span class="math inline">\mathrm{Pe}_h\le1</span> always — monotone, M-matrix — but the method solves a <strong>different</strong> equation: <span class="math inline">O(h)</span> consistency error.</li>
+<li><strong>Optimal</strong> (Il’in, Allen–Southwell): <span class="math inline">\tilde\varepsilon=\dfrac{|\mathbf b|h}{2}\,\xi(\mathrm{Pe}_h)</span>, <span class="math inline">\quad\xi(z)=\coth z-\dfrac1z</span> — nodally <strong>exact</strong> in 1D for constant data.</li>
+</ul>
+<div class="fragment">
+<p><span class="math inline">\xi(z)\approx z/3</span> for small <span class="math inline">z</span> (no diffusion added when the mesh resolves the layer), <span class="math inline">\xi(z)\to1</span> for <span class="math inline">z\to\infty</span> (full upwind).</p>
+</div>
+<div class="fragment">
+<p>In 2D, isotropic artificial diffusion also smears <strong>across</strong> the streamlines (crosswind), where no stabilisation was needed. Brooks &amp; Hughes (1982): add the diffusion <strong>only along <span class="math inline">\mathbf b</span></strong>, and do it in a consistent way.</p>
+</div>
+</section>
+<section id="a5-supg-streamline-upwind-petrovgalerkin" class="slide level2">
+<h2>§A5 SUPG — streamline upwind Petrov–Galerkin</h2>
+<div title="SUPG (Brooks–Hughes 1982)">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>SUPG (Brooks–Hughes 1982)</strong></p>
+</div>
+<div class="callout-content">
+<p>Find <span class="math inline">u_h\in V_h</span> such that for all <span class="math inline">v_h\in V_h</span> <span class="math display">a(u_h,v_h)+\sum_K\tau_K\big(-\varepsilon\Delta u_h+\mathbf b\cdot\nabla u_h-f,\ \mathbf b\cdot\nabla v_h\big)_K=(f,v_h),\qquad
+\tau_K=\frac{h_K}{2|\mathbf b|}\,\xi(\mathrm{Pe}_K),\ \ \mathrm{Pe}_K=\frac{|\mathbf b|h_K}{2\varepsilon}.</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li><strong>Petrov–Galerkin</strong>: the test function is <span class="math inline">v_h+\tau\,\mathbf b\cdot\nabla v_h</span> — upwind-weighted along the streamline.</li>
+<li><strong>Consistent</strong>: the added term is the element <strong>residual</strong> times <span class="math inline">\mathbf b\cdot\nabla v_h</span>; it vanishes for the exact solution, so Galerkin orthogonality <span class="math inline">a_{\text{SUPG}}(u-u_h,v_h)=0</span> holds.</li>
+<li>Stabilisation acts <strong>only along <span class="math inline">\mathbf b</span></strong>: <span class="math inline">\tau(\mathbf b\cdot\nabla u_h,\mathbf b\cdot\nabla v_h)</span> is diffusion in the streamline direction.</li>
+<li>For P1, <span class="math inline">\Delta u_h=0</span> inside each cell; for P2 and higher, the term <span class="math inline">-\varepsilon\Delta u_h</span> must stay.</li>
+<li>1D, P1: SUPG with this <span class="math inline">\tau</span> = the optimal artificial diffusion of §A4.</li>
+</ul>
+</div>
+</section>
+<section id="a6-what-supg-guarantees-and-what-it-does-not" class="slide level2">
+<h2>§A6 What SUPG guarantees — and what it does not</h2>
+<div title="Theorem (stability and error, P$k$, $\tau_K\sim h_K/|\mathbf b|$ in the convection-dominated regime)">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Theorem (stability and error, P<span class="math inline">k</span>, <span class="math inline">\tau_K\sim h_K/|\mathbf b|</span> in the convection-dominated regime)</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">a_{\text{SUPG}}(v_h,v_h)\ge\tfrac12|||v_h|||^2</span> with <span class="math inline">|||v|||^2=\varepsilon|v|_1^2+\sum_K\tau_K\|\mathbf b\cdot\nabla v\|_K^2</span>, and <span class="math display">|||u-u_h|||\le C\big(\varepsilon^{1/2}+h^{1/2}\big)h^k|u|_{k+1}\quad\Rightarrow\quad\|u-u_h\|_0=O(h^{k+1/2})\ \text{for smooth }u.</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li>Control of the <strong>streamline derivative</strong> — the quantity Galerkin cannot control when <span class="math inline">\varepsilon\to0</span>.</li>
+<li>In practice (and in the analysis of local error estimates): <span class="math inline">O(h^{k+1})</span> <strong>away from layers</strong>.</li>
+<li><strong>Not monotone</strong>: SUPG has no discrete maximum principle; it keeps over- and undershoots <em>at the layers</em> (crosswind direction). Spurious-oscillations-at-layers-diminishing (SOLD) and algebraic flux correction add nonlinear crosswind diffusion — beyond this course.</li>
+<li>Inside an unresolved layer no method is accurate; the global <span class="math inline">L^2</span> error is dominated by the layer.</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="part-b-supg-in-dolfinx-0.11" class="title-slide slide level1 center">
+<h1>Part B — SUPG in DOLFINx 0.11</h1>
+
+</section>
+<section id="b1-the-forms" class="slide level2">
+<h2>§B1 The forms</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>h   <span class="op">=</span> ufl.CellDiameter(msh)                    <span class="co"># longest edge of the cell (P2: use h/2)</span></span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>bn  <span class="op">=</span> ufl.sqrt(ufl.dot(b, b))</span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>Peh <span class="op">=</span> bn <span class="op">*</span> h <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> eps)</span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>tau <span class="op">=</span> h <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> bn) <span class="op">*</span> (<span class="dv">1</span> <span class="op">/</span> ufl.tanh(Peh) <span class="op">-</span> <span class="dv">1</span> <span class="op">/</span> Peh)</span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> (eps <span class="op">*</span> ufl.inner(ufl.grad(u), ufl.grad(v)) <span class="op">+</span> ufl.dot(b, ufl.grad(u)) <span class="op">*</span> v) <span class="op">*</span> ufl.dx</span>
+<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> f <span class="op">*</span> v <span class="op">*</span> ufl.dx</span>
+<span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> <span class="op">-</span>eps <span class="op">*</span> ufl.div(ufl.grad(u)) <span class="op">+</span> ufl.dot(b, ufl.grad(u))          <span class="co"># residual operator (div grad u = 0 per cell for P1)</span></span>
+<span id="cb1-9"><a href="" aria-hidden="true" tabindex="-1"></a>a <span class="op">+=</span> tau <span class="op">*</span> R <span class="op">*</span> ufl.dot(b, ufl.grad(v)) <span class="op">*</span> ufl.dx</span>
+<span id="cb1-10"><a href="" aria-hidden="true" tabindex="-1"></a>L <span class="op">+=</span> tau <span class="op">*</span> f <span class="op">*</span> ufl.dot(b, ufl.grad(v)) <span class="op">*</span> ufl.dx</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Math</th>
+<th>UFL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">h_K</span></td>
+<td><code>ufl.CellDiameter(msh)</code> (also <code>Circumradius</code>, <code>MinCellEdgeLength</code>)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\xi(z)=\coth z-1/z</span></td>
+<td><code>1 / ufl.tanh(z) - 1 / z</code></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\sum_K(\cdot,\cdot)_K</span></td>
+<td><code>* ufl.dx</code> — the cellwise quantities are evaluated per cell automatically</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\Delta u_h</span> inside <span class="math inline">K</span></td>
+<td><code>ufl.div(ufl.grad(u))</code> (broken second derivatives)</td>
+</tr>
+</tbody>
+</table>
+<p>The system is <strong>non-symmetric</strong>: LU (MUMPS) or GMRES, never CG.</p>
+</div>
+</section>
+<section id="b2-test-problems-with-layers" class="slide level2">
+<h2>§B2 Test problems with layers</h2>
+<p><strong>1D</strong>: <span class="math inline">-\varepsilon u''+u'=1</span> (exact solution in §A2). <strong>2D</strong>: <span class="math inline">\mathbf b=(2,3)</span>, <span class="math inline">f</span> from <span class="math display">u=xy^2-y^2e^{2(x-1)/\varepsilon}-x\,e^{3(y-1)/\varepsilon}+e^{(2(x-1)+3(y-1))/\varepsilon}</span> — <span class="math inline">u=0</span> on <span class="math inline">\partial\Omega</span>, layers of width <span class="math inline">\varepsilon/2</span> at <span class="math inline">x=1</span> and <span class="math inline">\varepsilon/3</span> at <span class="math inline">y=1</span>, smooth part <span class="math inline">xy^2</span> (<span class="math inline">\Delta\ne0</span>).</p>
+<div class="fragment">
+<ul>
+<li>Write exponentials <strong>as decaying ones</strong>: <span class="math inline">e^{(x-1)/\varepsilon}\le1</span>. The algebraically equivalent <span class="math inline">(e^{x/\varepsilon}-1)/(e^{1/\varepsilon}-1)</span> is <code>inf/inf = nan</code> for <span class="math inline">\varepsilon=10^{-4}</span>.</li>
+<li>Measure the error <strong>away from the layers</strong> as well (here on <span class="math inline">[0,0.8]^2</span>, a <code>ufl.conditional</code> indicator) and integrate with a high quadrature degree (8).</li>
+<li><span class="math inline">f</span> from UFL: <code>f = -eps * div(grad(u_ex)) + dot(b, grad(u_ex))</code>.</li>
+</ul>
+</div>
+</section>
+<section id="b3-interior-layers-the-skew-advection-test" class="slide level2">
+<h2>§B3 Interior layers: the skew advection test</h2>
+<p><span class="math inline">\varepsilon=10^{-8}</span>, <span class="math inline">\mathbf b=(\cos(-\pi/3),\sin(-\pi/3))</span>, <span class="math inline">f=0</span>; <span class="math inline">u=1</span> on <span class="math inline">\{y=1\}</span> and on <span class="math inline">\{x=0,\ y&gt;0.7\}</span>, <span class="math inline">u=0</span> elsewhere on <span class="math inline">\partial\Omega</span>.</p>
+<ul>
+<li>The jump at <span class="math inline">(0,0.7)</span> is carried along <span class="math inline">\mathbf b</span>: an <strong>interior layer</strong>; exponential layers where <span class="math inline">u</span> must drop to 0 at <span class="math inline">x=1</span> and <span class="math inline">y=0</span>.</li>
+<li>No exact solution formula — but <span class="math inline">0\le u\le1</span> (maximum principle). The range of <span class="math inline">u_h</span> measures the over- and undershoots.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> fem.Function(V)</span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>g.interpolate(<span class="kw">lambda</span> x: np.where(np.isclose(x[<span class="dv">1</span>], <span class="fl">1.0</span>) <span class="op">|</span> (np.isclose(x[<span class="dv">0</span>], <span class="fl">0.0</span>) <span class="op">&amp;</span> (x[<span class="dv">1</span>] <span class="op">&gt;</span> <span class="fl">0.7</span>)), <span class="fl">1.0</span>, <span class="fl">0.0</span>))</span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>bc <span class="op">=</span> fem.dirichletbc(g, fem.locate_dofs_topological(V, <span class="dv">1</span>, mesh.exterior_facet_indices(msh.topology)))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section></section>
+<section>
+<section id="part-c-measurements" class="title-slide slide level1 center">
+<h1>Part C — Measurements</h1>
+
+</section>
+<section id="c1-1d-galerkin-upwind-supg" class="slide level2">
+<h2>§C1 1D: Galerkin, upwind, SUPG</h2>
+
+<img data-src="figs/w13_1d.png" style="width:72.0%" class="r-stretch"><div class="fragment">
+<p><span class="math inline">N=20</span>: SUPG nodal errors <span class="math inline">3\times10^{-15}</span> … <span class="math inline">3\times10^{-16}</span> for <strong>every</strong> <span class="math inline">\varepsilon</span> (<span class="math inline">\mathrm{Pe}_h=0.25</span> to <span class="math inline">250</span>). Galerkin <span class="math inline">\max u_h</span>: 1.061, 1.379, 1.617, 13.4 for <span class="math inline">\mathrm{Pe}_h=1.25,2.5,5,250</span> (exact maxima 0.902–0.999). Upwind: monotone, nodal error 0.08–0.20 for <span class="math inline">\mathrm{Pe}_h\le5</span>.</p>
+</div>
+</section>
+<section id="c2-2d-boundary-layers-errors-away-from-the-layers" class="slide level2">
+<h2>§C2 2D boundary layers: errors away from the layers</h2>
+
+<img data-src="figs/w13_rates.png" style="width:90.0%" class="r-stretch"><div class="fragment">
+<p><span class="math inline">\varepsilon=10^{-6}</span>, P1, <span class="math inline">N=16\to128</span>: Galerkin <span class="math inline">\max u_h</span> 2681 → 49; upwind away-error rate 1.0 (monotone, <span class="math inline">\max u_h&lt;1</span>); SUPG away-error rate 2.0 (<span class="math inline">4.8\times10^{-6}</span> at <span class="math inline">N=128</span>). P2 SUPG (<span class="math inline">\varepsilon=10^{-4}</span>): rate 3.0. Whole domain: upwind and SUPG <span class="math inline">\approx0.5</span> — the unresolved layer (Galerkin’s slope 2 is its oscillation amplitude decaying from <span class="math inline">8\times10^2</span> to 14).</p>
+</div>
+</section>
+<section id="c3-the-same-table-for-three-péclet-numbers" class="slide level2">
+<h2>§C3 The same table for three Péclet numbers</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">\varepsilon</span></th>
+<th>Galerkin away error (<span class="math inline">N=128</span>) / <span class="math inline">\max u_h</span></th>
+<th>upwind away / rate</th>
+<th>SUPG away / rate / <span class="math inline">\max u_h</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">10^{-2}</span></td>
+<td><span class="math inline">4.8\times10^{-6}</span> / 1.03 (nearly resolved: <span class="math inline">\mathrm{Pe}_h\approx2</span>)</td>
+<td><span class="math inline">1.5\times10^{-3}</span> / 1.0</td>
+<td><span class="math inline">6.7\times10^{-6}</span> / 1.84 / 0.913</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">10^{-4}</span></td>
+<td>0.12 / 3.30</td>
+<td><span class="math inline">1.5\times10^{-3}</span> / 1.0</td>
+<td><span class="math inline">4.8\times10^{-6}</span> / 2.00 / 1.129</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">10^{-6}</span></td>
+<td>11.2 / 49.1</td>
+<td><span class="math inline">1.5\times10^{-3}</span> / 1.0</td>
+<td><span class="math inline">4.8\times10^{-6}</span> / 2.00 / 1.141</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li>Once the mesh resolves the layer (<span class="math inline">\mathrm{Pe}_h\lesssim1</span>), Galerkin is the best method — SUPG’s <span class="math inline">\xi(\mathrm{Pe}_h)\approx\mathrm{Pe}_h/3</span> switches itself off.</li>
+<li>SUPG overshoots by 13–14 % <strong>at</strong> the layer for <span class="math inline">\varepsilon\le10^{-4}</span> (exact <span class="math inline">\max u&lt;1</span>): accurate away from layers, not monotone at them.</li>
+<li>Making Galerkin work by refinement needs <span class="math inline">h&lt;2\varepsilon/|\mathbf b|</span>: for <span class="math inline">\varepsilon=10^{-6}</span>, <span class="math inline">|\mathbf b|\approx3.6</span>, about <span class="math inline">1.8\times10^6</span> cells per direction.</li>
+</ul>
+</div>
+</section>
+<section id="c4-tau-matters-and-so-does-consistency" class="slide level2">
+<h2>§C4 <span class="math inline">\tau</span> matters — and so does consistency</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>P1, <span class="math inline">\varepsilon=10^{-4}</span>, <span class="math inline">N=16\to128</span></th>
+<th>away error</th>
+<th>rates</th>
+<th><span class="math inline">\max u_h</span> / <span class="math inline">\min u_h</span> (<span class="math inline">N=128</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\tau</span> as in §A5</td>
+<td><span class="math inline">3.2\times10^{-4}\to4.8\times10^{-6}</span></td>
+<td>2.02, 2.01, 2.00</td>
+<td>1.129 / 0</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\tau/10</span></td>
+<td><span class="math inline">7.2\times10^{-2}\to2.4\times10^{-4}</span></td>
+<td>1.56, 2.32, 4.36</td>
+<td>2.571 / −0.549</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">10\,\tau</span></td>
+<td><span class="math inline">1.2\times10^{-1}\to1.0\times10^{-3}</span></td>
+<td>1.11, 2.10, 3.72</td>
+<td>0.641 / 0</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li>Too small: Galerkin-like oscillations. Too large: over-diffusion (<span class="math inline">\max u_h=0.009</span> at <span class="math inline">N=16</span> — the solution is wiped out). The “rates” above 2 are the pre-asymptotic recovery, not accuracy.</li>
+<li><strong>P2, <span class="math inline">\varepsilon=10^{-2}</span>, without <span class="math inline">-\varepsilon\Delta u_h</span> in the residual</strong>: away-error rates 1.13, 1.46, 1.78 instead of 3.25, 3.02, 3.00 — the method is no longer consistent.</li>
+</ul>
+</div>
+</section>
+<section id="c5-interior-layers-skew-advection" class="slide level2">
+<h2>§C5 Interior layers: skew advection</h2>
+
+<img data-src="figs/w13_skew.png" style="width:92.0%" class="r-stretch"><div class="fragment">
+<p>Range of <span class="math inline">u_h</span> (exact solution in <span class="math inline">[0,1]</span>), <span class="math inline">N=16/32/64</span>: Galerkin up to <span class="math inline">9.7\times10^4</span>, <span class="math inline">2.5\times10^4</span>, <span class="math inline">6.3\times10^3</span> (meaningless); upwind exactly <span class="math inline">[0,1]</span> but the interior layer is smeared over many cells; SUPG <span class="math inline">[-0.027,1.177]</span>, <span class="math inline">[-0.042,1.176]</span>, <span class="math inline">[-0.048,1.176]</span> — sharp layer, bounded over/undershoots <strong>that do not go away with <span class="math inline">h</span></strong>.</p>
+</div>
+</section></section>
+<section>
+<section id="part-d-llms-and-stabilised-methods-hw12" class="title-slide slide level1 center">
+<h1>Part D — LLMs and Stabilised Methods · HW12</h1>
+
+</section>
+<section id="d1-where-llm-generated-advectiondiffusion-code-goes-wrong" class="slide level2">
+<h2>§D1 Where LLM-generated advection–diffusion code goes wrong</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Kind</th>
+<th>What it looks like</th>
+<th>Symptom</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong><span class="math inline">\mathbf b=0</span> somewhere</strong></td>
+<td><span class="math inline">\tau=\frac{h}{2|\mathbf b|}(\coth\mathrm{Pe}_h-1/\mathrm{Pe}_h)</span> evaluated where <span class="math inline">\mathbf b=0</span></td>
+<td><code>nan</code> in the matrix: MUMPS reason −11 (test: <span class="math inline">\mathbf b=0</span> on half the unit square)</td>
+</tr>
+<tr class="even">
+<td><strong>Overflowing exact solution</strong></td>
+<td><span class="math inline">(e^{x/\varepsilon}-1)/(e^{1/\varepsilon}-1)</span></td>
+<td><code>inf/inf = nan</code> for <span class="math inline">\varepsilon=10^{-4}</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Wrong error measure</strong></td>
+<td>only the global <span class="math inline">L^2</span> error</td>
+<td>every method “converges at 0.5”: the layer hides the difference (§C2)</td>
+</tr>
+<tr class="even">
+<td><strong>Refinement instead of stabilisation</strong></td>
+<td>“increase N until the wiggles go away”</td>
+<td><span class="math inline">h&lt;2\varepsilon/|\mathbf b|</span>: millions of cells per direction</td>
+</tr>
+<tr class="odd">
+<td><strong>Over-claiming</strong></td>
+<td>“SUPG removes all oscillations”</td>
+<td>13–18 % overshoots at layers (§C3, §C5)</td>
+</tr>
+<tr class="even">
+<td><strong>Older API</strong></td>
+<td><code>ufl.CellSize(msh)</code>, <code>uh.vector</code> (legacy FEniCS)</td>
+<td><code>AttributeError</code> in 0.11 / UFL 2026</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>A safe <span class="math inline">\tau</span> without <span class="math inline">1/|\mathbf b|</span>: <span class="math inline">\tau=\dfrac{h^2}{12\varepsilon}\cdot\dfrac{3\,\xi(\mathrm{Pe}_h)}{\mathrm{Pe}_h}</span> (the second factor <span class="math inline">\to1</span> as <span class="math inline">\mathrm{Pe}_h\to0</span>) — reason 4, finite solution on the same test. Verification habit: a 1D problem with a known nodally exact answer first; then errors away from the layers, and the range of <span class="math inline">u_h</span>.</p>
+</div>
+</section>
+<section id="hw12-péclet-number-sweep-due-before-the-week-14-lecture" class="slide level2">
+<h2>HW12 — Péclet-number sweep, due before the Week 14 lecture</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><code>W13_HW12.ipynb</code> (100 pts)</p>
+<ul>
+<li><strong>Q1 (20)</strong> Theory: the 1D Galerkin difference equation, optimal artificial diffusion, consistency of SUPG</li>
+<li><strong>Q2 (40)</strong> A new problem with an outflow layer: Galerkin, upwind and SUPG for <span class="math inline">\varepsilon=1\dots10^{-6}</span>; errors away from the layer, rates</li>
+<li><strong>Q3 (20)</strong> Designing <span class="math inline">\tau</span>: optimal, asymptotic, too small, too large; P2 consistency</li>
+<li><strong>Q4 (20)</strong> LLM debugging: an SUPG script with four bugs</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div class="box">
+<p>Rules as always: <em>Restart session and run all</em>, <code>-np 2</code> where stated, the AI-usage log, numbers only from your own cells.</p>
+<p>For every table: the mesh Péclet number of each run, the range of <span class="math inline">u_h</span>, and the error away from the layer.</p>
+</div>
+</div></div>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Key idea</th>
+<th>DOLFINx 0.11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Péclet number</td>
+<td>Céa constant <span class="math inline">\sim|\mathbf b|/\varepsilon</span>; <span class="math inline">\mathrm{Pe}_h=|\mathbf b|h/2\varepsilon</span></td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>Galerkin oscillations</td>
+<td>1D root <span class="math inline">r=(1+\mathrm{Pe}_h)/(1-\mathrm{Pe}_h)&lt;0</span> for <span class="math inline">\mathrm{Pe}_h&gt;1</span></td>
+<td>—</td>
+</tr>
+<tr class="odd">
+<td>Upwinding</td>
+<td>artificial diffusion <span class="math inline">|\mathbf b|h/2</span>: monotone, first order</td>
+<td><code>+ bn*h/2*inner(grad u, grad v)*dx</code></td>
+</tr>
+<tr class="even">
+<td>Optimal diffusion</td>
+<td><span class="math inline">\xi(z)=\coth z-1/z</span>: nodally exact in 1D</td>
+<td><code>1/ufl.tanh(z) - 1/z</code></td>
+</tr>
+<tr class="odd">
+<td>SUPG</td>
+<td>residual × <span class="math inline">\tau\,\mathbf b\cdot\nabla v</span>: consistent, streamline only</td>
+<td><code>CellDiameter</code>, <code>div(grad(u))</code> for P2</td>
+</tr>
+<tr class="even">
+<td>Accuracy</td>
+<td><span class="math inline">O(h^{k+1})</span> away from layers, <span class="math inline">O(h^{k+1/2})</span> globally (smooth <span class="math inline">u</span>)</td>
+<td>errors on a subdomain, high quadrature</td>
+</tr>
+<tr class="odd">
+<td>Limits</td>
+<td>overshoots at layers stay (13–18 %)</td>
+<td>SOLD / flux correction (beyond)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Next week — Navier–Stokes:</strong> splitting schemes (Chorin, IPCS), the CFL condition, channel flow and the DFG flow past a cylinder; HW13.</p>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="assets/seoultech_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="W13_lecture_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="W13_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="W13_lecture_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true,"numbers":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

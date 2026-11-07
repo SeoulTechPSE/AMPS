@@ -1,0 +1,74 @@
+---
+title: "Topic J — A Laminar Tubular Polymerization Reactor"
+subtitle: "axisymmetric flow with conversion-dependent viscosity · species and heat · exothermic kinetics · tier: advanced"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: true
+---
+
+## Motivation
+
+In a tubular polymerization reactor the viscosity rises by orders of magnitude with conversion. The fluid near the wall, which has stayed
+longest and polymerized most, slows down further, the velocity profile sharpens, the residence-time distribution broadens — and with an
+exothermic reaction a hot, viscous wall layer can form. The coupling of rheology, transport and kinetics decides conversion, molecular weight
+spread and safe operation; it is a classical problem of polymer reaction engineering.
+
+**Related fields:** polymerization kinetics, polymer reactor modelling, process control and optimisation. **Course weeks:** 2 (axisymmetric weak forms), 11 (Navier–Stokes, mixed spaces, continuation), 12 (reactive flow, SUPG).
+
+## Model
+
+Tube of radius $R$ and length $L$, axisymmetric $(r,z)$, steady state. Navier–Stokes (Reynolds number small) with a viscosity
+$\eta(X,T)=\eta_0\exp\big(aX+\frac{E_\eta}{R_g}(\frac1T-\frac1{T_0})\big)$, monomer conversion $X$ and temperature $T$:
+$$
+\mathbf u\cdot\nabla X-\nabla\cdot(D\nabla X)=k(T)(1-X),\qquad \rho c_p\,\mathbf u\cdot\nabla T-\nabla\cdot(k_T\nabla T)=(-\Delta H)\,c_{M0}\,k(T)(1-X),
+$$
+$k(T)=k_0e^{-E/R_gT}$ (first-order pseudo-kinetics; free-radical kinetics with the gel effect as a stretch), parabolic inflow, $X=0$, $T=T_0$ at the
+inlet, wall at $T_w$ (Dirichlet or Robin).
+
+**Design outputs:** outlet conversion (mixing-cup average $\bar X=\frac{\int uX\,r\,dr}{\int u\,r\,dr}$), the velocity profile along the tube, the maximum
+temperature, against the flow rate and the viscosity parameter $a$.
+
+## Suggested parameters
+
+Dimensionless: Damköhler number $k(T_0)L/\bar u$ = 0.1–5, radial Péclet number $\bar uR^2/(DL)$ = 10–10⁴ (polymer: small $D$), $a$ = 0–10
+(viscosity ratio $e^a$ up to 2×10⁴), adiabatic temperature rise up to 50 K with Arrhenius number $E/R_gT_0$ = 20–30.
+
+## Required tasks
+
+1. Isothermal, constant viscosity: conversion against Da, compared with the limits below.
+2. Viscosity rising with conversion ($a$ = 0 → 10 by continuation): velocity profiles, outlet conversion.
+3. Non-isothermal with wall cooling: maximum temperature and conversion against Da; Newton with continuation.
+4. Mesh independence of the outlet conversion and of the peak temperature.
+
+## Verification specific to this topic
+
+- **Plug-flow limit** (strong radial mixing, $D\to$ large in $r$): $\bar X=1-e^{-\mathrm{Da}}$.
+- **Segregated laminar-flow limit** ($D\to0$, constant viscosity): each streamline is a batch reactor with residence time $t(r)$; the RTD of laminar
+  flow is $E(t)=\frac{\tau^2}{2t^3}$ for $t\ge\tau/2$, so $1-\bar X=\int_{\tau/2}^\infty e^{-kt}E(t)\,dt$ — evaluate it with NumPy and compare.
+- **Flow:** constant viscosity gives Poiseuille exactly (P2–P1); with $\eta(X)$, the flow rate must be conserved along the tube.
+- **Energy balance:** heat released = heat removed at the wall + enthalpy rise, to discretisation error.
+- **MMS** for the coupled axisymmetric system.
+
+## Stretch goals
+
+1. Free-radical kinetics with initiator decay and the gel (Trommsdorff) effect; moments of the molecular-weight distribution.
+2. Static mixer inserts (3D, or a 2D cross-section model) and their effect on the RTD.
+3. Thermal runaway map in (Da, wall temperature) with pseudo-arclength continuation.
+
+## Milestones
+
+M1 Poiseuille + isothermal conversion with both limits · M2 viscosity coupling with continuation · M3 non-isothermal · M4 energy balance and mesh
+study · M5 parameter study.
+
+## Pitfalls
+
+- The axis: no condition on $r=0$ for the scalars, $u_r=0$ there for the flow, and the $r$-weight everywhere (Week 2).
+- Large Péclet numbers in $z$: SUPG for $X$ and $T$ (Week 12); check that the outlet conversion does not depend on the stabilisation parameter.
+- A viscosity contrast of $10^4$ in one Newton step diverges: continuation in $a$ with the previous solution as initial guess.
+
+## References
+
+- O. Levenspiel, *Chemical Reaction Engineering*, 3rd ed., Wiley 1999 — laminar-flow RTD, segregated flow model.
+- J. A. Biesenberger, D. H. Sebastian, *Principles of Polymerization Engineering*, Wiley 1983.

@@ -1,0 +1,1356 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="W12_lecture_files/libs/clipboard/clipboard.min.js"></script>
+<script src="W12_lecture_files/libs/quarto-html/tabby.min.js"></script>
+<script src="W12_lecture_files/libs/quarto-html/popper.min.js"></script>
+<script src="W12_lecture_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="W12_lecture_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="W12_lecture_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="W12_lecture_files/libs/quarto-html/quarto-syntax-highlighting-a06763021a52c43c40a351ac8b799b8f.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.36">
+
+  <meta name="author" content="Kee-Youn Yoo">
+  <title>AI-based Materials and Process Simulation I</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="W12_lecture_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="W12_lecture_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="W12_lecture_files/libs/revealjs/dist/theme/quarto-7af60fb36352a8d2af996e24a7cdd28d.css">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="W12_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="W12_lecture_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="W12_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="W12_lecture_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="W12_lecture_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="W12_lecture_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">AI-based Materials and Process Simulation I</h1>
+  <p class="subtitle">Week 12 — Solving Saddle-Point Systems: Schur Complement · Block Preconditioners · fieldsplit · Stokes and Darcy</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Kee-Youn Yoo 
+</div>
+        <p class="quarto-title-affiliation">
+            Process Systems Laboratory<br>Department of Chemical and Biomolecular Engineering, SeoulTech
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="today" class="slide level2">
+<h2>Today</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Topic</th>
+<th style="text-align: center;">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Quiz</td>
+<td>Week 11 (Stokes, inf-sup, rates, P1–P1)</td>
+<td style="text-align: center;">10 min</td>
+</tr>
+<tr class="even">
+<td><strong>A</strong></td>
+<td>Theory — Schur complement, block preconditioners, <span class="math inline">S\sim M_p</span>, MINRES/GMRES, Darcy</td>
+<td style="text-align: center;">55 min</td>
+</tr>
+<tr class="odd">
+<td><strong>B</strong></td>
+<td>DOLFINx 0.11 + PETSc — blocked and nested systems, <code>fieldsplit</code>, null space</td>
+<td style="text-align: center;">40 min</td>
+</tr>
+<tr class="even">
+<td><strong>C</strong></td>
+<td>Measurements — spectra, iterations vs <span class="math inline">h</span>, time vs DOFs, Darcy</td>
+<td style="text-align: center;">30 min</td>
+</tr>
+<tr class="odd">
+<td><strong>D</strong></td>
+<td>LLM pitfalls with iterative solvers · HW11</td>
+<td style="text-align: center;">15 min</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p>Lab notebook: <code>W12_lab.ipynb</code> · Homework: <code>W12_HW11.ipynb</code> (due before Week 13)</p>
+</div>
+</section>
+<section id="where-we-are" class="slide level2">
+<h2>Where we are</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Week</th>
+<th>Problem</th>
+<th>Linear algebra</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>5</td>
+<td>Poisson</td>
+<td>SPD: CG + AMG, iterations <span class="math inline">\approx</span> const in <span class="math inline">h</span></td>
+</tr>
+<tr class="even">
+<td>9–10</td>
+<td>nonlinear, time-dependent</td>
+<td>a linear solve per Newton step / time step</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td>Stokes, discretised</td>
+<td><strong>MUMPS LU</strong> on the indefinite matrix</td>
+</tr>
+<tr class="even">
+<td><strong>12</strong></td>
+<td><strong>the same matrix, solved iteratively</strong></td>
+<td><strong>block preconditioners built from Week 11’s <span class="math inline">\beta_h</span></strong></td>
+</tr>
+<tr class="odd">
+<td>14–15</td>
+<td>Navier–Stokes</td>
+<td>same structure, <span class="math inline">A</span> non-symmetric, Schur complement depends on <span class="math inline">\mathbf u</span></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Week 11 used LU everywhere. LU is exact and robust — and its cost grows faster than the problem: in 3D, 14 times more DOFs made today’s factorisation 135 times slower (0.98 s → 132 s). This week: <strong>why</strong> iterative solvers work for saddle points, and how to make them <span class="math inline">h</span>-independent.</p>
+</div>
+</section>
+<section>
+<section id="part-a-theory" class="title-slide slide level1 center">
+<h1>Part A — Theory</h1>
+
+</section>
+<section id="a1-the-saddle-point-matrix" class="slide level2">
+<h2>§A1 The saddle-point matrix</h2>
+<p><span class="math display">
+\mathscr K=\begin{pmatrix}A&amp;B^\top\\B&amp;0\end{pmatrix},\qquad
+A_{ij}=\mu\!\int\nabla\boldsymbol\phi_j:\nabla\boldsymbol\phi_i,\quad B_{kj}=-\!\int\psi_k\,\nabla\cdot\boldsymbol\phi_j,\quad (M_p)_{kl}=\int\psi_k\psi_l .
+</span></p>
+<ul>
+<li><span class="math inline">A</span> (<span class="math inline">n\times n</span>) SPD, <span class="math inline">B</span> (<span class="math inline">m\times n</span>), <span class="math inline">m&lt;n</span>. Week 11 HW Q1: <span class="math inline">\mathscr K</span> has <span class="math inline">n</span> positive and <span class="math inline">m</span> negative eigenvalues (one zero for the pressure constant).</li>
+<li><strong>Indefinite</strong> ⇒ CG is not defined (its energy “norm” is not a norm). Krylov methods for symmetric indefinite matrices: <strong>MINRES</strong>; for anything: <strong>GMRES</strong>.</li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Unpreconditioned, the eigenvalues of <span class="math inline">\mathscr K</span> (Taylor–Hood, unit square, <span class="math inline">\mu=1</span>) spread as the mesh is refined:</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">N</span></th>
+<th>4</th>
+<th>8</th>
+<th>16</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\max|\lambda|/\min|\lambda|</span></td>
+<td><span class="math inline">1.65\times10^4</span></td>
+<td><span class="math inline">6.86\times10^4</span></td>
+<td><span class="math inline">2.77\times10^5</span></td>
+</tr>
+</tbody>
+</table>
+<p>Factor 4 per refinement, <span class="math inline">\propto h^{-2}</span>, like the Poisson stiffness matrix. MINRES without preconditioner: about 320, 770, 1480, 2670 iterations for <span class="math inline">N=8,\dots,64</span>.</p>
+</div>
+</section>
+<section id="a2-block-factorisation-and-the-schur-complement" class="slide level2">
+<h2>§A2 Block factorisation and the Schur complement</h2>
+<p><span class="math display">
+\begin{pmatrix}A&amp;B^\top\\B&amp;0\end{pmatrix}
+=\begin{pmatrix}I&amp;0\\BA^{-1}&amp;I\end{pmatrix}
+\begin{pmatrix}A&amp;0\\0&amp;-S\end{pmatrix}
+\begin{pmatrix}I&amp;A^{-1}B^\top\\0&amp;I\end{pmatrix},\qquad
+S=BA^{-1}B^\top .
+</span></p>
+<div class="fragment">
+<ul>
+<li>Solving <span class="math inline">\mathscr K\binom{\mathbf u}{p}=\binom{\mathbf f}{0}</span> = two solves with <span class="math inline">A</span> and one with <span class="math inline">S</span>: <span class="math inline">S\,p=BA^{-1}\mathbf f</span>, then <span class="math inline">A\mathbf u=\mathbf f-B^\top p</span> (the <strong>pressure Schur complement</strong> method / Uzawa).</li>
+<li><span class="math inline">S</span> is SPD on <span class="math inline">L^2_0</span> but <strong>dense</strong> (<span class="math inline">A^{-1}</span> inside). Never form it; approximate it.</li>
+</ul>
+</div>
+<div class="fragment">
+<div title="Definition — Schur complement and the inf-sup constant (Week 11)">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definition — Schur complement and the inf-sup constant (Week 11)</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">\beta_h^2=\lambda_{\min}(S,M_p)</span> on <span class="math inline">L^2_0</span> (with <span class="math inline">\mu=1</span>). The discrete inf-sup condition says exactly: the generalized eigenvalues of <span class="math inline">(S,M_p)</span> are bounded away from 0, uniformly in <span class="math inline">h</span>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="a3-ideal-block-preconditioners" class="slide level2">
+<h2>§A3 Ideal block preconditioners</h2>
+<div title="Theorem (Murphy, Golub, Wathen 2000)">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Theorem (Murphy, Golub, Wathen 2000)</strong></p>
+</div>
+<div class="callout-content">
+<p>With <span class="math inline">\mathscr P_D=\begin{pmatrix}A&amp;0\\0&amp;S\end{pmatrix}</span>, the matrix <span class="math inline">\mathscr P_D^{-1}\mathscr K</span> has at most <strong>three</strong> distinct eigenvalues: <span class="math inline">1,\ \tfrac{1\pm\sqrt5}{2}</span>. MINRES with <span class="math inline">\mathscr P_D</span> converges in at most 3 iterations.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Proof sketch: <span class="math inline">\mathscr P_D^{-1}\mathscr K\binom{\mathbf u}{p}=\lambda\binom{\mathbf u}{p}</span> ⇔ <span class="math inline">\mathbf u+A^{-1}B^\top p=\lambda\mathbf u</span>, <span class="math inline">S^{-1}B\mathbf u=\lambda p</span>. If <span class="math inline">\lambda\ne1</span>: <span class="math inline">\mathbf u=A^{-1}B^\top p/(\lambda-1)</span> ⇒ <span class="math inline">S p=\lambda(\lambda-1)Sp</span> ⇒ <span class="math inline">\lambda^2-\lambda-1=0</span>.</p>
+</div>
+<div class="fragment">
+<ul>
+<li>Block <strong>triangular</strong> <span class="math inline">\mathscr P_U=\begin{pmatrix}A&amp;B^\top\\0&amp;-S\end{pmatrix}</span>: <span class="math inline">\mathscr K\mathscr P_U^{-1}=\begin{pmatrix}I&amp;0\\BA^{-1}&amp;I\end{pmatrix}</span>, so <span class="math inline">(\mathscr K\mathscr P_U^{-1}-I)^2=0</span> — <strong>GMRES in 2 iterations</strong> (non-symmetric: not MINRES).</li>
+<li>Full <span class="math inline">LDU</span> = exact solve, 1 iteration. All three need <span class="math inline">S^{-1}</span>, which is as hard as the original problem — next slide.</li>
+</ul>
+</div>
+</section>
+<section id="a4-spectral-equivalence-replace-s-by-the-pressure-mass-matrix" class="slide level2">
+<h2>§A4 Spectral equivalence: replace <span class="math inline">S</span> by the pressure mass matrix</h2>
+<div title="Lemma (Stokes)">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Lemma (Stokes)</strong></p>
+</div>
+<div class="callout-content">
+<p>For <span class="math inline">\mathbf v\in H^1_0</span>: <span class="math inline">\|\nabla\cdot\mathbf v\|_0\le|\mathbf v|_1</span>. With the discrete inf-sup constant <span class="math inline">\beta_h</span>: <span class="math display">\beta_h^2\,q^\top M_p q\ \le\ q^\top S q\ \le\ q^\top M_p q\qquad\forall q\perp 1 \qquad(\mu=1).</span> For viscosity <span class="math inline">\mu</span>: <span class="math inline">S=\mu^{-1}BA_1^{-1}B^\top</span> ⇒ use <span class="math inline">\mu^{-1}M_p</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>With <span class="math inline">\mathscr P=\mathrm{diag}(A,\hat S)</span> and <span class="math inline">\sigma\in\operatorname{eig}(\hat S^{-1}S)</span>, the same algebra as in §A3 gives <span class="math display">\lambda=1\quad\text{or}\quad\lambda=\frac{1\pm\sqrt{1+4\sigma}}{2},\qquad \sigma\in[\beta_h^2,1].</span> Taylor–Hood, <span class="math inline">\hat S=M_p</span>: <span class="math inline">\sigma\in[0.1336,\,1.0000]</span>, <span class="math inline">\beta_h=0.366</span> (Week 11’s value) ⇒ <span class="math inline">\lambda\in[-0.618,-0.119]\cup[1,1.618]</span> — <strong>for every <span class="math inline">N</span></strong> (measured: <span class="math inline">N=4,8,16</span>).</p>
+</div>
+<div class="fragment">
+<p>Bounded spectrum on two intervals that do not depend on <span class="math inline">h</span> ⇒ MINRES iterations bounded independently of <span class="math inline">h</span>. <strong>The inf-sup constant is the convergence constant.</strong></p>
+</div>
+</section>
+<section id="a5-cheap-blocks-amg-and-jacobi" class="slide level2">
+<h2>§A5 Cheap blocks: AMG and Jacobi</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Exact block</th>
+<th>Replacement</th>
+<th>Why it is enough</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">A^{-1}</span> (vector Laplacian)</td>
+<td>one AMG V-cycle (BoomerAMG, GAMG)</td>
+<td>spectrally equivalent to <span class="math inline">A^{-1}</span>, constants independent of <span class="math inline">h</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">S^{-1}</span></td>
+<td><span class="math inline">M_p^{-1}</span></td>
+<td>Lemma in §A4</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">M_p^{-1}</span></td>
+<td>Jacobi: <span class="math inline">\mathrm{diag}(M_p)^{-1}</span></td>
+<td>P1 triangles: <span class="math inline">\operatorname{eig}(D^{-1}M_p)\in[\tfrac12,2]</span> exactly (measured, <span class="math inline">N=8,16</span>)</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li>Each replacement multiplies the interval bounds by constants independent of <span class="math inline">h</span>: iterations stay bounded, each iteration costs <span class="math inline">O(\text{DOFs})</span>.</li>
+<li><strong>MINRES requires a symmetric positive definite preconditioner</strong>: <span class="math inline">\mathrm{diag}(A,M_p)</span> ✓, <span class="math inline">\mathrm{diag}(A,-S)</span> ✗, block triangular ✗ (use GMRES).</li>
+<li>MINRES: short recurrence, monotone residual (in the <span class="math inline">\mathscr P^{-1}</span>-norm). GMRES: any preconditioner, memory grows with iterations (restart).</li>
+</ul>
+</div>
+</section>
+<section id="a6-darcy-a-different-schur-complement" class="slide level2 scrollable">
+<h2>§A6 Darcy: a different Schur complement</h2>
+<p>Mixed Poisson / Darcy, <span class="math inline">\boldsymbol\sigma=-K\nabla u</span>, <span class="math inline">\nabla\cdot\boldsymbol\sigma=f</span>, RT1 × DG0: <span class="math display">
+\begin{pmatrix}M_\sigma&amp;B^\top\\B&amp;0\end{pmatrix},\qquad (M_\sigma)_{ij}=\int K^{-1}\boldsymbol\phi_j\cdot\boldsymbol\phi_i,\quad B_{kj}=-\int\psi_k\nabla\cdot\boldsymbol\phi_j .
+</span></p>
+<div class="fragment">
+<ul>
+<li>Now <span class="math inline">A=M_\sigma</span> is a <strong>mass</strong> matrix and <span class="math inline">S=BM_\sigma^{-1}B^\top</span> is a discrete <strong>Laplacian</strong> on DG0: <span class="math inline">\operatorname{eig}(M_u^{-1}S)\in[19.8,\,2304]</span> (<span class="math inline">N=8</span>), <span class="math inline">[19.8,\,9216]</span> (<span class="math inline">N=16</span>) — ratio <span class="math inline">\propto h^{-2}</span>.</li>
+<li>So <span class="math inline">\mathrm{diag}(M_\sigma,M_u)</span> — the “Stokes recipe” — is <strong>wrong</strong> here: the problem is well-posed in <span class="math inline">H(\mathrm{div})\times L^2</span>, not <span class="math inline">L^2\times L^2</span>.</li>
+</ul>
+</div>
+<div class="fragment">
+<p>Two remedies:</p>
+<ol type="1">
+<li><strong>Riesz map of <span class="math inline">H(\mathrm{div})</span></strong>: <span class="math inline">\mathrm{diag}\big(M_\sigma+(\nabla\cdot,\nabla\cdot),\ M_u\big)</span>. For RT1/DG0, <span class="math inline">(\nabla\cdot\boldsymbol\sigma,\nabla\cdot\boldsymbol\tau)=B^\top M_u^{-1}B</span> exactly; preconditioned eigenvalues: <span class="math inline">1</span> and <span class="math inline">[-1,-0.952]</span>.</li>
+<li><strong>Algebraic</strong>: <span class="math inline">\hat S=B\,\mathrm{diag}(M_\sigma)^{-1}B^\top</span> (PETSc <code>selfp</code>) — a sparse, Laplacian-like matrix on which AMG works.</li>
+</ol>
+</div>
+<div class="fragment">
+<p><strong>Rule (Mardal–Winther):</strong> the preconditioner is the Riesz map of the spaces in which the continuous problem is well-posed.</p>
+</div>
+</section>
+<section id="a7-preview-navierstokes-and-pcd-weeks-1415" class="slide level2">
+<h2>§A7 Preview: Navier–Stokes and PCD (Weeks 14–15)</h2>
+<p><span class="math display">A\ \to\ F=\mu\,\text{Laplacian}+\text{convection}(\mathbf u_k)\quad\text{(non-symmetric)},\qquad S=BF^{-1}B^\top .</span></p>
+<ul>
+<li><span class="math inline">M_p/\mu</span> is no longer spectrally equivalent to <span class="math inline">S</span> when convection dominates: iterations grow with the Reynolds number.</li>
+<li><strong>Pressure convection–diffusion (PCD)</strong>: <span class="math inline">S^{-1}\approx M_p^{-1}F_pA_p^{-1}</span>, with <span class="math inline">F_p,A_p</span> a convection–diffusion operator and a Laplacian <strong>on the pressure space</strong>.</li>
+<li><code>fenicsx-pctools</code> (Rehor &amp; Hale) implements PCD as a PETSc Python preconditioner inside <code>fieldsplit</code>. Its backward-facing-step demo runs on DOLFINx 0.11 after three small API fixes: 4 Newton steps, 19–31 GMRES iterations each (Re = 100, local run).</li>
+<li>Week 15: lid-driven cavity with Reynolds-number continuation; iteration counts with PCD vs <span class="math inline">M_p</span>.</li>
+</ul>
+</section></section>
+<section>
+<section id="part-b-dolfinx-0.11-petsc" class="title-slide slide level1 center">
+<h1>Part B — DOLFINx 0.11 + PETSc</h1>
+
+</section>
+<section id="b1-three-ways-to-assemble-the-same-system" class="slide level2">
+<h2>§B1 Three ways to assemble the same system</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Monolithic</th>
+<th>Blocked</th>
+<th>Nested</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Spaces</td>
+<td>one <code>mixed_element([P2v, P1])</code></td>
+<td>two spaces <code>V</code>, <code>Q</code></td>
+<td>two spaces <code>V</code>, <code>Q</code></td>
+</tr>
+<tr class="even">
+<td>Forms</td>
+<td>one form</td>
+<td><code>[[a00, a01], [a10, None]]</code></td>
+<td>same list</td>
+</tr>
+<tr class="odd">
+<td>Matrix</td>
+<td><code>MPIAIJ</code>, interleaved DOFs</td>
+<td><code>MPIAIJ</code>, <strong>block layout</strong> per rank</td>
+<td><code>MATNEST</code> of four sub-matrices</td>
+</tr>
+<tr class="even">
+<td><code>kind=</code></td>
+<td>—</td>
+<td><code>None</code> (default)</td>
+<td><code>"nest"</code></td>
+</tr>
+<tr class="odd">
+<td>fieldsplit index sets</td>
+<td>from <code>W.sub(i).collapse()</code> maps</td>
+<td><strong>you compute offsets</strong></td>
+<td>automatic (<code>getNestISs</code>)</td>
+</tr>
+<tr class="even">
+<td>Direct solver</td>
+<td>MUMPS ✓</td>
+<td>MUMPS ✓</td>
+<td>MUMPS ✓ (same solution as blocked)</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Same Taylor–Hood MMS, <span class="math inline">N=16</span>, <code>-np 2</code>: monolithic (MUMPS), nested (MINRES) and blocked (MINRES) give <span class="math inline">\|\mathbf u-\mathbf u_h\|_0=9.7063\times10^{-5}</span> to all printed digits; <span class="math inline">\|\mathbf u_{\text{nest}}-\mathbf u_{\text{mono}}\|_0=2.6\times10^{-11}</span>.</p>
+</div>
+</section>
+<section id="b2-the-blocked-system-in-code" class="slide level2">
+<h2>§B2 The blocked system in code</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>a   <span class="op">=</span> fem.form([[mu <span class="op">*</span> inner(grad(u), grad(v)) <span class="op">*</span> dx, <span class="op">-</span>p <span class="op">*</span> div(v) <span class="op">*</span> dx],</span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>                [<span class="op">-</span>q <span class="op">*</span> div(u) <span class="op">*</span> dx,                  <span class="va">None</span>]])</span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>a_p <span class="op">=</span> fem.form([[mu <span class="op">*</span> inner(grad(u), grad(v)) <span class="op">*</span> dx, <span class="va">None</span>],</span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>                [<span class="va">None</span>,                              p <span class="op">*</span> q <span class="op">/</span> mu <span class="op">*</span> dx]])   <span class="co"># diag(A, Mp/mu)</span></span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> assemble_matrix(a, bcs<span class="op">=</span>[bc])<span class="op">;</span>   A.assemble()</span>
+<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> assemble_matrix(a_p, bcs<span class="op">=</span>[bc])<span class="op">;</span> P.assemble()</span>
+<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> assemble_vector(L, kind<span class="op">=</span><span class="st">"mpi"</span>)              <span class="co"># L = [f.v dx, ZeroBaseForm((q,))]</span></span>
+<span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a>apply_lifting(b, a, bcs<span class="op">=</span>bcs_by_block(extract_function_spaces(a, <span class="dv">1</span>), [bc]))</span>
+<span id="cb1-9"><a href="" aria-hidden="true" tabindex="-1"></a>b.ghostUpdate(PETSc.InsertMode.ADD, PETSc.ScatterMode.REVERSE)</span>
+<span id="cb1-10"><a href="" aria-hidden="true" tabindex="-1"></a>set_bc(b, bcs_by_block(extract_function_spaces(L), [bc]))</span>
+<span id="cb1-11"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="" aria-hidden="true" tabindex="-1"></a>Vm, Qm <span class="op">=</span> V.dofmap.index_map, Q.dofmap.index_map</span>
+<span id="cb1-13"><a href="" aria-hidden="true" tabindex="-1"></a>nu  <span class="op">=</span> Vm.size_local <span class="op">*</span> <span class="dv">2</span>                         <span class="co"># owned velocity rows</span></span>
+<span id="cb1-14"><a href="" aria-hidden="true" tabindex="-1"></a>off <span class="op">=</span> Vm.local_range[<span class="dv">0</span>] <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> Qm.local_range[<span class="dv">0</span>]</span>
+<span id="cb1-15"><a href="" aria-hidden="true" tabindex="-1"></a>is_u <span class="op">=</span> PETSc.IS().createStride(nu, off, <span class="dv">1</span>, comm<span class="op">=</span>comm)</span>
+<span id="cb1-16"><a href="" aria-hidden="true" tabindex="-1"></a>is_p <span class="op">=</span> PETSc.IS().createStride(Qm.size_local, off <span class="op">+</span> nu, <span class="dv">1</span>, comm<span class="op">=</span>comm)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<ul>
+<li><code>is_u</code>, <code>is_p</code>: the global rows of each field in the blocked matrix — <code>fieldsplit</code> needs them to cut out the blocks.</li>
+<li>Pressure constant: a <code>PETSc.NullSpace</code> with the vector <span class="math inline">(0,\dots,0,1,\dots,1)</span>, attached to <code>A</code> (and removed from <code>b</code>).</li>
+</ul>
+</div>
+</section>
+<section id="b3-fieldsplit-options" class="slide level2">
+<h2>§B3 <code>fieldsplit</code> options</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>ksp.setOperators(A, P)                     <span class="co"># operator K, preconditioner matrix P</span></span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>pc.setType(<span class="st">"fieldsplit"</span>)<span class="op">;</span> pc.setFieldSplitIS((<span class="st">"u"</span>, is_u), (<span class="st">"p"</span>, is_p))</span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>opts <span class="op">=</span> {<span class="st">"ksp_type"</span>: <span class="st">"minres"</span>, <span class="st">"ksp_rtol"</span>: <span class="fl">1e-8</span>,</span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"pc_fieldsplit_type"</span>: <span class="st">"additive"</span>,                <span class="co"># block diagonal</span></span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fieldsplit_u_ksp_type"</span>: <span class="st">"preonly"</span>,</span>
+<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fieldsplit_u_pc_type"</span>: <span class="st">"hypre"</span>,                 <span class="co"># one BoomerAMG V-cycle on A</span></span>
+<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fieldsplit_p_ksp_type"</span>: <span class="st">"preonly"</span>,</span>
+<span id="cb2-8"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="st">"fieldsplit_p_pc_type"</span>: <span class="st">"jacobi"</span>}                <span class="co"># Jacobi on Mp/mu</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>pc_fieldsplit_type</code></th>
+<th>meaning</th>
+<th>with</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>additive</code></td>
+<td><span class="math inline">\mathrm{diag}(\hat A,\hat S)</span></td>
+<td>MINRES (SPD blocks)</td>
+</tr>
+<tr class="even">
+<td><code>schur</code> + <code>schur_fact_type diag/lower/upper/full</code></td>
+<td>the factors of §A2 with <span class="math inline">\hat A</span>, <span class="math inline">\hat S</span></td>
+<td>GMRES (FGMRES if inner solves are Krylov)</td>
+</tr>
+<tr class="odd">
+<td><code>schur_precondition a11 / selfp / user</code></td>
+<td><span class="math inline">\hat S</span> from <span class="math inline">P_{11}</span> / <span class="math inline">B\,\mathrm{diag}(A)^{-1}B^\top</span> / your matrix</td>
+<td>Stokes: <code>a11</code> with <span class="math inline">P_{11}=M_p/\mu</span>; Darcy: <code>selfp</code></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Nested systems name the splits <code>0</code>, <code>1</code> (<code>fieldsplit_0_pc_type</code>, …); blocked systems use the names you gave in <code>setFieldSplitIS</code>. High level: <code>LinearProblem(a, L, bcs=..., P=a_p, kind="nest", petsc_options={...})</code>.</p>
+</div>
+</section>
+<section id="b4-details-the-pressure-constant-and-nested-matrices" class="slide level2">
+<h2>§B4 Details: the pressure constant and nested matrices</h2>
+<ul>
+<li><strong>Singular matrix and LU:</strong> with the null space instead of a pinned DOF, tell MUMPS: <code>mat_mumps_icntl_24 = 1</code> (null-pivot detection).</li>
+<li><strong>Pinning a pressure DOF in a blocked form</strong> needs an explicit zero block, otherwise 0.11 refuses: <code>RuntimeError: Diagonal sub-block (1, 1) cannot be 'None' and have DirichletBC applied. Consider assembling a zero block.</code></li>
+</ul>
+<div class="fragment">
+<ul>
+<li>Pin vs null space with MINRES: 50, 49, 50 iterations with the null space, 71, 49, 50 with a pinned DOF (<span class="math inline">N=16,32,64</span>; same errors). The null space is the natural choice for iterative solvers; the pin for LU.</li>
+<li><code>assemble_matrix(a, kind="nest")</code> for a form with a <code>None</code> block and no <code>bcs</code> raises <code>TypeError: 'NoneType' object is not iterable</code> in 0.11 — pass <code>bcs=[]</code>.</li>
+</ul>
+</div>
+</section></section>
+<section>
+<section id="part-c-measurements" class="title-slide slide level1 center">
+<h1>Part C — Measurements</h1>
+
+</section>
+<section id="c1-preconditioned-spectra" class="slide level2">
+<h2>§C1 Preconditioned spectra</h2>
+
+<img data-src="figs/w12_spectra.png" style="width:88.0%" class="r-stretch"><div class="fragment">
+<p><span class="math inline">N=8</span>: no preconditioner <span class="math inline">\max|\lambda|/\min|\lambda|=6.9\times10^4</span>; <span class="math inline">\mathrm{diag}(A,M_p)</span>: 13.5 (13.4, 13.5, 13.6 for <span class="math inline">N=4,8,16</span>); <span class="math inline">\mathrm{diag}(A,S)</span>: exactly <span class="math inline">\{-0.618,\,1,\,1.618\}</span>, ratio 2.618. The negative interval ends at <span class="math inline">(1-\sqrt{1+4\beta_h^2})/2=-0.119</span>.</p>
+</div>
+</section>
+<section id="c2-iterations-vs-h" class="slide level2">
+<h2>§C2 Iterations vs <span class="math inline">h</span></h2>
+
+<img data-src="figs/w12_iterations.png" style="width:90.0%" class="r-stretch"><div class="fragment">
+<p>Stokes (rtol <span class="math inline">10^{-8}</span>, <code>-np 2</code>): diag(LU, LU(<span class="math inline">M_p</span>)) 29–31; diag(BoomerAMG, Jacobi) 45–50; upper Schur (BoomerAMG, Jacobi) 47–58 — <strong>flat</strong>. GAMG with default options: 62 → 123 — not quite flat (an AMG is not automatically <span class="math inline">h</span>-independent for P2 vector problems).</p>
+</div>
+</section>
+<section id="c3-viscosity-scaling-and-the-stopping-test" class="slide level2">
+<h2>§C3 Viscosity scaling and the stopping test</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">\mu</span></th>
+<th><span class="math inline">P_{11}=M_p/\mu</span></th>
+<th><span class="math inline">P_{11}=M_p</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>49</td>
+<td>49</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">10^{-2}</span></td>
+<td>53</td>
+<td>79</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">10^{-4}</span></td>
+<td>55</td>
+<td>106</td>
+</tr>
+</tbody>
+</table>
+<p>MINRES, diag(BoomerAMG, Jacobi), <span class="math inline">N=32</span>. Same answers, more iterations: the unscaled block is spectrally equivalent with constants <span class="math inline">\propto\mu^{-1}</span>.</p>
+<div class="fragment">
+<p><strong>The tolerance is relative to the preconditioned residual</strong>, not the error. <span class="math inline">N=256</span>, rtol <span class="math inline">10^{-8}</span>: MINRES <span class="math inline">\|\mathbf u-\mathbf u_h\|_0=2.57\times10^{-8}</span>, LU <span class="math inline">2.38\times10^{-8}</span> — the algebraic error is already visible. Rule: tighten rtol until the discretisation error stops changing (Week 7, again).</p>
+</div>
+</section>
+<section id="c4-time-vs-dofs-2d-and-3d" class="slide level2">
+<h2>§C4 Time vs DOFs: 2D and 3D</h2>
+
+<img data-src="figs/w12_timing.png" style="width:92.0%" class="r-stretch"><p>KSP setup + solve, minimum of two runs, <code>-np 2</code> on the build machine (Colab has 2 slow cores — measure there). Same solutions: <span class="math inline">|x_{it}-x_{LU}|/|x_{LU}|\le2.3\times10^{-7}</span> in 3D.</p>
+</section>
+<section id="c4-growth-factors" class="slide level2">
+<h2>§C4 Growth factors</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>DOFs</th>
+<th>LU (MUMPS)</th>
+<th>MINRES diag(AMG, Jacobi)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2D, <span class="math inline">N=32\to256</span></td>
+<td>9.5 k → 592 k (×62)</td>
+<td>0.12 → 15.7 s (×130)</td>
+<td>0.17 → 12.0 s (×70, BoomerAMG)</td>
+</tr>
+<tr class="even">
+<td>3D, <span class="math inline">N=8\to20</span></td>
+<td>15 k → 216 k (×14)</td>
+<td>0.98 → <strong>132 s</strong> (×135)</td>
+<td>1.06 → <strong>13.8 s</strong> (×13, GAMG)</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li>2D: sparse LU (nested dissection, <span class="math inline">O(n^{1.5})</span> flops) is hard to beat on a laptop.</li>
+<li>3D: separators are larger (<span class="math inline">O(n^2)</span> flops, <span class="math inline">O(n^{4/3})</span> memory) — LU and MINRES tie near <span class="math inline">1.5\times10^4</span> DOFs, and LU memory runs out before its time does.</li>
+<li>Single timings scatter by tens of percent between runs on a shared machine: compare growth factors over a wide range, not two neighbouring points.</li>
+</ul>
+</div>
+</section>
+<section id="c5-darcy-l²-vs-hdiv-preconditioners" class="slide level2">
+<h2>§C5 Darcy: L² vs H(div) preconditioners</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">N</span></th>
+<th>DOFs</th>
+<th>diag<span class="math inline">(M_\sigma,M_u)</span> [L²]</th>
+<th>diag<span class="math inline">(M_\sigma+\nabla\!\cdot\nabla\!\cdot,\,M_u)</span> [H(div)]</th>
+<th>Schur upper, <code>selfp</code> + AMG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>16</td>
+<td>1 312</td>
+<td>104</td>
+<td>4</td>
+<td>22</td>
+</tr>
+<tr class="even">
+<td>32</td>
+<td>5 184</td>
+<td>178</td>
+<td>4</td>
+<td>22</td>
+</tr>
+<tr class="odd">
+<td>64</td>
+<td>20 608</td>
+<td>284</td>
+<td>3</td>
+<td>21</td>
+</tr>
+<tr class="even">
+<td>128</td>
+<td>82 176</td>
+<td>510</td>
+<td>3</td>
+<td>21</td>
+</tr>
+</tbody>
+</table>
+<p>MINRES / GMRES iterations to rtol <span class="math inline">10^{-8}</span>, <span class="math inline">K=1</span>, <span class="math inline">u=\sin\pi x\sin\pi y</span>, <code>-np 2</code>. LU errors: <span class="math inline">\|u-u_h\|_0=4.09\times10^{-3}</span>, <span class="math inline">\|\boldsymbol\sigma-\boldsymbol\sigma_h\|_0=1.57\times10^{-2}</span> at <span class="math inline">N=128</span> (rate 1).</p>
+<div class="fragment">
+<ul>
+<li>L²: iterations <span class="math inline">\propto h^{-1}</span> — the wrong norm. H(div) with an exact block (LU): 3–4 — the eigenvalue clusters of §A6. <code>selfp</code> + AMG: 21–22 and scalable.</li>
+<li>For heterogeneous <span class="math inline">K</span> the weights matter: HW11 Q3.</li>
+</ul>
+</div>
+</section>
+<section id="c6-jit-the-first-call-is-not-a-measurement" class="slide level2">
+<h2>§C6 JIT: the first call is not a measurement</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><code>LinearProblem(...)</code> construction, Taylor–Hood <span class="math inline">N=8</span>, <code>-np 2</code></th>
+<th>time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>a new form (code generated, compiled)</td>
+<td>2.38 s</td>
+</tr>
+<tr class="even">
+<td>the same form again (JIT cache)</td>
+<td>0.05 s</td>
+</tr>
+</tbody>
+</table>
+<p>The solve itself: 0.01–0.02 s. Time the <strong>solver</strong> (<code>ksp.solve</code> incl.&nbsp;setup), after the forms exist; run the smallest case once before timing.</p>
+</section></section>
+<section>
+<section id="part-d-llms-and-iterative-solvers-hw11" class="title-slide slide level1 center">
+<h1>Part D — LLMs and Iterative Solvers · HW11</h1>
+
+</section>
+<section id="d1-where-llm-generated-solver-code-goes-wrong" class="slide level2">
+<h2>§D1 Where LLM-generated solver code goes wrong</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Kind</th>
+<th>What it looks like</th>
+<th>Symptom</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Viscosity ignored</strong></td>
+<td><span class="math inline">P_{11}=M_p</span> for <span class="math inline">\mu\ne1</span></td>
+<td>same answer, more iterations (49 → 106 for <span class="math inline">\mu=10^{-4}</span>, §C3)</td>
+</tr>
+<tr class="even">
+<td><strong>Recipe transferred</strong></td>
+<td>the Stokes block diagonal <span class="math inline">\mathrm{diag}(A,M)</span> for Darcy</td>
+<td>iterations <span class="math inline">\propto h^{-1}</span> (104 → 510, §C5)</td>
+</tr>
+<tr class="odd">
+<td><strong>JIT in the timing</strong></td>
+<td>the first <code>LinearProblem</code> or <code>fem.form</code> inside the timer</td>
+<td>2.4 s of compilation in a 0.02 s solve (§C6)</td>
+</tr>
+<tr class="even">
+<td><strong>Pin in a blocked form</strong></td>
+<td><code>dirichletbc</code> on the pressure with a <code>None</code> <span class="math inline">(1,1)</span> block</td>
+<td><code>RuntimeError</code> (§B4)</td>
+</tr>
+<tr class="odd">
+<td><strong>Constant pressure</strong></td>
+<td>neither a pinned DOF nor a null space</td>
+<td>LU: a pressure shifted by an arbitrary constant, or a failed factorisation (Week 11)</td>
+</tr>
+<tr class="even">
+<td><strong>Older API</strong></td>
+<td><code>fem.petsc.create_vector_block</code>, <code>assemble_matrix_block</code> (not in 0.11)</td>
+<td><code>AttributeError</code></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Verification habit: first the discretisation (Week 11’s MMS rates), then the solver — iterations vs <span class="math inline">h</span> and <span class="math inline">\mu</span>, and the answer against something you trust.</p>
+</div>
+</section>
+<section id="hw11-solver-iterations-and-time-due-before-the-week-13-lecture" class="slide level2">
+<h2>HW11 — solver iterations and time, due before the Week 13 lecture</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><code>W12_HW11.ipynb</code> (100 pts)</p>
+<ul>
+<li><strong>Q1 (20)</strong> Theory: preconditioned eigenvalues with <span class="math inline">\hat S\ne S</span>, the triangular preconditioner, Darcy’s Schur complement</li>
+<li><strong>Q2 (40)</strong> 3D Stokes: LU vs two block preconditioners; iterations, time, slopes, agreement with LU</li>
+<li><strong>Q3 (20)</strong> Darcy with a high-contrast permeability: which preconditioner survives?</li>
+<li><strong>Q4 (20)</strong> LLM debugging: a solver benchmark with four bugs</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div class="box">
+<p>Rules as always: <em>Restart session and run all</em>, <code>-np 2</code> where stated, the AI-usage log, numbers only from your own cells.</p>
+<p>Timings vary between runs: report what you measured, compare <strong>growth over a wide range</strong>, and never compare a converged solve with a failed one.</p>
+</div>
+</div></div>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Key idea</th>
+<th>DOLFINx 0.11 / PETSc</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Saddle point</td>
+<td>indefinite: MINRES or GMRES, not CG</td>
+<td><code>ksp_type minres / gmres</code></td>
+</tr>
+<tr class="even">
+<td>Schur complement</td>
+<td><span class="math inline">S=BA^{-1}B^\top</span>, dense; <span class="math inline">\beta_h^2=\lambda_{\min}(S,M_p)</span></td>
+<td>never formed</td>
+</tr>
+<tr class="odd">
+<td>Ideal preconditioners</td>
+<td>diag: 3 eigenvalues; triangular: GMRES in 2</td>
+<td><code>pc_fieldsplit_type schur</code>, <code>fact_type diag/upper/full</code></td>
+</tr>
+<tr class="even">
+<td>Stokes</td>
+<td><span class="math inline">S\sim M_p/\mu</span> with constants <span class="math inline">\beta_h^2</span>, 1</td>
+<td><code>P=[[A, None], [None, Mp/mu]]</code>, <code>additive</code></td>
+</tr>
+<tr class="odd">
+<td>Darcy</td>
+<td><span class="math inline">S\sim</span> Laplacian: use H(div) or <code>selfp</code></td>
+<td><code>schur_precondition selfp</code></td>
+</tr>
+<tr class="even">
+<td>Practice</td>
+<td>AMG for <span class="math inline">A</span>, Jacobi for <span class="math inline">M_p</span>; null space for the pressure constant</td>
+<td><code>fieldsplit_u_pc_type hypre</code>, <code>NullSpace</code>, <code>icntl_24</code></td>
+</tr>
+<tr class="odd">
+<td>Cost</td>
+<td>2D: LU competitive; 3D: block preconditioners win</td>
+<td>time vs DOFs slopes</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Next week — advection–diffusion:</strong> Péclet number, Galerkin oscillations, SUPG; HW12.</p>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="assets/seoultech_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="W12_lecture_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="W12_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="W12_lecture_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="W12_lecture_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="W12_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="W12_lecture_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="W12_lecture_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="W12_lecture_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="W12_lecture_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="W12_lecture_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true,"numbers":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

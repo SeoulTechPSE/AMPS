@@ -1,0 +1,58 @@
+---
+title: "AMPS II — Term Project Topics"
+subtitle: "Ten topics from current research in chemical and biomolecular engineering · proposal due before Week 9 · progress talk in Week 15 · report and talk in Week 16"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: false
+    page-layout: full
+---
+
+## How to choose
+
+Each topic takes a problem from a current research field of chemical and biomolecular engineering and turns it into a solid, fluid or coupled model that combines several weeks of this
+course. You may also propose **your own topic** from your research (the Week 8 example: a pressurised and heated reactor wall). Every topic,
+including your own, is graded the same way (proposal 5 + progress talk 5 + final report and code 20 + final talk 10): model and weak form,
+numerical choices (locking, solvers, stepping), verification, results, LLM workflow.
+
+| | Topic | Tier | Physics | Course weeks used | Related fields |
+|---|---|---|---|---|---|
+| **A** | [Printed hydrogel scaffold](A_hydrogel_scaffold.html) | standard | periodic homogenization of a printed lattice; large-strain viscoelastic compression | 1, 5, 9 | biomaterials, hydrogels, rheology |
+| **B** | [Supercritical CO₂ extraction](B_supercritical_extraction.html) | standard | packed-bed flow, axial dispersion, linear-driving-force desorption | 12, 13 | supercritical fluids, separations |
+| **C** | [Catalyst pellet and monolith](C_catalyst_pellet_monolith.html) | standard → advanced | reaction–diffusion with Arrhenius heat release in a pellet; monolith channel with conjugate heat transfer | 3, 12, 13 | heterogeneous catalysis, reaction engineering |
+| **D** | [Compressed felt electrode](D_compressed_felt_electrode.html) | advanced | large-strain compression of a porous electrode → porosity and permeability → Darcy flow in a flow battery | 1, 2, 13 | flow batteries, electrolysis |
+| **E** | [Diffusion-induced stress in battery particles](E_battery_particle_stress.html) | standard | lithium diffusion + elasticity (thermal-stress analogy), spherical and ellipsoidal particles, fracture risk | 2, 3, 5 | lithium-ion batteries |
+| **F** | [Film stress, wafer bow and wrinkling](F_film_wrinkling.html) | standard → advanced | thermal-mismatch stress and Stoney bow; wrinkling of a stiff film on a soft substrate (SLEPc buckling) | 3, 6, 8, 9 | thin films, semiconductor and display devices |
+| **G** | [Pneumatic soft actuator](G_soft_actuator.html) | advanced | nearly incompressible hyperelasticity, inflation instability, bending actuator | 1, 7, 8 | soft robotics, stretchable electronics |
+| **H** | [Phase separation and coarsening](H_phase_separation.html) | standard | Cahn–Hilliard in polymer blends and emulsions; linear stability, coarsening law, parallel performance | 14 | polymers, emulsions, self-assembly |
+| **I** | [Microfluidic biosensor](I_microfluidic_biosensor.html) | standard | Stokes/Navier–Stokes channel flow, analyte transport, Langmuir binding on a sensor patch | 11, 12 | microfluidics, biosensors |
+| **J** | [Laminar tubular polymerization reactor](J_polymerization_reactor.html) | advanced | axisymmetric Navier–Stokes with conversion-dependent viscosity, species and heat, exothermic kinetics | 2, 11, 12 | polymerization, process systems |
+
+**Standard** topics have a well-defined required part and leave room for stretch goals. **Advanced** topics couple two of the course's models
+(solid ↔ flow in D, large strain + instability in G, flow ↔ rheology ↔ heat in J); start them only if Weeks 1 and 11–13 went well for you. Each
+topic page lists required tasks, the verification that is specific to the topic, stretch goals, milestones and pitfalls.
+
+## What every topic must contain
+
+1. **Model and weak form** with spaces, essential/natural conditions, the constitutive model and its internal variables, the reductions you make
+   (2D, axisymmetric, plane strain, periodic cell) and why they are valid.
+2. **Numerical choices**: elements (and why they do not lock), solvers, load or time stepping, the cost on Colab (2 CPUs).
+3. **Verification**: a manufactured or exact solution with **predicted** rates on at least four meshes, **and** the topic's own physical check
+   (listed on each page), **and** `-np 1` = `-np 2` (except branching 1D meshes, Week 7).
+4. **Results**: the topic's design output, mesh-independent.
+5. **LLM workflow** with at least three concrete errors found and how.
+
+Units: state the dimensional values **and** the dimensionless groups they correspond to (Péclet, Damköhler, Thiele, slenderness, stiffness ratio, …).
+
+## Choosing and claiming
+
+- Write your choice and a two-line plan in the proposal (`week08/W08_project_proposal.ipynb`, Section 1). At most **three students per topic**;
+  topics are assigned in the order the proposals arrive. Students on the same topic must not share code (syllabus, *Academic Integrity*).
+- A topic that matches **your own research** is welcome — bring your data and parameter values; the verification requirements stay the same.
+- Own topic: it must couple at least two of the course's models **or** contain a nonlinearity (material, geometric or kinetic), and it must allow an
+  exact or manufactured solution and one independent physical check.
+
+## Sources
+
+Each topic page lists its references.

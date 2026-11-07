@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="W13_lecture_files/libs/clipboard/clipboard.min.js"></script>
+<script src="W13_lecture_files/libs/quarto-html/tabby.min.js"></script>
+<script src="W13_lecture_files/libs/quarto-html/popper.min.js"></script>
+<script src="W13_lecture_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="W13_lecture_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="W13_lecture_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="W13_lecture_files/libs/quarto-html/quarto-syntax-highlighting-a06763021a52c43c40a351ac8b799b8f.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.36">
+
+  <meta name="author" content="Kee-Youn Yoo">
+  <title>AI-based Materials and Process Simulation II</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="W13_lecture_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="W13_lecture_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="W13_lecture_files/libs/revealjs/dist/theme/quarto-7af60fb36352a8d2af996e24a7cdd28d.css">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="W13_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="W13_lecture_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="W13_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="W13_lecture_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="W13_lecture_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="W13_lecture_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">AI-based Materials and Process Simulation II</h1>
+  <p class="subtitle">Week 13 — Porous Media and Conjugate Heat Transfer: Brinkman Layers, the Porous Interface, Forchheimer, Flow on a Submesh</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Kee-Youn Yoo 
+</div>
+        <p class="quarto-title-affiliation">
+            Process Systems Laboratory<br>Department of Chemical and Biomolecular Engineering, SeoulTech
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="today" class="slide level2">
+<h2>Today</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Topic</th>
+<th style="text-align: center;">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>Quiz on Week 12 (closed-AI)</td>
+<td style="text-align: center;">10 min</td>
+</tr>
+<tr class="even">
+<td><strong>A</strong></td>
+<td>Flow in porous media — Darcy, Brinkman, Forchheimer; the Brinkman layer; free fluid over a porous bed</td>
+<td style="text-align: center;">30 min</td>
+</tr>
+<tr class="odd">
+<td><strong>B</strong></td>
+<td>One domain in DOLFINx — <span class="math inline">1/K</span> per cell, resolving the layer, aligning the interface, Ergun</td>
+<td style="text-align: center;">25 min</td>
+</tr>
+<tr class="even">
+<td><strong>C</strong></td>
+<td>Conjugate heat transfer — flow on a submesh, heat everywhere; developed solution, energy balance, contact resistance</td>
+<td style="text-align: center;">40 min</td>
+</tr>
+<tr class="odd">
+<td><strong>D</strong></td>
+<td>LLM pitfalls · HW12</td>
+<td style="text-align: center;">15 min</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p>Lab: <code>W13_lab.ipynb</code> (≈ 80 min) · Homework: <code>W13_HW12.ipynb</code> (due before Week 14) · Applications: packed and fixed beds, filters and membranes over a free stream, catalyst layers, heat exchangers and cooled reactor walls (AMPS I Week 12: Darcy as a mixed problem; Week 10 here: integrals on an interface between submeshes)</p>
+</div>
+</section>
+<section>
+<section id="part-a-flow-in-porous-media" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part A · Flow in porous media</h1>
+
+</section>
+<section id="three-models-of-a-porous-medium" class="slide level2">
+<h2>Three models of a porous medium</h2>
+<p>Superficial velocity <span class="math inline">\mathbf u</span>, permeability <span class="math inline">K</span>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>model</th>
+<th>equation</th>
+<th>when</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Darcy</td>
+<td><span class="math inline">\frac{\mu}{K}\mathbf u+\nabla p=\mathbf f</span></td>
+<td>slow flow, far from walls and free fluid</td>
+</tr>
+<tr class="even">
+<td>Brinkman</td>
+<td><span class="math inline">-\mu_e\Delta\mathbf u+\frac{\mu}{K}\mathbf u+\nabla p=\mathbf f</span></td>
+<td>near walls and interfaces (no-slip, shear)</td>
+</tr>
+<tr class="odd">
+<td>Brinkman–Forchheimer</td>
+<td><span class="math inline">\dots+\beta\,|\mathbf u|\,\mathbf u</span></td>
+<td><span class="math inline">Re_p=\rho Ud_p/\mu\gtrsim1</span> (Ergun’s inertial term)</td>
+</tr>
+</tbody>
+</table>
+<p>All with <span class="math inline">\nabla\cdot\mathbf u=0</span>. Brinkman adds a viscous term — and with it a <strong>layer</strong> of thickness <span class="math inline">\lambda=\sqrt{\mu_eK/\mu}</span> at every wall and interface. Ergun for a packed bed: <span class="math inline">\frac1K=\frac{150(1-\varepsilon)^2}{\varepsilon^3d_p^2}</span>, <span class="math inline">\beta=\frac{1.75\rho(1-\varepsilon)}{\varepsilon^3d_p}</span>.</p>
+</section>
+<section id="the-brinkman-channel-and-its-layer" class="slide level2">
+<h2>The Brinkman channel and its layer</h2>
+<p><span class="math inline">0&lt;y&lt;1</span>, no slip, pressure gradient <span class="math inline">G</span>, <span class="math inline">\mu_e=\mu=1</span>:</p>
+<p><span class="math display">
+u=GK\Big(1-\frac{\cosh\frac{y-1/2}{\sqrt K}}{\cosh\frac1{2\sqrt K}}\Big),\qquad Q=GK\Big(1-2\sqrt K\tanh\frac1{2\sqrt K}\Big).
+</span></p>
+<ul>
+<li><span class="math inline">K\to\infty</span>: Poiseuille (<span class="math inline">Q=G/12</span>). <span class="math inline">K\to0</span>: Darcy plug <span class="math inline">u=GK</span> with layers of width <span class="math inline">\sqrt K</span> at the walls.</li>
+<li><span class="math inline">K=10^{-4}</span>: the layers are 0.01 thick and carry only 2 % of the flow (<span class="math inline">Q/Q_\text{Darcy}=0.98</span>).</li>
+</ul>
+</section>
+<section id="free-fluid-over-a-porous-bed" class="slide level2">
+<h2>Free fluid over a porous bed</h2>
+<p>Porous layer <span class="math inline">0&lt;y&lt;a</span>, free fluid <span class="math inline">a&lt;y&lt;1</span>. <strong>One domain:</strong> a single Brinkman equation with <span class="math inline">1/K=0</span> in the fluid.</p>
+<ul>
+<li>Integrating by parts on each side: the weak form imposes <strong>continuity of <span class="math inline">u</span></strong> (the space) <strong>and of the shear stress</strong> <span class="math inline">\mu_e\partial_yu</span> (natural) at <span class="math inline">y=a</span> — nothing to write.</li>
+<li>Beavers–Joseph describe the same interface by a slip <span class="math inline">\partial_yu=\frac{\alpha}{\sqrt K}(u_i-u_D)</span>. The Brinkman layer below the interface acts exactly as such a slip with <span class="math inline">\alpha=\sqrt{\mu_e/\mu}</span> — measured: <span class="math inline">\alpha=0.998</span> for <span class="math inline">K=10^{-3}</span>, <span class="math inline">10^{-4}</span> (HW12 Q3).</li>
+<li>Exact two-layer solution: <span class="math inline">\cosh/\sinh</span> in the bed, a parabola above, four constants from no-slip and the two interface conditions (written with <span class="math inline">e^{-y/\lambda}</span>, <span class="math inline">e^{(y-a)/\lambda}</span> — <span class="math inline">\cosh(a/\lambda)</span> overflows for thin layers).</li>
+</ul>
+</section></section>
+<section>
+<section id="part-b-one-domain-in-dolfinx" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part B · One domain in DOLFINx</h1>
+
+</section>
+<section id="weak-form-and-code" class="slide level2">
+<h2>Weak form and code</h2>
+<p><span class="math display">
+\int_\Omega\Big(\mu_e\nabla\mathbf u:\nabla\mathbf v+\frac{\mu}{K}\mathbf u\cdot\mathbf v+\beta|\mathbf u|\,\mathbf u\cdot\mathbf v-p\,\nabla\cdot\mathbf v-q\,\nabla\cdot\mathbf u-\mathbf f\cdot\mathbf v\Big)\,dx=0 ,
+</span></p>
+<p>Taylor–Hood, <span class="math inline">1/K</span> a <strong>DG0</strong> field set per cell; Newton for the Forchheimer term (2–6 iterations).</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Math</th>
+<th>DOLFINx 0.11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">1/K</span> per cell</td>
+<td><code>Q = functionspace(msh, ("DG", 0)); invK.x.array[ct.find(2)] = 1 / K</code></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\vert\mathbf u\vert\mathbf u</span></td>
+<td><code>ufl.sqrt(ufl.dot(u, u) + 1e-20) * ufl.dot(u, v)</code></td>
+</tr>
+<tr class="odd">
+<td>do-nothing ends, body force</td>
+<td>no pressure condition needed (the ends fix <span class="math inline">p</span>)</td>
+</tr>
+<tr class="even">
+<td>wall shear</td>
+<td>interpolate <code>u[0].dx(1)</code> into DG1 (<code>fem.Expression</code>)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="the-brinkman-layer-must-be-resolved" class="slide level2">
+<h2>The Brinkman layer must be resolved</h2>
+
+<img data-src="figs/w13_brinkman.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
+<section id="what-the-figure-says" class="slide level2">
+<h2>What the figure says</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>cells across</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">16</th>
+<th style="text-align: center;">32</th>
+<th style="text-align: center;">64</th>
+<th style="text-align: center;">128</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">K=10^{-4}</span>: max velocity error</td>
+<td style="text-align: center;">0.39</td>
+<td style="text-align: center;">0.20</td>
+<td style="text-align: center;">0.068</td>
+<td style="text-align: center;">0.016</td>
+<td style="text-align: center;">0.0027</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">K=10^{-4}</span>: flow-rate error</td>
+<td style="text-align: center;">0.015</td>
+<td style="text-align: center;">0.0040</td>
+<td style="text-align: center;">0.00067</td>
+<td style="text-align: center;">0.000068</td>
+<td style="text-align: center;">0.000005</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The flow rate is right to 1.5 % on 8 cells while the velocity in the layer is off by 39 %: an integral hides the layer (a functional, Week 11).</li>
+<li>The wall shear (the drag) is worse still: −11.5 % on 64 uniform cells. A mesh graded towards the walls (first cell <span class="math inline">\le\sqrt K</span>) gives 0.4 % on 32 cells (HW12 Q2).</li>
+</ul>
+</section>
+<section id="the-interface-on-mesh-lines-or-not" class="slide level2">
+<h2>The interface on mesh lines — or not</h2>
+
+<img data-src="figs/w13_twolayer.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
+<section id="the-interface-what-the-figure-says" class="slide level2">
+<h2>The interface: what the figure says</h2>
+<ul>
+<li>Aligned (<span class="math inline">a=0.5</span>): order 2.6–2.9, <span class="math inline">10^{-3}\to3\times10^{-6}</span>.</li>
+<li>Between mesh lines (<span class="math inline">a=0.52</span>): <span class="math inline">1/K</span> per cell moves the interface to a mesh line — 0.531, 0.516, 0.523, 0.520 for 32…256 cells. Error 8 %, 3.2 %, 2.5 %, 0.34 %: first order on average, erratic in detail.</li>
+<li>The flow above is sensitive to the interface position (<span class="math inline">dQ/da\approx-0.07</span>): a mesh that ignores the material boundary computes a different bed.</li>
+</ul>
+</section>
+<section id="forchheimer-the-ergun-core" class="slide level2">
+<h2>Forchheimer: the Ergun core</h2>
+<p>Packed bed <span class="math inline">d_p=0.05</span>, <span class="math inline">\varepsilon=0.4</span>: <span class="math inline">1/K=337\,500</span>, <span class="math inline">\beta=328</span>. Core velocity of Brinkman–Forchheimer against Ergun:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">G</span></th>
+<th style="text-align: center;"><span class="math inline">U</span> (FE)</th>
+<th style="text-align: center;"><span class="math inline">U</span> (Ergun)</th>
+<th style="text-align: center;"><span class="math inline">Re_p</span></th>
+<th style="text-align: center;"><span class="math inline">G/U</span> (Darcy: 337 500)</th>
+<th style="text-align: center;">Newton</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">10^5</span></td>
+<td style="text-align: center;">0.296211</td>
+<td style="text-align: center;">0.296211</td>
+<td style="text-align: center;">0.015</td>
+<td style="text-align: center;">337 597</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">10^8</span></td>
+<td style="text-align: center;">240.202</td>
+<td style="text-align: center;">240.202</td>
+<td style="text-align: center;">12</td>
+<td style="text-align: center;">416 316</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">10^9</span></td>
+<td style="text-align: center;">1305.63</td>
+<td style="text-align: center;">1305.63</td>
+<td style="text-align: center;">65</td>
+<td style="text-align: center;">765 911</td>
+<td style="text-align: center;">6</td>
+</tr>
+</tbody>
+</table>
+<p>The inertial term equals the viscous one at <span class="math inline">Re_p\approx51</span>. The Brinkman layer (<span class="math inline">\sqrt K=0.0017</span>) is not resolved here and need not be: the core and the flow rate are right.</p>
+</section></section>
+<section>
+<section id="part-c-conjugate-heat-transfer" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part C · Conjugate heat transfer</h1>
+
+</section>
+<section id="the-model" class="slide level2">
+<h2>The model</h2>
+<p>Fluid channel <span class="math inline">0&lt;y&lt;1</span> over a solid wall <span class="math inline">-t&lt;y&lt;0</span>; heat flux <span class="math inline">q</span> into the bottom of the wall; inlet fluid at <span class="math inline">T=0</span>; top adiabatic. With <span class="math inline">H</span>, the mean velocity and <span class="math inline">k_f</span>:</p>
+<p><span class="math display">
+\text{fluid: } Pe\,\mathbf u\cdot\nabla T=\Delta T,\qquad\text{solid: } 0=\nabla\cdot(k_s\nabla T),\qquad T,\ k\,\partial_nT\ \text{continuous (perfect contact)}.
+</span></p>
+<ul>
+<li><strong>Flow on the fluid submesh only</strong> (Stokes, parabolic inlet) — there is no flow in the solid to solve for.</li>
+<li><strong>Temperature on the whole mesh</strong> (one continuous P2 space, <span class="math inline">k</span> per cell) — or on two submeshes with a contact conductance <span class="math inline">h_c</span>: flux <span class="math inline">=h_c(T_s-T_f)</span> (Week 10’s interface integral).</li>
+</ul>
+</section>
+<section id="moving-a-field-from-a-submesh-to-its-parent" class="slide level2">
+<h2>Moving a field from a submesh to its parent</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>fsub, em, _, _ <span class="op">=</span> mesh.create_submesh(msh, tdim, ct.find(<span class="dv">1</span>))         <span class="co"># em: EntityMap</span></span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>sub_cells <span class="op">=</span> np.arange(n_sub_cells, dtype<span class="op">=</span>np.int32)</span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>parent_cells <span class="op">=</span> em.sub_topology_to_topology(sub_cells, inverse<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>u_parent.interpolate(u_sub, cells0<span class="op">=</span>sub_cells, cells1<span class="op">=</span>parent_cells)  <span class="co"># cells0: of the SOURCE, cells1: of the TARGET</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Swapped (<code>cells0=parent_cells, cells1=sub_cells</code>): correct on rank 0 — where both numberings happen to coincide — and a <strong>segmentation fault on rank 1</strong>. A bug that only <code>-np 2</code> shows.</li>
+<li>Outside the fluid cells <code>u_parent</code> stays 0: the advection term vanishes in the solid by construction.</li>
+</ul>
+</section>
+<section id="the-fully-developed-solution" class="slide level2">
+<h2>The fully developed solution</h2>
+<p>With <span class="math inline">T=Ax+\theta(y)</span> and the bulk balance <span class="math inline">Pe\,A=q</span>: fluid <span class="math inline">\theta''=q\,u</span>, <span class="math inline">u=6y(1-y)</span>; solid <span class="math inline">k_s\theta''=0</span>; flux <span class="math inline">q</span> through the wall:</p>
+<p><span class="math display">
+\theta_f=\theta_w-qy+q\Big(y^3-\frac{y^4}{2}\Big),\qquad\theta_s=\theta_w-\frac{q\,y}{k_s}+\frac{q}{h_c},\qquad \theta_b-\theta_w=-\frac{13}{35}q,\quad Nu_H=\frac{35}{13}.
+</span></p>
+<p><span class="math inline">k_s</span> does not enter <span class="math inline">Nu</span> (the fluid sees the flux <span class="math inline">q</span> at its wall); <span class="math inline">h_c</span> only shifts the solid by <span class="math inline">q/h_c</span>. FE at <span class="math inline">x=20</span> (<span class="math inline">L=40</span>, 160 × 30): <span class="math inline">Nu_H=2.692384</span> (35/13 = 2.692308), <span class="math inline">\theta</span> to <span class="math inline">2.5\times10^{-5}</span>, jump 0.199998 for <span class="math inline">h_c=5</span>.</p>
+</section>
+<section id="the-developed-profile" class="slide level2">
+<h2>The developed profile</h2>
+
+<img data-src="figs/w13_profile.png" class="quarto-figure quarto-figure-center r-stretch" style="width:72.0%"></section>
+<section id="the-energy-balance" class="slide level2">
+<h2>The energy balance</h2>
+<p><span class="math inline">qL=40</span> must leave the domain:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>convected out (<span class="math inline">Pe\int u\,T</span> outlet − inlet)</td>
+<td style="text-align: center;">39.183692</td>
+</tr>
+<tr class="even">
+<td>conducted out through the inlet, from <span class="math inline">\partial_nT_h</span></td>
+<td style="text-align: center;">0.800635 → residual <strong>0.0157</strong></td>
+</tr>
+<tr class="odd">
+<td>conducted out through the inlet, consistent (residual at the Dirichlet dofs)</td>
+<td style="text-align: center;">0.816308 → residual <span class="math inline">5\times10^{-11}</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>At <span class="math inline">Pe=20</span> heat diffuses upstream and leaves through the cold inlet — 2 % of the input.</li>
+<li>Only the flux the discrete equations actually exchange closes the balance (the reaction of the Dirichlet condition, as Week 11’s consistent Nusselt number).</li>
+</ul>
+</section>
+<section id="the-conjugate-effect-the-temperature-field" class="slide level2">
+<h2>The conjugate effect: the temperature field</h2>
+
+<img data-src="figs/w13_cht_field.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>The wall (<span class="math inline">k_s=10</span>) is nearly isothermal across its thickness; the fluid heats up from below, the outlet end (adiabatic) bends the isotherms.</p>
+</section>
+<section id="the-conjugate-effect-where-the-heat-enters" class="slide level2">
+<h2>The conjugate effect: where the heat enters</h2>
+
+<img data-src="figs/w13_cht_flux.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><p>A conducting wall spreads the heat axially: with <span class="math inline">k_s=100</span> only 52 % of <span class="math inline">q</span> enters the fluid at <span class="math inline">x=0.5</span>, and the wall stays cooler (<span class="math inline">T_{\max}</span> 7.35 → 1.99 from <span class="math inline">k_s=0.1</span> to 100). Far downstream every wall gives <span class="math inline">Nu_{D_h}=5.3846</span>.</p>
+</section>
+<section id="contact-resistance-and-the-penalty-trap" class="slide level2">
+<h2>Contact resistance and the penalty trap</h2>
+<p>Two submeshes coupled by <span class="math inline">\int_\Gamma h_c(T_s-T_f)(w_s-w_f)</span>:</p>
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><span class="math inline">h_c</span></th>
+<th style="text-align: center;">SNES (rtol <span class="math inline">10^{-10}</span>)</th>
+<th style="text-align: center;">SNES (rtol <span class="math inline">10^{-8}</span>)</th>
+<th style="text-align: center;">jump</th>
+<th style="text-align: center;"><span class="math inline">T_b(20)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>10</td>
+<td style="text-align: center;">✓ 1</td>
+<td style="text-align: center;">✓ 1</td>
+<td style="text-align: center;">0.099999</td>
+<td style="text-align: center;">1.00206</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">10^4</span></td>
+<td style="text-align: center;">✓ 1</td>
+<td style="text-align: center;">✓ 1</td>
+<td style="text-align: center;"><span class="math inline">1.0\times10^{-4}</span></td>
+<td style="text-align: center;">0.97443</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">10^6</span></td>
+<td style="text-align: center;"><strong>−5 (30)</strong></td>
+<td style="text-align: center;">✓ 1</td>
+<td style="text-align: center;"><span class="math inline">1.0\times10^{-6}</span></td>
+<td style="text-align: center;">0.974188</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">10^8</span></td>
+<td style="text-align: center;"><strong>−5 (30)</strong></td>
+<td style="text-align: center;"><strong>−5 (30)</strong></td>
+<td style="text-align: center;"><span class="math inline">1.0\times10^{-8}</span></td>
+<td style="text-align: center;">0.974185</td>
+</tr>
+</tbody>
+</table>
+<p>The linear problem is solved in one step; afterwards round-off times <span class="math inline">h_c</span> keeps the residual above the tolerance — “diverged”, with the right answer. A penalty large enough to mimic perfect contact ruins the conditioning: perfect contact = one continuous space (or Nitsche with a moderate penalty).</p>
+</section></section>
+<section>
+<section id="part-d-llm-hw12" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part D · LLM · HW12</h1>
+
+</section>
+<section id="what-goes-wrong-in-porous-and-conjugate-models" class="slide level2">
+<h2>What goes wrong in porous and conjugate models</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pitfall</th>
+<th>Measured symptom (this week)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>The Brinkman layer not resolved</td>
+<td>velocity −39 % (<span class="math inline">K=10^{-4}</span>, 8 cells), wall shear −51 %</td>
+</tr>
+<tr class="even">
+<td>Judging by the flow rate</td>
+<td>1.5 % on the same mesh — looks fine</td>
+</tr>
+<tr class="odd">
+<td>The interface between mesh lines</td>
+<td>erratic first-order error, 8 % → 0.3 %</td>
+</tr>
+<tr class="even">
+<td><code>cells0</code>/<code>cells1</code> swapped in a submesh transfer</td>
+<td>right on rank 0, segfault on rank 1</td>
+</tr>
+<tr class="odd">
+<td>A huge contact conductance as “perfect contact”</td>
+<td>SNES −5 with a correct solution</td>
+</tr>
+<tr class="even">
+<td>The balance from <span class="math inline">\partial_nT_h</span> at a Dirichlet boundary</td>
+<td>a residual of 0.016 that is not physics</td>
+</tr>
+<tr class="odd">
+<td>Exact formulas with <span class="math inline">\cosh(a/\lambda)</span></td>
+<td>overflow and a wrong reference for thin layers</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="hw12-due-before-week-14" class="slide level2">
+<h2>HW12 (due before Week 14)</h2>
+<p>Theory (Brinkman, the one-domain interface, the developed temperature, the consistent flux) · resolving the layer with uniform and graded meshes · the interface and the Beavers–Joseph coefficient · an Ergun bed · the wall conductivity · contact resistance and the penalty · an LLM-generated heat-transfer script with defects. The whole HW runs in a few minutes on Colab.</p>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Key point</th>
+<th>DOLFINx 0.11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Brinkman</td>
+<td>layer <span class="math inline">\sqrt{\mu_eK/\mu}</span> at walls and interfaces</td>
+<td>Taylor–Hood, <span class="math inline">1/K</span> in DG0</td>
+</tr>
+<tr class="even">
+<td>One domain</td>
+<td>continuity of <span class="math inline">u</span> and shear for free; <span class="math inline">\alpha_{BJ}=\sqrt{\mu_e/\mu}</span></td>
+<td>cell tags from the mesh, interface on mesh lines</td>
+</tr>
+<tr class="odd">
+<td>Forchheimer</td>
+<td>Ergun core; Newton</td>
+<td><code>sqrt(dot(u, u) + eps) * dot(u, v)</code></td>
+</tr>
+<tr class="even">
+<td>Flow on a submesh</td>
+<td>solve where the physics is, move the field</td>
+<td><code>create_submesh</code>, <code>interpolate(u, cells0=sub, cells1=parent)</code></td>
+</tr>
+<tr class="odd">
+<td>Conjugate heat</td>
+<td>one space (perfect contact) or two + <span class="math inline">h_c</span></td>
+<td><code>NonlinearProblem([Ff, Fs], ..., entity_maps, kind="mpi")</code></td>
+</tr>
+<tr class="even">
+<td>Verification</td>
+<td>developed <span class="math inline">Nu_H=35/13</span>, the balance with the consistent flux</td>
+<td>residual at the Dirichlet dofs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Next week:</strong> phase separation (Cahn–Hilliard, extended) and parallel performance — and HW13.</p>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="assets/seoultech_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="W13_lecture_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="W13_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="W13_lecture_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="W13_lecture_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true,"numbers":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

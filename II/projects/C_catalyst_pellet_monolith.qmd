@@ -1,0 +1,81 @@
+---
+title: "Topic C — Catalyst Pellet and Monolith Channel"
+subtitle: "reaction–diffusion with Arrhenius heat release · conjugate heat transfer in a monolith · thermal stress · tier: standard (pellet) → advanced (monolith)"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: true
+---
+
+## Motivation
+
+A catalyst is only as good as the fraction of it that the reactants reach. In a porous pellet, diffusion limits the rate (Thiele modulus,
+effectiveness factor) and the heat of reaction can make the inside much hotter than the surface. In a monolith, the reaction sits in a thin washcoat
+on channel walls; the wall conducts heat along the channel and couples the channels. You will compute effectiveness factors and hot spots, and
+the thermal stress they cause in the support.
+
+**Related fields:** heterogeneous catalysis (metal-oxide and zeolite catalysts, reaction kinetics); nanostructured catalysts and adsorbents for clean energy. **Course weeks:** 3 (thermal stress), 12 (reactive flow,
+SUPG), 13 (conjugate heat transfer with submeshes).
+
+## Model
+
+**Stage 1 — pellet** (standard). Sphere or cylinder (axisymmetric), effective diffusivity $D_e$ and conductivity $k_e$:
+$$
+-\nabla\cdot(D_e\nabla c)=-r(c,T),\qquad -\nabla\cdot(k_e\nabla T)=(-\Delta H)\,r(c,T),\qquad r=k_0e^{-E/RT}c^n,
+$$
+surface conditions $c=c_s$, $T=T_s$ (or external film resistances, Robin). Effectiveness factor $\eta=\frac{\int r\,dV}{r(c_s,T_s)\,V}$.
+Then the thermo-elastic stress in the pellet from the temperature field (Week 3, one-way coupled).
+
+**Stage 2 — monolith channel** (advanced). One channel with its wall (square or circular, axisymmetric for circular), laminar flow in the channel
+(Navier–Stokes or the fully developed profile), species and energy in the gas, a washcoat with the reaction, heat conduction in the wall solved on a
+separate submesh and coupled at the interface (Week 13). Inlet temperature ramp for light-off.
+
+**Design outputs:** $\eta(\phi)$ and the maximum internal temperature against the Thiele modulus and the Prater number; for the monolith, the
+light-off curve (conversion against inlet temperature) and the peak wall temperature.
+
+## Suggested parameters
+
+Pellet: radius 1–5 mm, Thiele modulus $\phi=R\sqrt{k(T_s)/D_e}$ from 0.1 to 20, Prater number $\beta=\frac{(-\Delta H)D_ec_s}{k_eT_s}$ = 0–0.3,
+Arrhenius number $\gamma=E/RT_s$ = 10–30. Monolith: channel 1 mm, length 50 mm, Reynolds number 50–500, cordierite wall.
+
+## Required tasks
+
+1. Isothermal pellet, first order: $\eta(\phi)$ against the exact curve; then $n=2$ (no closed form — mesh independence).
+2. Non-isothermal pellet: $\eta$ and $T_{\max}$ for several $\beta$, $\gamma$; Newton with continuation in $\phi$.
+3. Thermal stress in the pellet from the computed $T$ (sphere: the closed-form stress for a given radial temperature, Week 3 analogy).
+4. (Advanced) the monolith channel with conjugate heat transfer: light-off curve.
+
+## Verification specific to this topic
+
+- **Effectiveness factor:** first-order isothermal sphere $\eta=\frac{3}{\phi^2}(\phi\coth\phi-1)$, slab $\eta=\tanh\phi/\phi$ — to discretisation error,
+  with rates.
+- **Prater relation:** in the pellet, $T-T_s=\frac{(-\Delta H)D_e}{k_e}(c_s-c)$ holds pointwise for any kinetics (combine the two equations) — so
+  $T_{\max}-T_s\le\beta T_s$. Check it at every point.
+- **Thermal stress:** for a sphere with a radial temperature $T(r)$ the stresses are closed-form integrals of $T$ (Timoshenko & Goodier); compare your
+  FE stress with the integrals of **your** FE temperature.
+- **Monolith:** fully developed laminar flow without reaction — the Graetz/Nusselt limit ($\mathrm{Nu}=3.66$ for a circular channel at constant wall
+  temperature), and the energy balance between gas and wall.
+
+## Stretch goals
+
+1. Multiple steady states of the non-isothermal pellet (Weisz–Hicks): pseudo-arclength continuation in $\phi$.
+2. Langmuir–Hinshelwood kinetics with inhibition.
+3. Pellet shape optimisation (hollow cylinder, trilobe) at equal volume.
+
+## Milestones
+
+M1 isothermal pellet and $\eta(\phi)$ · M2 non-isothermal pellet with the Prater check · M3 thermal stress · M4 monolith flow and Graetz check ·
+M5 coupled monolith and light-off.
+
+## Pitfalls
+
+- Large $\phi$: a boundary layer of thickness $R/\phi$ at the surface — grade the mesh, otherwise $\eta$ converges slowly from above.
+- Newton from $c=c_s$, $T=T_s$ fails for large $\beta\gamma$: continuation (Week 7 load steps, Week 9 HW).
+- Axisymmetric sphere: the $r$-weight in every integral (Week 2), and no condition on the axis.
+
+## References
+
+- R. Aris, *The Mathematical Theory of Diffusion and Reaction in Permeable Catalysts*, Clarendon 1975.
+- G. F. Froment, K. B. Bischoff, J. De Wilde, *Chemical Reactor Analysis and Design*, 3rd ed., Wiley 2011.
+- S. P. Timoshenko, J. N. Goodier, *Theory of Elasticity*, 3rd ed., McGraw-Hill 1970 — thermal stresses in a sphere.

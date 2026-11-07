@@ -1,0 +1,75 @@
+---
+title: "Topic I — A Microfluidic Biosensor"
+subtitle: "channel flow · analyte transport · Langmuir binding on a sensor patch · tier: standard"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: true
+---
+
+## Motivation
+
+A point-of-care sensor detects a pathogen or biomarker when target molecules carried by the flow bind to receptors on a small sensor patch in a
+microchannel. How fast the signal rises — and therefore the detection time and limit — depends on whether binding is limited by the reaction
+or by the transport of molecules to the surface, which depletes a boundary layer above the patch. A model answers design questions directly:
+flow rate, channel height, patch length.
+
+**Related fields:** microfluidic point-of-care biosensors, biochips, interface engineering. **Course weeks:** 11 (Navier–Stokes/Stokes, mixed spaces), 12 (advection–
+diffusion with reactions, SUPG).
+
+## Model
+
+2D channel of height $H$ (or axisymmetric/3D as a stretch), sensor patch of length $L_s$ on the bottom wall. Stokes or Navier–Stokes flow (low
+Reynolds number), analyte concentration $c$ in the liquid, bound surface concentration $B$ on the patch:
+$$
+\partial_tc+\mathbf u\cdot\nabla c=D\Delta c,\qquad \partial_tB=k_{\rm on}c\,(b_m-B)-k_{\rm off}B\ \text{ on the patch},\qquad -D\partial_nc=-\partial_tB\ \text{ on the patch},
+$$
+$c=c_0$ at the inlet, natural outflow, no flux on the other walls. The surface ODE lives on the boundary: a field on the patch facets (a submesh or a
+boundary-only DG0 space) or one unknown per patch dof.
+
+**Design outputs:** $B(t)$ averaged over the patch; the time to reach 50 % of the equilibrium signal against the flow rate; the Damköhler number
+at which transport starts to dominate.
+
+## Suggested parameters
+
+$H$ = 10–100 µm, $L_s$ = 10–500 µm, mean velocity 0.1–10 mm/s, $D=10^{-11}$ m²/s (protein), $k_{\rm on}=10^6$ M⁻¹s⁻¹, $k_{\rm off}=10^{-3}$ s⁻¹,
+$b_m=10^{-11}$ mol/m², $c_0$ = 1 pM – 1 nM. Péclet numbers $\mathrm{Pe}_H=\bar uH/D$ up to 10⁵ — SUPG and a graded mesh at the patch.
+
+## Required tasks
+
+1. Flow field (check against the parabolic profile).
+2. Transport without binding (steady); then with fast irreversible capture (perfect sink, $c=0$ on the patch): the transport-limited flux.
+3. The full coupled problem in time; $B(t)$ for several flow rates and $c_0$.
+4. A map of the regimes in the Damköhler number $k_{\rm on}b_mH/D$ (or its patch-length version) and the Péclet number.
+
+## Verification specific to this topic
+
+- **Reaction-limited limit** (Da ≪ 1, fast transport, $c\approx c_0$ at the surface): $B(t)=\frac{k_{\rm on}c_0b_m}{k_{\rm on}c_0+k_{\rm off}}\big(1-e^{-(k_{\rm on}c_0+k_{\rm off})t}\big)$ — exact;
+  your model must approach it as $k_{\rm on}\to0$.
+- **Transport-limited flux** (perfect sink): for a long thin depletion layer the flux follows the Lévêque scaling, $\propto(\text{shear rate})^{1/3}$ —
+  check the exponent by varying the flow rate (Squires, Messinger & Manalis 2008).
+- **Mass balance:** molecules captured = inflow − outflow − change in the channel, at every time.
+- **MMS** for the advection–diffusion with the Robin-type surface coupling.
+
+## Stretch goals
+
+1. Two analytes competing for the same receptors.
+2. A 3D channel with a finite-width patch.
+3. Electrokinetic or acoustic enhancement modelled as a body force in the flow.
+
+## Milestones
+
+M1 flow · M2 perfect-sink transport and the 1/3 exponent · M3 reaction-limited limit · M4 coupled time-dependent model · M5 regime map.
+
+## Pitfalls
+
+- The concentration boundary layer at the patch is thin at high Péclet numbers: under-resolving it overestimates the flux. Refine until the
+  captured amount stops changing.
+- Units: $k_{\rm on}$ in M⁻¹s⁻¹ and $b_m$ in mol/m² — convert once and print the dimensionless groups.
+- Oscillations from the abrupt patch edges (the flux is singular there): SUPG and refinement; report patch averages, not edge values.
+
+## References
+
+- T. M. Squires, R. J. Messinger, S. R. Manalis, "Making it stick: convection, reaction and diffusion in surface-based biosensors", *Nat. Biotechnol.* 26 (2008) 417–426.
+- D. G. Myszka et al., "Extending the range of rate constants available from BIACORE: interpreting mass transport-influenced binding data", *Biophys. J.* 75 (1998) 583–594.

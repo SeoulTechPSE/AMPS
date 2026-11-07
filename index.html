@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI-based Materials and Process Simulation · SeoulTech</title>
+  <meta name="description" content="AI-based Materials and Process Simulation I and II: finite element methods with FEniCSx (DOLFINx 0.11) on Google Colab, with an LLM-assisted workflow. Department of Chemical and Biomolecular Engineering, SeoulTech.">
+  <link rel="icon" type="image/svg+xml" href="assets/psl-mark.svg">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <style>
+    :root { --ink: #1f2933; --muted: #5f6b7a; --line: #e4e7eb; --accent: #1f4e9c; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; color: var(--ink); background: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", "Segoe UI", sans-serif;
+      line-height: 1.6;
+    }
+    main { max-width: 760px; margin: 0 auto; padding: 56px 24px 72px; }
+    header > a > img { height: 40px; }
+    .title { display: flex; align-items: center; gap: 14px; margin: 28px 0 4px; }
+    .title img { height: 52px; width: 52px; }
+    h1 { font-size: 1.7rem; margin: 0; letter-spacing: -0.01em; }
+    .sub { color: var(--muted); margin: 0; }
+    h2 { font-size: 1.05rem; margin: 44px 0 14px; color: var(--muted); font-weight: 600;
+         text-transform: uppercase; letter-spacing: 0.06em; }
+    a.card {
+      display: block; padding: 20px 22px; background: #f9fafb; border: 1px solid var(--line);
+      border-radius: 10px; color: inherit; text-decoration: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    a.card + a.card { margin-top: 14px; }
+    a.card:hover { border-color: var(--accent); box-shadow: 0 2px 10px rgba(31, 78, 156, .08); }
+    .card h3 { margin: 0 0 4px; font-size: 1.15rem; color: var(--accent); }
+    .card p { margin: 0; color: var(--muted); }
+    ul { padding-left: 1.2em; color: var(--muted); }
+    a { color: var(--accent); }
+    footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line);
+             color: var(--muted); font-size: .9rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <header>
+      <a href="/"><img src="assets/seoultech_logo.png" alt="Seoul National University of Science and Technology"></a>
+      <div class="title">
+        <img src="assets/psl-mark.svg" alt="PSL logo">
+        <h1>AI-based Materials and Process Simulation</h1>
+      </div>
+      <p class="sub">Finite element methods with FEniCSx (DOLFINx 0.11) on Google Colab, with an LLM-assisted workflow<br>
+        Department of Chemical and Biomolecular Engineering, SeoulTech</p>
+    </header>
+
+    <h2>Courses</h2>
+    <a class="card" href="I/">
+      <h3>AMPS I · Foundations</h3>
+      <p>Weak forms, convergence and verification, nonlinear and time-dependent problems, Stokes and Navier–Stokes,
+         saddle-point solvers, advection–diffusion — 16 weeks of slides, Colab notebooks and homework, term project</p>
+    </a>
+    <a class="card" href="II/">
+      <h3>AMPS II · Solids, Coupled Transport and Projects</h3>
+      <p>Elasticity, plasticity, viscoelasticity and fracture, dynamics, beams, plates and shells, homogenization, cohesive interfaces,
+         natural convection, reactive flow, porous media, phase separation and parallel performance — term projects A–J</p>
+    </a>
+
+    <h2>Getting started</h2>
+    <ul>
+      <li>Each course page has the syllabus, the week-by-week materials, the DOLFINx 0.11 API reference sheet and the AI-usage log template.</li>
+      <li>Notebooks run on <a href="https://colab.research.google.com/">Google Colab</a> with the
+        <a href="https://github.com/SeoulTechPSE/fenicsx-colab">fenicsx-colab</a> setup cell (about 3–5 minutes per runtime).</li>
+    </ul>
+
+    <footer><a href="/">Process Systems Laboratory</a> · SeoulTech</footer>
+  </main>
+</body>
+</html>

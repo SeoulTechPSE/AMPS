@@ -1,0 +1,1493 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="W04_lecture_files/libs/clipboard/clipboard.min.js"></script>
+<script src="W04_lecture_files/libs/quarto-html/tabby.min.js"></script>
+<script src="W04_lecture_files/libs/quarto-html/popper.min.js"></script>
+<script src="W04_lecture_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="W04_lecture_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="W04_lecture_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="W04_lecture_files/libs/quarto-html/quarto-syntax-highlighting-a06763021a52c43c40a351ac8b799b8f.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.36">
+
+  <meta name="author" content="Kee-Youn Yoo">
+  <title>AI-based Materials and Process Simulation I</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="W04_lecture_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="W04_lecture_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="W04_lecture_files/libs/revealjs/dist/theme/quarto-7af60fb36352a8d2af996e24a7cdd28d.css">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="W04_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="W04_lecture_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="W04_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="W04_lecture_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="W04_lecture_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="W04_lecture_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">AI-based Materials and Process Simulation I</h1>
+  <p class="subtitle">Week 04 — Interpolation Operators · Sobolev Norms · Averaged Taylor Polynomials and Scaling · Functions, Interpolation and Errors in DOLFINx</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Kee-Youn Yoo 
+</div>
+        <p class="quarto-title-affiliation">
+            Process Systems Laboratory<br>Department of Chemical and Biomolecular Engineering, SeoulTech
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="today" class="slide level2">
+<h2>Today</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Topic</th>
+<th style="text-align: center;">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Quiz</strong></td>
+<td>Week 3 material (closed-AI)</td>
+<td style="text-align: center;">10 min</td>
+</tr>
+<tr class="even">
+<td><strong>A</strong></td>
+<td>Theory — interpolation operators, <span class="math inline">H^k</span> norms, Sobolev embedding, averaged Taylor polynomials, scaling, the error estimate</td>
+<td style="text-align: center;">70 min</td>
+</tr>
+<tr class="odd">
+<td><strong>B</strong></td>
+<td><code>fem.Function</code> and the ways to interpolate in DOLFINx</td>
+<td style="text-align: center;">35 min</td>
+</tr>
+<tr class="even">
+<td><strong>C</strong></td>
+<td>Measuring errors, convergence rates, interpolation and I/O</td>
+<td style="text-align: center;">40 min</td>
+</tr>
+<tr class="odd">
+<td><strong>D</strong></td>
+<td>LLM pitfalls with functions and norms · assignment</td>
+<td style="text-align: center;">15 min</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p>Lab notebook: <code>W04_lab.ipynb</code> · Assignment: <code>W04_HW4.ipynb</code> (due before Week 5)</p>
+</div>
+</section>
+<section id="week-3-in-one-slide" class="slide level2">
+<h2>Week 3 in one slide</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>Global space</td>
+<td>cells share the DOFs of shared vertices and edges → <span class="math inline">C^0</span> (Lagrange)</td>
+</tr>
+<tr class="even">
+<td>Dimension</td>
+<td><span class="math inline">\dim V_h=\sum_d n_d m_d</span>, e.g.&nbsp;<span class="math inline">(kN+1)^2</span> for P<span class="math inline">k</span> on <span class="math inline">N\times N</span></td>
+</tr>
+<tr class="odd">
+<td>Cell-node map</td>
+<td><span class="math inline">M(c,i)</span>; edge DOFs ordered by global vertex numbers for <span class="math inline">k\ge3</span></td>
+</tr>
+<tr class="even">
+<td>DOLFINx</td>
+<td><code>topology.connectivity</code>, <code>geometry.dofmaps[0]</code>, <code>V.dofmap</code>, owned + ghost</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>We can now <strong>build</strong> <span class="math inline">V_h</span>. <strong>This week: how well can <span class="math inline">V_h</span> approximate a given <span class="math inline">u</span>?</strong></p>
+<ul>
+<li>The simplest approximation: interpolate, <span class="math inline">u\mapsto\mathcal I_h u</span></li>
+<li>How do we measure the error? (<span class="math inline">H^k</span> norms)</li>
+<li>How fast does it go to zero as <span class="math inline">h\to0</span>, and what does that depend on? (Taylor + scaling)</li>
+<li>How do we do all this in DOLFINx — and get the numbers right?</li>
+</ul>
+</div>
+</section>
+<section>
+<section id="part-a-interpolation-theory" class="title-slide slide level1 center">
+<h1>Part A — Interpolation Theory</h1>
+
+</section>
+<section id="a1-the-local-interpolation-operator" class="slide level2">
+<h2>§A1 The local interpolation operator</h2>
+<div title="Definition — Local interpolant">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definition — Local interpolant</strong></p>
+</div>
+<div class="callout-content">
+<p>For an element <span class="math inline">(K,\mathcal P,\mathcal N)</span> with nodal basis <span class="math inline">\{\phi_i\}</span>: <span class="math display">\mathcal I_K v=\sum_i N_i(v)\,\phi_i\ \in\mathcal P .</span> For Lagrange elements <span class="math inline">N_i(v)=v(x_i)</span>: <span class="math inline">\mathcal I_K v</span> is the polynomial that agrees with <span class="math inline">v</span> at the nodes.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Property</th>
+<th>Statement</th>
+<th>Why</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Linear</td>
+<td><span class="math inline">\mathcal I_K(\alpha u+v)=\alpha\mathcal I_Ku+\mathcal I_Kv</span></td>
+<td><span class="math inline">N_i</span> linear</td>
+</tr>
+<tr class="even">
+<td>Nodal</td>
+<td><span class="math inline">N_i(\mathcal I_Kv)=N_i(v)</span></td>
+<td><span class="math inline">N_i(\phi_j)=\delta_{ij}</span></td>
+</tr>
+<tr class="odd">
+<td><strong>Preserves <span class="math inline">\mathcal P</span></strong></td>
+<td><span class="math inline">\mathcal I_Kp=p</span> for all <span class="math inline">p\in\mathcal P</span></td>
+<td>unisolvence: <span class="math inline">p-\mathcal I_Kp\in\mathcal P</span> has zero DOFs</td>
+</tr>
+<tr class="even">
+<td>Projection</td>
+<td><span class="math inline">\mathcal I_K\mathcal I_K=\mathcal I_K</span></td>
+<td>apply the previous line to <span class="math inline">p=\mathcal I_Kv</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p><strong>Polynomial preservation</strong> is the engine of the whole theory: the error comes only from the part of <span class="math inline">v</span> that <span class="math inline">\mathcal P</span> cannot represent.</p>
+</div>
+</section>
+<section id="a2-the-global-interpolation-operator" class="slide level2">
+<h2>§A2 The global interpolation operator</h2>
+<div title="Definition — Global interpolant">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definition — Global interpolant</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">\mathcal I_h u\in V_h</span> with <span class="math inline">(\mathcal I_h u)|_K=\mathcal I_K u</span> for every <span class="math inline">K\in\mathcal T_h</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<p>Well defined and in <span class="math inline">V_h</span>: neighbouring cells evaluate the <strong>same</strong> shared DOFs (Week 3, <span class="math inline">C^0</span> decomposition), so the pieces match.</p>
+
+<img data-src="figs/w04_interp_1d.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><div class="fragment">
+<p>For Lagrange: <span class="math inline">\mathcal I_h u=\sum_j u(x_j)\,\phi_j</span> — the coefficient vector is just <span class="math inline">u</span> at the DOF coordinates. That is <code>u_h.interpolate(...)</code>.</p>
+</div>
+</section>
+<section id="a3-sobolev-norms" class="slide level2">
+<h2>§A3 Sobolev norms</h2>
+<p>Multi-index <span class="math inline">\alpha=(\alpha_1,\dots,\alpha_n)</span>, <span class="math inline">|\alpha|=\sum\alpha_i</span>, <span class="math inline">D^\alpha u=\partial^{|\alpha|}u/\partial x_1^{\alpha_1}\cdots\partial x_n^{\alpha_n}</span>.</p>
+<div title="Definition — $H^k$ seminorm and norm">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definition — <span class="math inline">H^k</span> seminorm and norm</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math display">|u|_{H^k(\Omega)}^2=\sum_{|\alpha|=k}\int_\Omega|D^\alpha u|^2\,dx,\qquad \|u\|_{H^k(\Omega)}^2=\sum_{j=0}^k|u|_{H^j(\Omega)}^2 .</span> <span class="math inline">H^k(\Omega)</span> = functions with finite <span class="math inline">\|\cdot\|_{H^k}</span> (derivatives in the weak sense — Week 7).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>written out</th>
+<th>in UFL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\|e\|_{L^2}=\|e\|_{H^0}</span></td>
+<td><span class="math inline">\left(\int e^2\right)^{1/2}</span></td>
+<td><code>inner(e, e) * dx</code></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">|e|_{H^1}</span></td>
+<td><span class="math inline">\left(\int|\nabla e|^2\right)^{1/2}</span></td>
+<td><code>inner(grad(e), grad(e)) * dx</code></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">|e|_{H^2}</span></td>
+<td><span class="math inline">\left(\sum_{i,j}\int(\partial_{ij}e)^2\right)^{1/2}</span></td>
+<td><code>inner(grad(grad(e)), grad(grad(e))) * dx</code></td>
+</tr>
+</tbody>
+</table>
+<p>The seminorm vanishes on polynomials of degree <span class="math inline">&lt;k</span>: <span class="math inline">|p|_{H^{k}}=0</span> for <span class="math inline">p\in\mathcal P_{k-1}</span>.</p>
+</div>
+</section>
+<section id="a4-when-is-mathcal-i_h-defined-sobolev-embedding" class="slide level2">
+<h2>§A4 When is <span class="math inline">\mathcal I_h</span> defined? — Sobolev embedding</h2>
+<p>Lagrange DOFs are <strong>point values</strong>. Is <span class="math inline">u(x_i)</span> meaningful for <span class="math inline">u\in H^k</span>?</p>
+<div title="Theorem — Sobolev embedding">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Theorem — Sobolev embedding</strong></p>
+</div>
+<div class="callout-content">
+<p>If <span class="math inline">\Omega\subset\mathbb R^n</span> is Lipschitz and <span class="math inline">k&gt;n/2</span>, then <span class="math inline">\max_{\bar\Omega}|u|\le C\,\|u\|_{H^k(\Omega)}</span> (and <span class="math inline">u</span> is continuous).</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;"><span class="math inline">n=1</span></th>
+<th style="text-align: center;"><span class="math inline">n=2</span></th>
+<th style="text-align: center;"><span class="math inline">n=3</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>point values bounded for</td>
+<td style="text-align: center;"><span class="math inline">H^1</span></td>
+<td style="text-align: center;"><span class="math inline">H^2</span></td>
+<td style="text-align: center;"><span class="math inline">H^2</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>In 2D, <span class="math inline">H^1</span> is not enough.</strong> <span class="math inline">u(x)=\log\bigl|\log|x|\bigr|</span> on <span class="math inline">|x|&lt;1/e</span> has <span class="math inline">\int|\nabla u|^2&lt;\infty</span> but <span class="math inline">u(0)=\infty</span>. So the estimates below assume <span class="math inline">u\in H^{k+1}</span> with <span class="math inline">k+1\ge2</span>, and Lagrange interpolation of a merely <span class="math inline">H^1</span> function is not defined. (Other “interpolants” — Clément, Scott–Zhang — average instead of evaluating.)</p>
+</div>
+</section>
+<section id="a5-averaged-taylor-polynomials" class="slide level2">
+<h2>§A5 Averaged Taylor polynomials</h2>
+<p>A Taylor polynomial at <strong>one point</strong> needs pointwise derivatives. Averaging over a ball <span class="math inline">B</span> gives an integral-friendly version.</p>
+<div title="Definition — Averaged Taylor polynomial">
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Definition — Averaged Taylor polynomial</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">K</span> star-shaped w.r.t. a ball <span class="math inline">B</span>, cut-off <span class="math inline">\varphi\ge0</span> supported in <span class="math inline">B</span> with <span class="math inline">\int\varphi=1</span>: <span class="math display">Q_k u(x)=\int_B T^k_y u(x)\,\varphi(y)\,dy,\qquad T^k_yu(x)=\sum_{|\alpha|\le k}\frac{D^\alpha u(y)}{\alpha!}(x-y)^\alpha .</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<ul>
+<li><span class="math inline">Q_k u\in\mathcal P_k</span>, and <span class="math inline">Q_kp=p</span> for <span class="math inline">p\in\mathcal P_k</span>.</li>
+<li><span class="math inline">D^\alpha Q_k u=Q_{k-|\alpha|}D^\alpha u</span> — averaging and differentiation commute.</li>
+</ul>
+</div>
+<div class="fragment">
+<div title="Theorem — Bramble–Hilbert (Taylor remainder)">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Theorem — Bramble–Hilbert (Taylor remainder)</strong></p>
+</div>
+<div class="callout-content">
+<p>On <span class="math inline">K</span> with diameter <span class="math inline">d</span>, for <span class="math inline">0\le i\le k+1</span>: <span class="math inline">\;|u-Q_ku|_{H^i(K)}\le C\,d^{\,k+1-i}\,|u|_{H^{k+1}(K)}</span>, with <span class="math inline">C</span> depending on <span class="math inline">k</span>, <span class="math inline">n</span> and the ratio <span class="math inline">d/\rho_B</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<p>Only the <strong><span class="math inline">(k+1)</span>-th derivatives</strong> of <span class="math inline">u</span> appear: lower-order parts are reproduced exactly.</p>
+</div>
+</section>
+<section id="a6-the-estimate-on-the-reference-cell" class="slide level2 scrollable">
+<h2>§A6 The estimate on the reference cell</h2>
+<div title="Lemma — Reference-cell estimate">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Lemma — Reference-cell estimate</strong></p>
+</div>
+<div class="callout-content">
+<p>On the reference triangle <span class="math inline">\hat K</span>, for P<span class="math inline">k</span> Lagrange (<span class="math inline">k\ge1</span>) and <span class="math inline">0\le i\le k+1</span>: <span class="math inline">\;|\hat u-\hat{\mathcal I}\hat u|_{H^i(\hat K)}\le \hat C\,|\hat u|_{H^{k+1}(\hat K)}</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p><strong>Proof.</strong> Let <span class="math inline">p=Q_k\hat u\in\mathcal P_k</span>. Polynomial preservation gives <span class="math inline">\hat{\mathcal I}p=p</span>, so <span class="math display">\hat u-\hat{\mathcal I}\hat u=(\hat u-p)-\hat{\mathcal I}(\hat u-p).</span></p>
+</div>
+<div class="fragment">
+<ol type="1">
+<li><span class="math inline">\|\hat u-p\|_{H^{k+1}(\hat K)}\le C|\hat u|_{H^{k+1}(\hat K)}</span> (Bramble–Hilbert, all <span class="math inline">i\le k+1</span>).</li>
+<li><span class="math inline">\|\hat{\mathcal I}w\|_{H^{k+1}(\hat K)}\le\sum_j|w(\hat x_j)|\,\|\hat\phi_j\|_{H^{k+1}}\le C\max|w|\le C\|w\|_{H^{k+1}(\hat K)}</span> (Sobolev, <span class="math inline">k+1\ge2&gt;n/2</span>).</li>
+<li>Apply 2 to <span class="math inline">w=\hat u-p</span> and add. <span class="math inline">\square</span></li>
+</ol>
+</div>
+<div class="fragment">
+<p>Three ingredients: <strong>polynomial preservation</strong>, <strong>bounded DOFs</strong> (Sobolev), <strong>Taylor remainder</strong>.</p>
+</div>
+</section>
+<section id="a7-scaling-to-a-physical-cell" class="slide level2">
+<h2>§A7 Scaling to a physical cell</h2>
+
+<img data-src="figs/w04_scaling.png" class="quarto-figure quarto-figure-center r-stretch" style="width:58.0%"><p>Affine map <span class="math inline">F_K(\hat x)=x_0+J_K\hat x</span>, <span class="math inline">\hat v=v\circ F_K</span>. Let <span class="math inline">h_K=\operatorname{diam}K</span>, <span class="math inline">\rho_K</span> = diameter of the largest inscribed ball.</p>
+<div class="fragment">
+<div title="Lemma — Scaling of seminorms">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Lemma — Scaling of seminorms</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">|v|_{H^m(K)}\le C\,\|J_K^{-1}\|^m\,|\det J_K|^{1/2}\,|\hat v|_{H^m(\hat K)}</span> and <span class="math inline">|\hat v|_{H^m(\hat K)}\le C\,\|J_K\|^m\,|\det J_K|^{-1/2}\,|v|_{H^m(K)}</span>, with <span class="math inline">\|J_K\|\le\dfrac{h_K}{\hat\rho}</span>, <span class="math inline">\|J_K^{-1}\|\le\dfrac{\hat h}{\rho_K}</span>.</p>
+</div>
+</div>
+</div>
+</div>
+<p>Chain rule (<span class="math inline">m</span> derivatives → <span class="math inline">m</span> factors of <span class="math inline">J</span>) and change of variables (<span class="math inline">dx=|\det J|\,d\hat x</span>).</p>
+</div>
+<div class="fragment">
+<p>For Lagrange elements interpolation commutes with the map: <span class="math inline">\widehat{\mathcal I_Ku}=\hat{\mathcal I}\hat u</span> (nodes map to nodes).</p>
+</div>
+</section>
+<section id="a7-scaling-the-proof" class="slide level2">
+<h2>§A7 Scaling — the proof</h2>
+<p><span class="math display">
+\begin{aligned}
+|u-\mathcal I_Ku|_{H^i(K)} &amp;\le C\,\|J_K^{-1}\|^{i}\,|\det J_K|^{1/2}\;|\hat u-\hat{\mathcal I}\hat u|_{H^i(\hat K)} &amp;&amp;\text{(scale down)}\\
+&amp;\le C\,\|J_K^{-1}\|^{i}\,|\det J_K|^{1/2}\;\hat C\,|\hat u|_{H^{k+1}(\hat K)} &amp;&amp;\text{(reference estimate)}\\
+&amp;\le C\,\|J_K^{-1}\|^{i}\,\|J_K\|^{k+1}\;|u|_{H^{k+1}(K)} &amp;&amp;\text{(scale up)}\\
+&amp;\le C\,\Bigl(\frac{h_K}{\rho_K}\Bigr)^{i}\,h_K^{\,k+1-i}\;|u|_{H^{k+1}(K)} .
+\end{aligned}
+</span></p>
+<div class="fragment">
+<ul>
+<li><span class="math inline">i=0</span> (<span class="math inline">L^2</span>): no shape factor at all.</li>
+<li><span class="math inline">i\ge1</span>: the factor <span class="math inline">\sigma_K=h_K/\rho_K</span> appears. <strong>Shape regularity</strong> — <span class="math inline">\sigma_K\le\sigma</span> for all cells — makes it a constant.</li>
+<li>Is shape regularity <em>necessary</em>? Thin triangles are common near walls. → <strong>HW4 Q3</strong>.</li>
+</ul>
+</div>
+</section>
+<section id="a8-the-global-estimate" class="slide level2">
+<h2>§A8 The global estimate</h2>
+<div title="Theorem — Interpolation error">
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Theorem — Interpolation error</strong></p>
+</div>
+<div class="callout-content">
+<p>Shape-regular family <span class="math inline">\{\mathcal T_h\}</span>, P<span class="math inline">k</span> Lagrange, <span class="math inline">u\in H^{k+1}(\Omega)</span>, <span class="math inline">k\ge1</span>. For <span class="math inline">i=0,1</span>: <span class="math display">|u-\mathcal I_hu|_{H^i(\Omega)}\le C\,h^{\,k+1-i}\,|u|_{H^{k+1}(\Omega)},\qquad h=\max_K h_K .</span></p>
+</div>
+</div>
+</div>
+</div>
+<p><strong>Proof.</strong> Square the local estimate and sum over cells: <span class="math inline">\sum_K h_K^{2(k+1-i)}|u|^2_{H^{k+1}(K)}\le h^{2(k+1-i)}|u|^2_{H^{k+1}(\Omega)}</span>. <span class="math inline">\square</span> (<span class="math inline">i\ge2</span> is not meaningful for <span class="math inline">C^0</span> elements globally — <span class="math inline">\nabla\mathcal I_hu</span> jumps across edges.)</p>
+<div class="fragment">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;"><span class="math inline">\|u-\mathcal I_hu\|_{L^2}</span></th>
+<th style="text-align: center;"><span class="math inline">|u-\mathcal I_hu|_{H^1}</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P1</td>
+<td style="text-align: center;"><span class="math inline">h^2</span></td>
+<td style="text-align: center;"><span class="math inline">h</span></td>
+</tr>
+<tr class="even">
+<td>P2</td>
+<td style="text-align: center;"><span class="math inline">h^3</span></td>
+<td style="text-align: center;"><span class="math inline">h^2</span></td>
+</tr>
+<tr class="odd">
+<td>P3</td>
+<td style="text-align: center;"><span class="math inline">h^4</span></td>
+<td style="text-align: center;"><span class="math inline">h^3</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p><strong>Why it matters:</strong> Céa’s lemma (Week 7) bounds the FE error by the <strong>best</strong> approximation, and <span class="math inline">\mathcal I_hu</span> is one candidate: <span class="math inline">\|u-u_h\|_{H^1}\le C\inf_{v_h}\|u-v_h\|_{H^1}\le C\|u-\mathcal I_hu\|_{H^1}</span>. Interpolation rates <strong>are</strong> the FE rates.</p>
+</div>
+</section>
+<section id="a9-when-u-is-not-smooth" class="slide level2">
+<h2>§A9 When <span class="math inline">u</span> is not smooth</h2>
+<p>If <span class="math inline">u\in H^{s}</span> only, with <span class="math inline">1&lt;s&lt;k+1</span>, the same argument (with <span class="math inline">k</span> replaced by <span class="math inline">s-1</span>) gives <span class="math inline">|u-\mathcal I_hu|_{H^i}\le Ch^{\,s-i}|u|_{H^s}</span>. <strong>Regularity, not degree, limits the rate.</strong></p>
+
+<img data-src="figs/w04_rates.png" class="quarto-figure quarto-figure-center r-stretch" style="width:82.0%"><div class="columns">
+<div class="column" style="width:50%;">
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th><span class="math inline">u=r^{2/3}</span></th>
+<th style="text-align: center;"><span class="math inline">L^2</span> rate</th>
+<th style="text-align: center;"><span class="math inline">H^1</span> rate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P1</td>
+<td style="text-align: center;">1.66</td>
+<td style="text-align: center;">0.66</td>
+</tr>
+<tr class="even">
+<td>P2</td>
+<td style="text-align: center;">1.67</td>
+<td style="text-align: center;">0.67</td>
+</tr>
+<tr class="odd">
+<td>P3</td>
+<td style="text-align: center;">1.67</td>
+<td style="text-align: center;">0.67</td>
+</tr>
+</tbody>
+</table>
+</div><div class="column" style="width:50%;">
+<p><span class="math inline">r^{\alpha}\in H^{1+\alpha-\varepsilon}</span> near a 2D corner, so <span class="math inline">s=5/3</span>: rates <span class="math inline">5/3</span> and <span class="math inline">2/3</span> for <strong>every</strong> <span class="math inline">k</span>. Such corner singularities appear in the solutions of PDEs on non-convex domains (L-shapes, re-entrant corners).</p>
+</div></div>
+</section></section>
+<section>
+<section id="part-b-functions-and-interpolation-in-dolfinx" class="title-slide slide level1 center">
+<h1>Part B — Functions and Interpolation in DOLFINx</h1>
+
+</section>
+<section id="b1-fem.function-a-coefficient-vector-on-a-space" class="slide level2">
+<h2>§B1 <code>fem.Function</code>: a coefficient vector on a space</h2>
+<p><span class="math display">u_h=\sum_j u_j\,\phi_j\qquad\longleftrightarrow\qquad \texttt{u.x.array}=(u_0,u_1,\dots)</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>V <span class="op">=</span> fem.functionspace(msh, (<span class="st">"Lagrange"</span>, <span class="dv">2</span>))</span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> fem.Function(V, name<span class="op">=</span><span class="st">"u"</span>)       <span class="co"># all zeros; the name is used in output files</span></span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>u.x.array                           <span class="co"># NumPy view: owned DOFs first, then ghosts</span></span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>u.function_space, u.x.index_map, u.x.block_size</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>4×4 mesh, P2</th>
+<th style="text-align: center;"><code>-np 1</code></th>
+<th style="text-align: center;"><code>-np 2</code>, rank 0</th>
+<th style="text-align: center;"><code>-np 2</code>, rank 1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>len(u.x.array)</code></td>
+<td style="text-align: center;">81</td>
+<td style="text-align: center;">57</td>
+<td style="text-align: center;">57</td>
+</tr>
+<tr class="even">
+<td>owned / ghosts</td>
+<td style="text-align: center;">81 / 0</td>
+<td style="text-align: center;">39 / 18</td>
+<td style="text-align: center;">42 / 15</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<ul>
+<li>If you <strong>write</strong> into <code>u.x.array</code> yourself, call <code>u.x.scatter_forward()</code> so ghosts get the owners’ values.</li>
+<li><code>interpolate</code> and solvers do this for you.</li>
+<li>Ghost values are copies: never sum over <code>u.x.array</code> to get a global number.</li>
+</ul>
+</div>
+</section>
+<section id="b2-interpolating-a-python-function" class="slide level2">
+<h2>§B2 Interpolating a Python function</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>u.interpolate(<span class="kw">lambda</span> x: np.sin(np.pi <span class="op">*</span> x[<span class="dv">0</span>]) <span class="op">*</span> np.cos(np.pi <span class="op">*</span> x[<span class="dv">1</span>]))   <span class="co"># x has shape (3, n_points)</span></span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>w.interpolate(<span class="kw">lambda</span> x: np.vstack((x[<span class="dv">0</span>], <span class="op">-</span>x[<span class="dv">1</span>])))                       <span class="co"># vector space: return (gdim, n_points)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>DOLFINx passes the <strong>physical coordinates of all interpolation points at once</strong>; the callable must be vectorised.</p>
+<div class="fragment">
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Mistake</th>
+<th>What happens (0.11)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>lambda x: 1.0</code></td>
+<td><code>TypeError: interpolate_f(): incompatible function arguments</code> → use <code>np.full(x.shape[1], 1.0)</code></td>
+</tr>
+<tr class="even">
+<td>vector field returned as <code>(n_points, 2)</code></td>
+<td><code>RuntimeError: Interpolation data has the wrong shape/size.</code></td>
+</tr>
+<tr class="odd">
+<td><code>np.sin</code> applied to a UFL coordinate</td>
+<td><code>TypeError: loop of ufunc does not support argument 0 of type Indexed…</code></td>
+</tr>
+<tr class="even">
+<td><code>x[0]**0.75</code></td>
+<td><code>nan</code> at some DOFs: boundary coordinates can be <span class="math inline">-3\times10^{-18}</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p>NumPy for callables (<code>x</code> is an array); UFL (<code>ufl.sin</code>, <code>ufl.SpatialCoordinate</code>) for forms and <code>fem.Expression</code>.</p>
+</div>
+</section>
+<section id="b3-interpolating-other-things" class="slide level2">
+<h2>§B3 Interpolating other things</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>u1.interpolate(u3)                                    <span class="co"># Function → Function, same mesh (P3 → P1, P1 → P3, …)</span></span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="" aria-hidden="true" tabindex="-1"></a>expr <span class="op">=</span> fem.Expression(ufl.grad(u3), VD.element.interpolation_points)   <span class="co"># property: no ()</span></span>
+<span id="cb3-4"><a href="" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> fem.Function(VD)<span class="op">;</span> g.interpolate(expr)             <span class="co"># any UFL expression, e.g. ∇u into a DG vector space</span></span>
+<span id="cb3-5"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="" aria-hidden="true" tabindex="-1"></a>kappa.interpolate(<span class="kw">lambda</span> x: np.full(x.shape[<span class="dv">1</span>], <span class="fl">10.0</span>), cells0<span class="op">=</span>right_cells)   <span class="co"># only on some cells</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>P3 → P1 by <code>interpolate(u3)</code> equals direct P1 interpolation of the same <span class="math inline">u</span> (difference <span class="math inline">4\times10^{-16}</span>): it evaluates <span class="math inline">u_3</span> at the P1 nodes.</li>
+<li><code>cells0=</code>: piecewise data, e.g.&nbsp;a DG0 conductivity <span class="math inline">\kappa=1</span> / <span class="math inline">10</span> on the two halves of the square (<span class="math inline">\int\kappa=5.5</span>).</li>
+</ul>
+<div class="fragment">
+<p><strong>Different meshes</strong> need the non-matching version:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>cells <span class="op">=</span> np.arange(n_cells_local_plus_ghost, dtype<span class="op">=</span>np.int32)          <span class="co"># target cells</span></span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>data  <span class="op">=</span> fem.create_interpolation_data(V_coarse, V_fine, cells, padding<span class="op">=</span><span class="fl">1e-14</span>)</span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>u_coarse.interpolate_nonmatching(u_fine, cells, interpolation_data<span class="op">=</span>data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Plain <code>u_coarse.interpolate(u_fine)</code> → <code>RuntimeError: Meshes do no match.</code> A quadratic moved from a triangle mesh to a quadrilateral mesh with P2 arrives with error <span class="math inline">2\times10^{-16}</span> — polynomial preservation again.</p>
+</div>
+</section></section>
+<section>
+<section id="part-c-measuring-errors" class="title-slide slide level1 center">
+<h1>Part C — Measuring Errors</h1>
+
+</section>
+<section id="c1-norms-of-errors-in-ufl" class="slide level2">
+<h2>§C1 Norms of errors in UFL</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> ufl.SpatialCoordinate(msh)</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>u_ex <span class="op">=</span> ufl.sin(<span class="dv">2</span> <span class="op">*</span> ufl.pi <span class="op">*</span> x[<span class="dv">0</span>]) <span class="op">*</span> ufl.cos(<span class="dv">2</span> <span class="op">*</span> ufl.pi <span class="op">*</span> x[<span class="dv">1</span>])      <span class="co"># exact solution as UFL</span></span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>e <span class="op">=</span> u_h <span class="op">-</span> u_ex</span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> norm(form):                                                     <span class="co"># parallel-safe</span></span>
+<span id="cb5-6"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.sqrt(msh.comm.allreduce(fem.assemble_scalar(fem.form(form)), op<span class="op">=</span>MPI.SUM))</span>
+<span id="cb5-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="" aria-hidden="true" tabindex="-1"></a>L2 <span class="op">=</span> norm(ufl.inner(e, e) <span class="op">*</span> ufl.dx)</span>
+<span id="cb5-9"><a href="" aria-hidden="true" tabindex="-1"></a>H1 <span class="op">=</span> norm(ufl.inner(ufl.grad(e), ufl.grad(e)) <span class="op">*</span> ufl.dx)             <span class="co"># seminorm</span></span>
+<span id="cb5-10"><a href="" aria-hidden="true" tabindex="-1"></a>rate <span class="op">=</span> np.log(E[i <span class="op">-</span> <span class="dv">1</span>] <span class="op">/</span> E[i]) <span class="op">/</span> np.log(h[i <span class="op">-</span> <span class="dv">1</span>] <span class="op">/</span> h[i])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="fragment">
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>P<span class="math inline">k</span>, <span class="math inline">u=\sin2\pi x\cos2\pi y</span></th>
+<th style="text-align: center;"><span class="math inline">L^2</span>, <span class="math inline">N=64</span></th>
+<th style="text-align: center;">rate</th>
+<th style="text-align: center;"><span class="math inline">H^1</span>, <span class="math inline">N=64</span></th>
+<th style="text-align: center;">rate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P1</td>
+<td style="text-align: center;"><span class="math inline">9.8\times10^{-4}</span></td>
+<td style="text-align: center;">2.00</td>
+<td style="text-align: center;"><span class="math inline">2.2\times10^{-1}</span></td>
+<td style="text-align: center;">1.00</td>
+</tr>
+<tr class="even">
+<td>P2</td>
+<td style="text-align: center;"><span class="math inline">8.6\times10^{-6}</span></td>
+<td style="text-align: center;">3.00</td>
+<td style="text-align: center;"><span class="math inline">4.2\times10^{-3}</span></td>
+<td style="text-align: center;">2.00</td>
+</tr>
+<tr class="odd">
+<td>P3</td>
+<td style="text-align: center;"><span class="math inline">8.3\times10^{-8}</span></td>
+<td style="text-align: center;">4.00</td>
+<td style="text-align: center;"><span class="math inline">6.5\times10^{-5}</span></td>
+<td style="text-align: center;">3.00</td>
+</tr>
+</tbody>
+</table>
+<p>Rates from <span class="math inline">N=32\to64</span>; the full table and plot are in §A9.</p>
+</div>
+</section>
+<section id="c2-three-ways-to-get-a-wrong-error" class="slide level2">
+<h2>§C2 Three ways to get a wrong error</h2>
+<p><strong>1 · The exact solution lives in the same space.</strong> Interpolating <span class="math inline">u_{\rm ex}</span> into <span class="math inline">V</span> and comparing with <span class="math inline">\mathcal I_hu</span>: the error is <strong>exactly 0</strong> (P1, <span class="math inline">N=8</span>: <span class="math inline">0.0</span> vs <span class="math inline">1.56\times10^{-2}</span> with the UFL expression). Use a UFL expression, or interpolate into a <strong>higher-degree</strong> space.</p>
+<div class="fragment">
+<p><strong>2 · Too little quadrature.</strong> UFL estimates the degree for <code>sin</code> as degree + 2; forcing a low degree changes the answer:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 10%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>quadrature_degree</code></th>
+<th style="text-align: center;">1</th>
+<th style="text-align: center;">2</th>
+<th style="text-align: center;">4</th>
+<th style="text-align: center;">8</th>
+<th style="text-align: center;">default (12)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\|u-\mathcal I_hu\|_{L^2}</span></td>
+<td style="text-align: center;">0.0189</td>
+<td style="text-align: center;">0.0146</td>
+<td style="text-align: center;">0.01556</td>
+<td style="text-align: center;">0.015553</td>
+<td style="text-align: center;">0.015553</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="fragment">
+<p><strong>3 · Forgetting the parallel sum</strong> (<code>allreduce</code>), or taking <code>sqrt</code> of a per-rank value. Test with <code>-np 1</code> and <code>-np 2</code>.</p>
+</div>
+<div class="fragment">
+<p><strong>Unit test for every pipeline:</strong> polynomial preservation. Interpolating <span class="math inline">x^2+xy</span>: P1 error <span class="math inline">4.4\times10^{-3}</span>; P2, P3 errors <span class="math inline">2\times10^{-16}</span>.</p>
+</div>
+</section>
+<section id="c3-d-interpolation-and-io" class="slide level2">
+<h2>§C3 [D] Interpolation and I/O</h2>
+<p>From the DOLFINx demo <em>Interpolation and IO</em>: a field whose <strong>normal</strong> component jumps at <span class="math inline">x=0.5</span>, in an <span class="math inline">H(\mathrm{curl})</span> space.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="" aria-hidden="true" tabindex="-1"></a>V  <span class="op">=</span> fem.functionspace(msh, (<span class="st">"N1curl"</span>, <span class="dv">1</span>))                     <span class="co"># Nédélec: tangential continuity only</span></span>
+<span id="cb6-2"><a href="" aria-hidden="true" tabindex="-1"></a>u  <span class="op">=</span> fem.Function(V)</span>
+<span id="cb6-3"><a href="" aria-hidden="true" tabindex="-1"></a>u.interpolate(<span class="kw">lambda</span> x: np.vstack((x[<span class="dv">0</span>], x[<span class="dv">1</span>])), cells0)       <span class="co"># cells with x ≤ 0.5</span></span>
+<span id="cb6-4"><a href="" aria-hidden="true" tabindex="-1"></a>u.interpolate(<span class="kw">lambda</span> x: np.vstack((x[<span class="dv">0</span>] <span class="op">+</span> <span class="dv">1</span>, x[<span class="dv">1</span>])), cells1)   <span class="co"># cells with x ≥ 0.5</span></span>
+<span id="cb6-5"><a href="" aria-hidden="true" tabindex="-1"></a>V0 <span class="op">=</span> fem.functionspace(msh, (<span class="st">"DG"</span>, <span class="dv">1</span>, (<span class="dv">2</span>,)))                   <span class="co"># discontinuous Lagrange for output</span></span>
+<span id="cb6-6"><a href="" aria-hidden="true" tabindex="-1"></a>u0 <span class="op">=</span> fem.Function(V0)<span class="op">;</span> u0.interpolate(u)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Just left / right of <span class="math inline">(0.5, 0.3)</span>: <span class="math inline">u_0=(0.469,\,0.281)</span> and <span class="math inline">(1.531,\,0.281)</span> — <span class="math inline">u_x</span> jumps, <span class="math inline">u_y</span> is continuous.</p>
+<div class="fragment">
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Writer</th>
+<th>What it accepts</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>io.XDMFFile</code></td>
+<td>functions of the <strong>same degree as the mesh</strong> (P1 on an affine mesh)</td>
+<td>P2 → <code>RuntimeError: Degree of output Function must be same as mesh degree.</code></td>
+</tr>
+<tr class="even">
+<td><code>io.VTXWriter</code> (ADIOS2)</td>
+<td>Lagrange/DG of any degree, time series</td>
+<td>open the <code>.bp</code> folder in ParaView; check <code>dolfinx.has_adios2</code></td>
+</tr>
+</tbody>
+</table>
+<p>On Colab: write to <code>/tmp/fnx/</code> or Drive, then download and open in ParaView.</p>
+</div>
+</section>
+<section id="c4-math-dolfinx" class="slide level2">
+<h2>§C4 Math → DOLFINx</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Math</th>
+<th>DOLFINx 0.11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">u_h=\sum u_j\phi_j</span></td>
+<td><code>u = fem.Function(V)</code>; <code>u.x.array</code> (owned + ghosts)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\mathcal I_hu</span> for a formula <span class="math inline">u</span></td>
+<td><code>u.interpolate(lambda x: ...)</code> (NumPy, vectorised)</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\mathcal I_h</span> of another FE function</td>
+<td><code>interpolate(v)</code>; other mesh: <code>create_interpolation_data</code> + <code>interpolate_nonmatching</code></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\mathcal I_h</span> of an expression (<span class="math inline">\nabla u</span>, <span class="math inline">\kappa\nabla u</span>)</td>
+<td><code>fem.Expression(expr, V.element.interpolation_points)</code></td>
+</tr>
+<tr class="odd">
+<td>piecewise data</td>
+<td><code>interpolate(f, cells0=cells)</code></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\|e\|_{L^2}</span>, <span class="math inline">|e|_{H^1}</span></td>
+<td><code>sqrt(allreduce(assemble_scalar(form(inner(e,e)*dx))))</code>, same with <code>grad</code></td>
+</tr>
+<tr class="odd">
+<td>rate</td>
+<td><span class="math inline">\log(E_{i-1}/E_i)/\log(h_{i-1}/h_i)</span></td>
+</tr>
+<tr class="even">
+<td>output</td>
+<td><code>VTXWriter</code> (any order), <code>XDMFFile</code> (mesh degree)</td>
+</tr>
+</tbody>
+</table>
+</section></section>
+<section>
+<section id="part-d-llms-functions-and-norms-assignment" class="title-slide slide level1 center">
+<h1>Part D — LLMs, Functions and Norms · Assignment</h1>
+
+</section>
+<section id="d1-where-llm-generated-interpolationerror-code-goes-wrong" class="slide level2">
+<h2>§D1 Where LLM-generated interpolation/error code goes wrong</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Kind</th>
+<th>What it looks like</th>
+<th>Detection</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>NumPy vs UFL</strong></td>
+<td>NumPy functions in forms, UFL objects in callables</td>
+<td>the <code>TypeError</code>; know which side each object lives on</td>
+</tr>
+<tr class="even">
+<td><strong>Shapes</strong></td>
+<td>callables that return a scalar, a tuple of the wrong length, or the transposed array</td>
+<td>the error message; print <code>x.shape</code> inside the callable</td>
+</tr>
+<tr class="odd">
+<td><strong>Self-fulfilling checks</strong></td>
+<td>comparing with a reference that lives in the same space; low quadrature</td>
+<td>polynomial preservation; a reference you trust</td>
+</tr>
+<tr class="even">
+<td><strong>Stale API</strong></td>
+<td>interpolation between meshes, writer classes and their arguments from older versions</td>
+<td>the API sheet; read the signature</td>
+</tr>
+<tr class="odd">
+<td><strong>Parallel</strong></td>
+<td>per-rank norms, missing <code>sqrt</code>/<code>allreduce</code></td>
+<td><code>-np 1</code> = <code>-np 2</code></td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p><strong>Before trusting a rate:</strong> run a polynomial that must be reproduced exactly, and check that the rate is constant over several refinements.</p>
+</div>
+</section>
+<section id="assignment-hw4-due-before-the-week-5-lecture" class="slide level2">
+<h2>Assignment — HW4, due before the Week 5 lecture</h2>
+<div class="columns">
+<div class="column" style="width:55%;">
+<h3 id="hw4-interpolation-convergence-rates-100">HW4 — Interpolation convergence rates (100)</h3>
+<ul>
+<li><strong>Q1</strong> proofs: the 1D estimate by Rolle and scaling; how norms scale (25)</li>
+<li><strong>Q2</strong> convergence study: P1–P3, a smooth function and a function singular along an edge; graded meshes (35)</li>
+<li><strong>Q3</strong> one-triangle experiment: which triangle shapes are harmful for <span class="math inline">|u-\mathcal I_hu|_{H^1}</span>? (20)</li>
+<li><strong>Q4</strong> LLM-assisted: transfer a P2 field between non-matching meshes, verify, write it out (20)</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<div class="box">
+<p>Submit the executed <code>.ipynb</code> (restart &amp; run all) with the AI-usage log.</p>
+<p><strong>Reminder:</strong> an error in a <code>%%fenicsx</code> cell does <strong>not</strong> stop <em>Run all</em>. Read every output before you submit.</p>
+</div>
+</div></div>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Key idea</th>
+<th>DOLFINx</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Interpolant</td>
+<td><span class="math inline">\mathcal I_Kv=\sum N_i(v)\phi_i</span>, preserves <span class="math inline">\mathcal P</span></td>
+<td><code>interpolate</code></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">H^k</span> norms</td>
+<td><span class="math inline">|u|_{H^k}^2=\sum_{|\alpha|=k}\|D^\alpha u\|^2</span></td>
+<td>UFL <code>inner</code>, <code>grad</code></td>
+</tr>
+<tr class="odd">
+<td>Sobolev</td>
+<td>point values need <span class="math inline">k&gt;n/2</span></td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>Error estimate</td>
+<td><span class="math inline">|u-\mathcal I_hu|_{H^i}\le Ch^{k+1-i}|u|_{H^{k+1}}</span></td>
+<td>rates 2/1, 3/2, 4/3</td>
+</tr>
+<tr class="odd">
+<td>Ingredients</td>
+<td>Taylor remainder + polynomial preservation + scaling</td>
+<td>—</td>
+</tr>
+<tr class="even">
+<td>Limits</td>
+<td>regularity of <span class="math inline">u</span>; shape of cells</td>
+<td>graded meshes; HW4</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<h3 id="next-week-laxmilgram">Next week — Lax–Milgram</h3>
+<p>Riesz representation, coercivity and continuity, well-posedness of Poisson/Helmholtz; assembly and PETSc KSP; the method of manufactured solutions.</p>
+</div>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="assets/seoultech_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="W04_lecture_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="W04_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="W04_lecture_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true,"numbers":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

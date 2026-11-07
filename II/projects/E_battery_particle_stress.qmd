@@ -1,0 +1,78 @@
+---
+title: "Topic E — Diffusion-Induced Stress in Battery Electrode Particles"
+subtitle: "lithium diffusion + elasticity (the thermal-stress analogy) · spherical and ellipsoidal particles · fracture risk · tier: standard"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: true
+---
+
+## Motivation
+
+Lithium entering an electrode particle makes it swell; a non-uniform concentration therefore stresses the particle, and during fast charging the
+surface can crack. The stress depends on the charging rate, the particle size and its shape. Mathematically this is the thermal-stress problem of
+Week 3 with concentration in place of temperature — with closed-form solutions for a sphere that make it an ideal verification case — and it
+opens the door to non-spherical particles, concentration-dependent diffusivity and fracture.
+
+**Related fields:** lithium-ion and post-lithium batteries: electrolytes, electrode materials, next-generation battery devices. **Course weeks:** 2 (axisymmetry),
+3 (thermal stress, one-way coupling), 5 (phase-field fracture, stretch goal).
+
+## Model
+
+Particle of radius $R$ (sphere: 1D radial or 2D axisymmetric; prolate/oblate spheroid: 2D axisymmetric), dimensionless concentration $\tilde c=c/c_{\max}$.
+$$
+\partial_tc=\nabla\cdot(D(c)\nabla c),\qquad -D\partial_nc=-\frac{i}{F}\ \text{(galvanostatic charging)},
+$$
+$$
+\nabla\cdot\boldsymbol\sigma=\mathbf 0,\qquad \boldsymbol\sigma=\lambda\operatorname{tr}\boldsymbol\varepsilon\,\mathbf I+2\mu\boldsymbol\varepsilon-(3\lambda+2\mu)\frac{\Omega}{3}(c-c_0)\mathbf I,
+$$
+($\Omega$ = partial molar volume; the "thermal expansion" is $\Omega c/3$), traction-free surface, quasi-static (diffusion is slow compared with elastic
+waves). One-way coupling first; the stress-enhanced diffusion $D\nabla c\to D(\nabla c-\frac{\Omega c}{RT}\nabla\sigma_h)$ as a stretch goal.
+
+**Design outputs:** the maximum tensile hoop stress at the surface and the maximum radial stress at the centre during charging, against the
+C-rate and the particle radius; the effect of the aspect ratio.
+
+## Suggested parameters
+
+Order-of-magnitude values for a LiMn₂O₄-type cathode: $R$ = 1–10 µm, $D\sim10^{-14}$ m²/s, $E\sim10$ GPa, $\nu=0.3$, $\Omega\sim3.5\times10^{-6}$ m³/mol,
+$c_{\max}\sim2.3\times10^4$ mol/m³ — take the exact set from Cheng & Verbrugge (2009) and quote it. Current density from 1C to 10C. Dimensionless: $\tau=Dt/R^2$, flux $\frac{iR}{FDc_{\max}}$, stress scale $\frac{E\Omega c_{\max}}{3(1-\nu)}$.
+
+## Required tasks
+
+1. Diffusion in a sphere (1D radial and 2D axisymmetric), galvanostatic, until the surface reaches $c_{\max}$.
+2. Stresses from the concentration at several times; maximum hoop and radial stress against $\tau$.
+3. C-rate and size study in dimensionless form.
+4. Spheroids with aspect ratio 0.5–2: where is the maximum stress?
+
+## Verification specific to this topic
+
+- **Diffusion:** a sphere with constant surface flux has a series solution (Crank, *The Mathematics of Diffusion*, Ch. 6); compare $c(r,t)$.
+- **Stresses (thermal analogy):** for any radial $c(r)$,
+  $\sigma_r=\frac{2\Omega E}{3(1-\nu)}\Big[\frac1{R^3}\int_0^Rc\,r^2dr-\frac1{r^3}\int_0^rc\,r^2dr\Big]$,
+  $\sigma_\theta=\frac{\Omega E}{3(1-\nu)}\Big[\frac2{R^3}\int_0^Rc\,r^2dr+\frac1{r^3}\int_0^rc\,r^2dr-c\Big]$ — evaluate the integrals of **your** FE
+  concentration and compare with the FE stress (a check that separates the mechanics from the diffusion error).
+- **Uniform concentration** gives zero stress (free swelling) — the "stress-free field" test of Week 3.
+- **MMS** for the transient diffusion (time and space rates) and for the axisymmetric elasticity.
+
+## Stretch goals
+
+1. Concentration-dependent $D(c)$ and two-way stress-enhanced diffusion (Newton on the coupled problem).
+2. Phase-field fracture (Week 5) driven by the diffusion-induced stress: critical C-rate for crack initiation.
+3. Core–shell particle (two materials, an interface).
+
+## Milestones
+
+M1 1D radial diffusion with the series · M2 stresses with the integral check · M3 2D axisymmetric sphere = 1D · M4 C-rate/size study · M5 spheroids.
+
+## Pitfalls
+
+- The axisymmetric axis: no boundary condition on $r=0$, and the $r$-weight in every integral; the hoop strain $u_r/r$ (Week 2).
+- The surface stress converges slowly with a steep concentration gradient at high C-rates: grade the mesh towards the surface.
+- Rigid-body modes of a free particle: fix the minimum (one point in 2D axisymmetric: $u_z$ at one node) and check that the stresses do not change.
+
+## References
+
+- Y.-T. Cheng, M. W. Verbrugge, "Diffusion-induced stress, interfacial charge transfer, and criteria for avoiding crack initiation of electrode particles", *J. Electrochem. Soc.* 157 (2010) A508–A516; and *J. Power Sources* 190 (2009) 453–460.
+- J. Christensen, J. Newman, "Stress generation and fracture in lithium insertion materials", *J. Solid State Electrochem.* 10 (2006) 293–319.
+- J. Crank, *The Mathematics of Diffusion*, 2nd ed., Oxford 1975.

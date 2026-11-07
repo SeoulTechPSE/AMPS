@@ -1,0 +1,78 @@
+---
+title: "Topic B — Supercritical CO₂ Extraction in a Packed Bed"
+subtitle: "packed-bed flow · axial and radial dispersion · linear-driving-force desorption · tier: standard"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: true
+---
+
+## Motivation
+
+Supercritical CO₂ is a green solvent for extracting oils, flavours and drugs from packed plant material, and for drying aerogels without capillary
+collapse. The extraction curve (extracted mass against time or solvent used) decides the vessel size, the flow rate and the cycle time. It is
+controlled by three time scales: convection through the bed, dispersion, and mass transfer out of the particles.
+
+**Related fields:** supercritical fluid technology, phase equilibria, supercritical extraction, aerogels. **Course weeks:** 12 (advection–diffusion–reaction, SUPG), 13 (porous media: Darcy/Brinkman, wall channelling).
+
+## Model
+
+Cylindrical extractor, axisymmetric $(r,z)$, length $L$, radius $R$, bed porosity $\varepsilon$, particles of radius $a$.
+
+**Flow:** Darcy (or Brinkman with a wall region of higher porosity, Week 13), $\mathbf u=-\frac{\kappa}{\mu}\nabla p$, $\nabla\cdot\mathbf u=0$, given flow rate at the inlet.
+
+**Fluid phase** (solute concentration $c$) and **solid phase** (solute loading $q$, per particle volume):
+$$
+\varepsilon\,\partial_tc+\mathbf u\cdot\nabla c-\nabla\cdot(\varepsilon\mathbf D\nabla c)=-(1-\varepsilon)\,\partial_tq,\qquad
+\partial_tq=-k_f\,a_p\,\big(c^*(q)-c\big)\ \text{(linear driving force)},
+$$
+with an equilibrium relation $c^*(q)$ (linear $c^*=q/K$ to start, then a solubility cap $c^*\le c_{\rm sat}$ for the "easily accessible solute" stage),
+$c=0$ at the inlet, natural outflow, $q(\cdot,0)=q_0$. Dispersion $\mathbf D$ with axial and radial coefficients.
+
+**Design outputs:** the extraction curve $m(t)=\int_0^t\int_{\rm outlet}u\,c\,ds\,dt$, the time to 90 % recovery, and its dependence on the flow rate.
+
+## Suggested parameters
+
+$L=0.2$ m, $R=0.025$ m, $\varepsilon=0.4$, interstitial velocity 1–5 mm/s, axial Péclet number $uL/D_{ax}$ = 100–1000, $K=1$–10,
+$k_fa_p$ such that the mass-transfer Damköhler number $k_fa_pL/u$ ranges over 0.1–10. Report all results against the dimensionless groups.
+
+## Required tasks
+
+1. Flow field (uniform bed, then with a wall layer of higher porosity); check the flow rate.
+2. Tracer test without desorption ($q\equiv0$): breakthrough curve; Péclet number and SUPG.
+3. Coupled $(c,q)$: θ-method or BDF2 in time, extraction curves for three flow rates.
+4. Time-step and mesh independence of the 90 %-recovery time.
+
+## Verification specific to this topic
+
+- **Ogata–Banks:** in 1D (or a 2D bed with uniform flow), a step inlet with no desorption has
+  $\frac{c}{c_0}=\frac12\Big[\operatorname{erfc}\frac{x-vt}{2\sqrt{Dt}}+e^{vx/D}\operatorname{erfc}\frac{x+vt}{2\sqrt{Dt}}\Big]$ with the **interstitial** velocity $v=u/\varepsilon$ and the
+  axial dispersion $D$ of the model above (semi-infinite domain — use a long domain).
+- **Mass balance:** extracted + remaining in the bed = initial, at every time step, to the time-integration error.
+- **Local equilibrium limit:** $k_fa_p\to\infty$ with linear $c^*=q/K$ gives a retarded tracer with retardation factor
+  $1+\frac{(1-\varepsilon)K}{\varepsilon}$ — your breakthrough must shift accordingly.
+- **MMS** for the coupled $(c,q)$ system in time (a smooth space–time solution), with predicted rates in space and time.
+
+## Stretch goals
+
+1. Two-stage extraction curve (solubility-controlled, then diffusion-controlled: Sovová's broken-and-intact-cells model).
+2. Intraparticle diffusion instead of the linear driving force (a 1D radial particle model at every bed point, or a second coordinate).
+3. Pressure- and temperature-dependent CO₂ density and viscosity (Span–Wagner tables) in the flow.
+
+## Milestones
+
+M1 flow · M2 tracer with Ogata–Banks · M3 coupled linear model with mass balance · M4 equilibrium limit and the solubility cap · M5 flow-rate study.
+
+## Pitfalls
+
+- Oscillations at the front for $\mathrm{Pe}_h>1$: SUPG (Week 12), and check that the front speed is unchanged.
+- Interstitial vs superficial velocity: $\mathbf u$ in Darcy is superficial; the advection term in $\varepsilon\partial_tc+\mathbf u\cdot\nabla c$ is then correct as written —
+  mixing the two conventions shifts the breakthrough by the factor $\varepsilon$.
+- The solubility cap makes the problem nonlinear (non-smooth): use a smooth approximation or a semismooth Newton and report the iterations.
+
+## References
+
+- A. Ogata, R. B. Banks, *A solution of the differential equation of longitudinal dispersion in porous media*, USGS Prof. Paper 411-A (1961).
+- H. Sovová, "Rate of the vegetable oil extraction with supercritical CO₂ — I. Modelling of extraction curves", *Chem. Eng. Sci.* 49 (1994) 409–414.
+- D. M. Ruthven, *Principles of Adsorption and Adsorption Processes*, Wiley 1984 — linear driving force, retardation.

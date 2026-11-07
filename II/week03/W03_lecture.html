@@ -1,0 +1,1303 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="W03_lecture_files/libs/clipboard/clipboard.min.js"></script>
+<script src="W03_lecture_files/libs/quarto-html/tabby.min.js"></script>
+<script src="W03_lecture_files/libs/quarto-html/popper.min.js"></script>
+<script src="W03_lecture_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="W03_lecture_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="W03_lecture_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="W03_lecture_files/libs/quarto-html/quarto-syntax-highlighting-a06763021a52c43c40a351ac8b799b8f.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.36">
+
+  <meta name="author" content="Kee-Youn Yoo">
+  <title>AI-based Materials and Process Simulation II</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="W03_lecture_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="W03_lecture_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="W03_lecture_files/libs/revealjs/dist/theme/quarto-7af60fb36352a8d2af996e24a7cdd28d.css">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="W03_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="W03_lecture_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="W03_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="W03_lecture_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="W03_lecture_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="W03_lecture_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">AI-based Materials and Process Simulation II</h1>
+  <p class="subtitle">Week 03 — Generalized Plane Strain · Thermoelasticity (One-Way and Fully Coupled) · Static Condensation</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Kee-Youn Yoo 
+</div>
+        <p class="quarto-title-affiliation">
+            Process Systems Laboratory<br>Department of Chemical and Biomolecular Engineering, SeoulTech
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="today" class="slide level2">
+<h2>Today</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Topic</th>
+<th style="text-align: center;">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>Quiz on Week 2 (closed-AI)</td>
+<td style="text-align: center;">10 min</td>
+</tr>
+<tr class="even">
+<td><strong>A</strong></td>
+<td>Theory — one 3D law and three 2D reductions, generalized plane strain, thermal stress, coupled thermoelasticity</td>
+<td style="text-align: center;">55 min</td>
+</tr>
+<tr class="odd">
+<td><strong>B</strong></td>
+<td>Generalized plane strain in code — the extra unknown <span class="math inline">e_0</span>, static condensation, the thick tube</td>
+<td style="text-align: center;">40 min</td>
+</tr>
+<tr class="even">
+<td><strong>C</strong></td>
+<td>Thermoelasticity in code — one-way coupling, supports, a mixed <span class="math inline">(\theta,\mathbf u)</span> space, time stepping</td>
+<td style="text-align: center;">45 min</td>
+</tr>
+<tr class="odd">
+<td><strong>D</strong></td>
+<td>LLM pitfalls · assignment</td>
+<td style="text-align: center;">20 min</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p>Lab notebook: <code>W03_lab.ipynb</code> · Assignment: <code>W03_HW3.ipynb</code> (due before Week 4)</p>
+</div>
+</section>
+<section id="week-2-in-one-slide" class="slide level2">
+<h2>Week 2 in one slide</h2>
+<ul>
+<li>Plane stress = plane-strain law with <span class="math inline">\lambda\to\lambda^*=2\lambda\mu/(\lambda+2\mu)</span>; orthotropy <span class="math inline">\mathbf C=\mathbf S^{-1}</span>, rotate <span class="math inline">\boldsymbol\varepsilon</span> in and <span class="math inline">\boldsymbol\sigma</span> out.</li>
+<li>Gmsh: build on rank 0, physical groups → tags, check the area. Mesh study <strong>and</strong> size study.</li>
+<li>Axisymmetry: <span class="math inline">3\times3</span> strain with <span class="math inline">u_r/r</span>, <span class="math inline">r</span>-weighted form; Lamé for three end conditions (1.9667 / 1.8667 / 1.9067).</li>
+</ul>
+<p><strong>Today:</strong> the long prism whose ends are free (or capped) — one extra <strong>number</strong> <span class="math inline">e_0</span> in the unknowns; then temperature: as a load (one-way) and as an unknown (fully coupled).</p>
+</section>
+<section>
+<section id="part-a-one-law-three-reductions-temperature" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part A · One law, three reductions, temperature</h1>
+
+</section>
+<section id="a-2d-reduction-is-a-choice-of-varepsilon_zz" class="slide level2">
+<h2>A 2D reduction is a choice of <span class="math inline">\varepsilon_{zz}</span></h2>
+<p>Long prism along <span class="math inline">z</span>, cross-section <span class="math inline">\Omega</span> in <span class="math inline">(x,y)</span>, loads independent of <span class="math inline">z</span>. Keep the <strong>3D law</strong> <span class="math inline">\boldsymbol\sigma=2\mu\boldsymbol\varepsilon+\lambda(\operatorname{tr}\boldsymbol\varepsilon)\mathbf I_3</span> with <span class="math inline">\boldsymbol\varepsilon</span> built from <span class="math inline">u_x(x,y),u_y(x,y)</span> and one more entry:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Reduction</th>
+<th><span class="math inline">\varepsilon_{zz}</span></th>
+<th><span class="math inline">\sigma_{zz}</span></th>
+<th>when</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>plane strain</td>
+<td><span class="math inline">0</span></td>
+<td><span class="math inline">\lambda\operatorname{tr}\boldsymbol\varepsilon</span> (free)</td>
+<td>ends held fixed</td>
+</tr>
+<tr class="even">
+<td>plane stress</td>
+<td><span class="math inline">-\dfrac{\lambda}{\lambda+2\mu}(\varepsilon_{xx}+\varepsilon_{yy})</span></td>
+<td><span class="math inline">0</span></td>
+<td>thin plate</td>
+</tr>
+<tr class="odd">
+<td><strong>generalized plane strain</strong> (GPS)</td>
+<td><span class="math inline">e_0</span> — <strong>one unknown number</strong></td>
+<td>free, but <span class="math inline">\displaystyle\int_\Omega\sigma_{zz}\,dA=N</span></td>
+<td>long prism, ends free or capped</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>GPS: every cross-section stretches by the same amount; the extra equation is the axial force balance at the ends.</li>
+<li>In code all three are <strong>one function</strong> that returns <span class="math inline">\varepsilon_{zz}</span>; the rest of the model is shared.</li>
+</ul>
+</section>
+<section id="generalized-plane-strain-the-weak-form" class="slide level2">
+<h2>Generalized plane strain: the weak form</h2>
+<p>Unknowns <span class="math inline">(\mathbf u,e_0)\in V\times\mathbb R</span>. Test functions <span class="math inline">(\mathbf v,\hat e)</span>. Virtual work of the 3D stress on the 3D strain: <span class="math display">
+\int_\Omega\boldsymbol\sigma(\mathbf u,e_0):\boldsymbol\varepsilon(\mathbf v,\hat e)\,dA=\int_{\Gamma_N}\mathbf t\cdot\mathbf v\,ds+N\,\hat e\qquad\forall(\mathbf v,\hat e)
+</span></p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p>Split by the test functions:</p>
+<ul>
+<li><span class="math inline">\hat e=0</span>: the 2D problem, with <span class="math inline">e_0</span> entering through <span class="math inline">\lambda e_0</span> in <span class="math inline">\sigma_{xx},\sigma_{yy}</span>;</li>
+<li><span class="math inline">\mathbf v=0</span>: <span class="math inline">\displaystyle\int_\Omega\sigma_{zz}\,dA=N</span> — <strong>one</strong> scalar equation.</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<p>Discretised, a <strong>bordered</strong> matrix: <span class="math display">
+\begin{pmatrix}K&amp;\mathbf g\\\mathbf g^\top&amp;c\end{pmatrix}\begin{pmatrix}\mathbf u\\e_0\end{pmatrix}=\begin{pmatrix}\mathbf f\\N\end{pmatrix}
+</span> <span class="math inline">g_i=\int\lambda\,\nabla\!\cdot\boldsymbol\phi_i</span>, <span class="math inline">\;c=\int(\lambda+2\mu)\,dA</span>.</p>
+</div></div>
+<p><span class="math inline">e_0</span> is a “Real” degree of freedom: one value for the whole domain, coupled to <strong>every</strong> row through <span class="math inline">\mathbf g</span> (a dense row and column).</p>
+</section>
+<section id="static-condensation" class="slide level2">
+<h2>Static condensation</h2>
+<p>Eliminate the single unknown <span class="math inline">e_0</span> (block Gauss elimination): <span class="math display">
+\underbrace{(c-\mathbf g^\top K^{-1}\mathbf g)}_{N_1}\,e_0=N-\underbrace{\mathbf g^\top K^{-1}\mathbf f}_{N_0},\qquad \mathbf u=\underbrace{K^{-1}\mathbf f}_{\mathbf u_0}-e_0\,\underbrace{K^{-1}\mathbf g}_{-\mathbf u_1}
+</span></p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Two solves with one matrix</strong></p>
+</div>
+<div class="callout-content">
+<p>Case 1: loads on, <span class="math inline">e_0=0</span> → <span class="math inline">\mathbf u_0</span>, axial force <span class="math inline">N_0</span>. Case 2: loads off, <span class="math inline">e_0=1</span> → <span class="math inline">\mathbf u_1</span>, axial force <span class="math inline">N_1</span>. Then <span class="math inline">N_0+e_0N_1=N</span> and <span class="math inline">\mathbf u=\mathbf u_0+e_0\mathbf u_1</span> — exact for a linear problem, <strong>one LU factorisation</strong>.</p>
+</div>
+</div>
+</div>
+<ul>
+<li><span class="math inline">N_1</span> is the <strong>Schur complement</strong>: the axial stiffness of the section once the in-plane response has been solved for. Case 2 is not “nothing happens”: <span class="math inline">e_0=1</span> loads the section through <span class="math inline">\lambda e_0</span>.</li>
+<li>The same idea at element level condenses interior (bubble) DOFs before assembly; here it condenses one global DOF.</li>
+</ul>
+</section>
+<section id="the-thick-tube-in-gps" class="slide level2">
+<h2>The thick tube in GPS</h2>
+<p>Lamé with <span class="math inline">\sigma_{zz},\varepsilon_{zz}</span> constant (Week 2). In the cross-section: <span class="math inline">\varepsilon_{zz}=e_0=\big(\sigma_{zz}-\nu(\sigma_{rr}+\sigma_{\theta\theta})\big)/E</span>, with <span class="math inline">\sigma_{rr}+\sigma_{\theta\theta}=2A</span>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 18%">
+<col style="width: 31%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>End condition</th>
+<th><span class="math inline">N</span></th>
+<th style="text-align: center;"><span class="math inline">e_0</span> (<span class="math inline">r_i=1,r_o=2,p=1,E=1,\nu=0.3</span>)</th>
+<th style="text-align: center;"><span class="math inline">u_r(r_i)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>plane strain</td>
+<td>(reaction)</td>
+<td style="text-align: center;"><span class="math inline">0</span></td>
+<td style="text-align: center;">1.906667</td>
+</tr>
+<tr class="even">
+<td>open ends</td>
+<td><span class="math inline">0</span></td>
+<td style="text-align: center;"><span class="math inline">-2\nu A/E=-0.2</span></td>
+<td style="text-align: center;">1.966667</td>
+</tr>
+<tr class="odd">
+<td>closed ends</td>
+<td><span class="math inline">p\pi r_i^2</span></td>
+<td style="text-align: center;"><span class="math inline">(1-2\nu)A/E=0.13333</span></td>
+<td style="text-align: center;">1.866667</td>
+</tr>
+</tbody>
+</table>
+<p>The same three numbers as the axisymmetric model of Week 2, now from a 2D cross-section with one extra unknown — an independent check of both.</p>
+</section>
+<section id="thermal-strain" class="slide level2">
+<h2>Thermal strain</h2>
+<p>Temperature change <span class="math inline">\Delta T=T-T_0</span> from the stress-free reference <span class="math inline">T_0</span>; isotropic expansion <span class="math inline">\alpha\,\Delta T\,\mathbf I</span>: <span class="math display">
+\boldsymbol\sigma=\mathbb C:(\boldsymbol\varepsilon-\alpha\,\Delta T\,\mathbf I)=2\mu\boldsymbol\varepsilon+\lambda(\operatorname{tr}\boldsymbol\varepsilon)\mathbf I-\beta\,\Delta T\,\mathbf I,\qquad \beta=(3\lambda+2\mu)\alpha=\frac{E\alpha}{1-2\nu}
+</span></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Reduction</th>
+<th>in-plane law</th>
+<th><span class="math inline">\sigma_{zz}</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>plane strain / GPS</td>
+<td><span class="math inline">2\mu\boldsymbol\varepsilon+\lambda(\operatorname{tr}\boldsymbol\varepsilon+\varepsilon_{zz})\mathbf I_2-\beta\Delta T\,\mathbf I_2</span></td>
+<td><span class="math inline">\lambda\operatorname{tr}\boldsymbol\varepsilon+(\lambda+2\mu)\varepsilon_{zz}-\beta\Delta T</span></td>
+</tr>
+<tr class="even">
+<td>plane stress</td>
+<td><span class="math inline">2\mu\boldsymbol\varepsilon+\lambda^*(\operatorname{tr}\boldsymbol\varepsilon)\mathbf I_2-\dfrac{E\alpha}{1-\nu}\Delta T\,\mathbf I_2</span></td>
+<td><span class="math inline">0</span></td>
+</tr>
+</tbody>
+</table>
+<p>With the “choice of <span class="math inline">\varepsilon_{zz}</span>” code, each row comes out of the same 3D law — nothing to re-derive per case (HW3 Q1 asks for the derivation once).</p>
+</section>
+<section id="which-temperature-fields-cause-stress" class="slide level2">
+<h2>Which temperature fields cause stress?</h2>
+<p><span class="math inline">\Delta T</span> is only a load if the thermal strain <span class="math inline">\alpha\Delta T\,\mathbf I</span> is <strong>not compatible</strong> (not the symmetric gradient of some displacement) or if the supports prevent it.</p>
+<div class="callout callout-important callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Stress-free temperature fields</strong></p>
+</div>
+<div class="callout-content">
+<ul>
+<li>3D, free body: <span class="math inline">\Delta T</span> <strong>linear</strong> in <span class="math inline">x,y,z</span> → no stress.</li>
+<li>Plane stress, free simply connected plate: <span class="math inline">\Delta T</span> <strong>harmonic</strong> (<span class="math inline">\nabla^2\Delta T=0</span>, e.g.&nbsp;steady conduction without a source) → no in-plane stress.</li>
+<li>Plane strain: the in-plane stress vanishes for harmonic <span class="math inline">\Delta T</span> too, but <span class="math inline">\sigma_{zz}=-E\alpha\Delta T</span> remains (the ends are held).</li>
+</ul>
+</div>
+</div>
+</div>
+<p>“Free” means: the supports remove the rigid motions and nothing more (<strong>statically determinate</strong>). Part C measures what extra supports do.</p>
+</section>
+<section id="temperature-as-an-unknown-full-coupling" class="slide level2">
+<h2>Temperature as an unknown: full coupling</h2>
+<p>The energy balance contains the rate of the elastic volume change. Linearised about <span class="math inline">T_0</span>, with <span class="math inline">\theta=T-T_0</span>: <span class="math display">
+\rho c\,\dot\theta+T_0\,\beta\,\operatorname{tr}\dot{\boldsymbol\varepsilon}-\nabla\!\cdot(k\nabla\theta)=Q,\qquad \nabla\!\cdot\boldsymbol\sigma(\mathbf u,\theta)+\mathbf f=\mathbf 0
+</span></p>
+<ul>
+<li><strong>One-way (weak) coupling:</strong> drop <span class="math inline">T_0\beta\operatorname{tr}\dot{\boldsymbol\varepsilon}</span> → solve <span class="math inline">\theta</span> first, then <span class="math inline">\mathbf u</span> with <span class="math inline">\theta</span> as a load.</li>
+<li><strong>Full coupling:</strong> the expansion of the solid consumes heat (and compression releases it) → <span class="math inline">\theta</span> and <span class="math inline">\mathbf u</span> in <strong>one</strong> system.</li>
+<li>At steady state <span class="math inline">\dot{\boldsymbol\varepsilon}=0</span>: both models give the same answer. The coupling only acts <strong>during</strong> a transient.</li>
+</ul>
+</section>
+<section id="how-strong-is-the-coupling" class="slide level2">
+<h2>How strong is the coupling?</h2>
+<div class="callout callout-note callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<p><strong>Coupling number</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math inline">\displaystyle\delta=\frac{T_0\,\beta^2}{\rho c\,(\lambda+2\mu)}</span> — the heat taken by the elastic expansion relative to the heat stored, in uniaxial strain.</p>
+</div>
+</div>
+</div>
+<p>1D strip in uniaxial strain, <span class="math inline">\sigma_{xx}=0</span> (free end): <span class="math inline">\varepsilon_{xx}=\beta\theta/(\lambda+2\mu)</span>, so the heat equation becomes <span class="math display">
+\rho c\,(1+\delta)\,\dot\theta=k\,\theta''\qquad\Rightarrow\qquad \text{diffusivity } \frac{\kappa}{1+\delta},\ \ \kappa=\frac{k}{\rho c}
+</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Material (<span class="math inline">T_0=293</span> K)</th>
+<th style="text-align: center;"><span class="math inline">\delta</span></th>
+<th style="text-align: center;">one-way model: time scale off by</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>steel (<span class="math inline">E</span> 210 GPa, <span class="math inline">\alpha</span> <span class="math inline">1.2\times10^{-5}</span>)</td>
+<td style="text-align: center;">0.0114</td>
+<td style="text-align: center;">1.1 %</td>
+</tr>
+<tr class="even">
+<td>aluminium (<span class="math inline">E</span> 70 GPa, <span class="math inline">\alpha</span> <span class="math inline">2.3\times10^{-5}</span>)</td>
+<td style="text-align: center;">0.0261</td>
+<td style="text-align: center;">2.6 %</td>
+</tr>
+</tbody>
+</table>
+<p>Small for metals — but it is a model error you can <strong>measure</strong>, not a belief. Part C uses <span class="math inline">\delta=0.5</span> (“what if”) to make it visible.</p>
+</section></section>
+<section>
+<section id="part-b-generalized-plane-strain-in-code" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part B · Generalized plane strain in code</h1>
+
+</section>
+<section id="math-code-gps.py" class="slide level2">
+<h2>Math → code (<code>gps.py</code>)</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Mathematics</th>
+<th>DOLFINx 0.11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\boldsymbol\varepsilon</span> (<span class="math inline">3\times3</span>) with <span class="math inline">\varepsilon_{zz}</span></td>
+<td><code>ufl.as_matrix([[u[0].dx(0), g, 0], [g, u[1].dx(1), 0], [0, 0, ezz]])</code></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\boldsymbol\sigma=2\mu\boldsymbol\varepsilon+\lambda\operatorname{tr}\boldsymbol\varepsilon\,\mathbf I-\beta\Delta T\,\mathbf I</span></td>
+<td><code>2*mu*e + lmbda*ufl.tr(e)*ufl.Identity(3) - beta*dT*ufl.Identity(3)</code></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\varepsilon_{zz}</span>: <span class="math inline">0</span> / <span class="math inline">e_0</span> / from <span class="math inline">\sigma_{zz}=0</span></td>
+<td><code>ezz_of(m, mode, u, dT, e0)</code></td>
+</tr>
+<tr class="even">
+<td>in-plane virtual work</td>
+<td><code>ufl.inner(S2(sigma3(...)), ufl.sym(ufl.grad(v)))*dx</code> with <code>S2</code> = the <span class="math inline">2\times2</span> block</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">e_0</span> of a solve</td>
+<td><code>e0c = fem.Constant(msh, 0.0)</code>; set <code>e0c.value</code> before assembling <span class="math inline">\mathbf b</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">N=\int\sigma_{zz}\,dA</span></td>
+<td><code>fem.assemble_scalar(fem.form(sigma3(...)[2, 2]*dx))</code> + <code>allreduce</code></td>
+</tr>
+</tbody>
+</table>
+<p>Material data can be numbers or DG0 functions (<code>Material.regions</code>), so the same code runs layered sections.</p>
+</section>
+<section id="one-factorisation-two-right-hand-sides" class="slide level2">
+<h2>One factorisation, two right-hand sides</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> assemble_matrix(a, bcs<span class="op">=</span>bcs)<span class="op">;</span> A.assemble()</span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>ksp <span class="op">=</span> PETSc.KSP().create(comm)<span class="op">;</span> ksp.setOperators(A)<span class="op">;</span> ksp.setType(<span class="st">"preonly"</span>)</span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>ksp.getPC().setType(<span class="st">"lu"</span>)<span class="op">;</span> ksp.getPC().setFactorSolverType(<span class="st">"mumps"</span>)     <span class="co"># factorised at the first solve</span></span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solve(lf_, e0_):                                   <span class="co"># load factor, e0</span></span>
+<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>    lf.value, e0c.value <span class="op">=</span> lf_, e0_</span>
+<span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a>    b <span class="op">=</span> assemble_vector(L)<span class="op">;</span> apply_lifting(b, [a], [bcs])</span>
+<span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a>    b.ghostUpdate(addv<span class="op">=</span>PETSc.InsertMode.ADD, mode<span class="op">=</span>PETSc.ScatterMode.REVERSE)<span class="op">;</span> set_bc(b, bcs)</span>
+<span id="cb1-9"><a href="" aria-hidden="true" tabindex="-1"></a>    w <span class="op">=</span> fem.Function(V)<span class="op">;</span> ksp.solve(b, w.x.petsc_vec)<span class="op">;</span> w.x.scatter_forward()<span class="op">;</span> <span class="cf">return</span> w</span>
+<span id="cb1-10"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="" aria-hidden="true" tabindex="-1"></a>u0, u1 <span class="op">=</span> solve(<span class="fl">1.0</span>, <span class="fl">0.0</span>), solve(<span class="fl">0.0</span>, <span class="fl">1.0</span>)              <span class="co"># same KSP: the LU factors are reused</span></span>
+<span id="cb1-12"><a href="" aria-hidden="true" tabindex="-1"></a>e0 <span class="op">=</span> (N <span class="op">-</span> Nz(u0, <span class="fl">0.0</span>, <span class="fl">1.0</span>)) <span class="op">/</span> Nz(u1, <span class="fl">1.0</span>, <span class="fl">0.0</span>)</span>
+<span id="cb1-13"><a href="" aria-hidden="true" tabindex="-1"></a>uh.x.array[:] <span class="op">=</span> u0.x.array <span class="op">+</span> e0 <span class="op">*</span> u1.x.array</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p><code>LinearProblem</code> would assemble and factorise again for each case; for one extra unknown that doubles the cost, for many (Week 9: periodic cells) it matters.</p>
+</section>
+<section id="a-curved-mesh-without-gmsh" class="slide level2">
+<h2>A curved mesh without Gmsh</h2>
+<p>Week 2: the same Gmsh script gave 2968 cells on macOS and 3004 on Colab. For exact reproducibility, map a structured grid:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>R, TH <span class="op">=</span> np.meshgrid(np.linspace(ri, ro, <span class="dv">2</span><span class="op">*</span>nr <span class="op">+</span> <span class="dv">1</span>), np.linspace(<span class="dv">0</span>, np.pi<span class="op">/</span><span class="dv">2</span>, <span class="dv">2</span><span class="op">*</span>nt <span class="op">+</span> <span class="dv">1</span>), indexing<span class="op">=</span><span class="st">"ij"</span>)</span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.c_[(R<span class="op">*</span>np.cos(TH)).ravel(), (R<span class="op">*</span>np.sin(TH)).ravel()]          <span class="co"># 6-node triangles: vertices + edge midpoints</span></span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>cells <span class="op">=</span> [... [v0, v1, v2, mid(v1,v2), mid(v0,v2), mid(v0,v1)] ...]  <span class="co"># basix order of the P2 triangle</span></span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a>msh <span class="op">=</span> mesh.create_mesh(comm, cells, ufl.Mesh(basix.ufl.element(<span class="st">"Lagrange"</span>, <span class="st">"triangle"</span>, <span class="dv">2</span>, shape<span class="op">=</span>(<span class="dv">2</span>,))), x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Curved (isoparametric) cells: area error <span class="math inline">-1.2\times10^{-4},-7.3\times10^{-6},-4.6\times10^{-7},-2.9\times10^{-8}</span> — rate 4.</li>
+<li>Rank 0 passes the arrays, the others pass empty ones; <code>create_mesh</code> distributes.</li>
+</ul>
+</section>
+<section id="tube-three-end-conditions-one-code" class="slide level2">
+<h2>Tube: three end conditions, one code</h2>
+
+<img data-src="figs/w03_tube_convergence.png" class="quarto-figure quarto-figure-center r-stretch" style="width:56.0%"><p><span class="math inline">n=16</span>: <span class="math inline">u_r(r_i)</span> = 1.9066660 / 1.9666660 / 1.8666660 and <span class="math inline">e_0</span> = 0 / −0.2000000 / 0.1333333. The three error curves lie on top of each other: <span class="math inline">e_0\,\mathbf u_1</span> is a uniform contraction that P2 represents exactly — the error is that of the plane-strain part.</p>
+</section>
+<section id="the-bordered-system-assembled" class="slide level2">
+<h2>The bordered system, assembled</h2>
+<p>The same tube, <span class="math inline">n=4</span>, serial: put <span class="math inline">K</span>, <span class="math inline">\mathbf g=-\mathbf b_1</span> and <span class="math inline">c=(\lambda+2\mu)|\Omega_h|</span> into one dense <span class="math inline">307\times307</span> matrix and solve.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Check</th>
+<th style="text-align: center;">Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\max\lvert M-M^\top\rvert</span></td>
+<td style="text-align: center;"><span class="math inline">8.9\times10^{-16}</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">e_0</span> bordered − condensed</td>
+<td style="text-align: center;"><span class="math inline">2.8\times10^{-16}</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\max\lvert\mathbf u_{\rm bordered}-\mathbf u_{\rm condensed}\rvert</span></td>
+<td style="text-align: center;"><span class="math inline">8.0\times10^{-14}</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">c</span></td>
+<td style="text-align: center;">3.1718</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">N_1=c-\mathbf g^\top K^{-1}\mathbf g</span></td>
+<td style="text-align: center;">2.3561872 <span class="math inline">=E\,|\Omega_h|</span></td>
+</tr>
+</tbody>
+</table>
+<p>The Schur complement turns <span class="math inline">(\lambda+2\mu)</span> — the stiffness with the section held laterally — into <span class="math inline">E</span>: the section contracts freely in its plane.</p>
+</section></section>
+<section>
+<section id="part-c-thermoelasticity-in-code" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part C · Thermoelasticity in code</h1>
+
+</section>
+<section id="one-way-coupling" class="slide level2">
+<h2>One-way coupling</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>Th <span class="op">=</span> heat(msh, ft, k<span class="op">=</span><span class="fl">1.0</span>, Q<span class="op">=</span><span class="fl">0.0</span>, dirichlet<span class="op">=</span>((LEFT, <span class="fl">0.0</span>), (RIGHT, <span class="fl">1.0</span>)))   <span class="co"># P1 Function, steady</span></span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>uh, info <span class="op">=</span> solve_2d(msh, ft, mat, <span class="dv">2</span>, <span class="st">"stress"</span>, dT<span class="op">=</span>Th, points<span class="op">=</span>[(pin, <span class="dv">0</span>), (pin, <span class="dv">1</span>), (roller, <span class="dv">1</span>)])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>The temperature <code>Function</code> (P1) enters the P2 mechanical form directly; UFL evaluates it at the quadrature points.</li>
+<li><span class="math inline">\Delta T</span> only appears on the right-hand side: <span class="math inline">\displaystyle\int\beta\,\Delta T\,\nabla\!\cdot\mathbf v</span> (in plane stress with <span class="math inline">E\alpha/(1-\nu)</span>).</li>
+<li>Supports: <code>points=[(marker, comp)]</code> fixes single vertices — a pin and a roller remove the three rigid motions of a plane body and nothing more.</li>
+</ul>
+</section>
+<section id="the-heated-plate-what-the-supports-do" class="slide level2">
+<h2>The heated plate: what the supports do</h2>
+
+<img data-src="figs/w03_plate_supports.png" class="quarto-figure quarto-figure-center r-stretch" style="width:80.0%"><p><span class="math inline">[0,1]^2</span>, <span class="math inline">T=x</span> (harmonic), plane stress, <span class="math inline">E=210</span> GPa, <span class="math inline">\alpha=10^{-5}</span>. Rollers on <span class="math inline">x=0</span> and <span class="math inline">y=0</span>: <span class="math inline">\max u_x=5.7164\times10^{-6}</span> m, stress 1.19 MPa. Pin + roller: <span class="math inline">\max u_x=5.0000\times10^{-6}=\alpha/2</span>, stress <span class="math inline">6\times10^{-11}</span>, <span class="math inline">\lVert\mathbf u_h-\mathbf u_{\rm free}\rVert=1.5\times10^{-17}</span> with <span class="math inline">\mathbf u_{\rm free}=\alpha\big(\tfrac12(x^2-y^2),\,xy\big)</span>.</p>
+</section>
+<section id="reading-the-plate-result" class="slide level2">
+<h2>Reading the plate result</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 23%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Supports</th>
+<th>reduction</th>
+<th style="text-align: center;"><span class="math inline">\max u_x</span> [m]</th>
+<th style="text-align: center;">max von Mises [MPa]</th>
+<th style="text-align: center;"><span class="math inline">\max\lvert\sigma_{zz}\rvert</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>rollers</td>
+<td>plane stress</td>
+<td style="text-align: center;"><span class="math inline">5.7164\times10^{-6}</span></td>
+<td style="text-align: center;">1.19</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td>pin + roller</td>
+<td>plane stress</td>
+<td style="text-align: center;"><span class="math inline">5.0000\times10^{-6}</span></td>
+<td style="text-align: center;"><span class="math inline">6\times10^{-11}</span></td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td>pin + roller</td>
+<td>plane strain</td>
+<td style="text-align: center;"><span class="math inline">6.5000\times10^{-6}</span></td>
+<td style="text-align: center;">2.10</td>
+<td style="text-align: center;">2.10 <span class="math inline">=E\alpha\cdot1</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The rollers impose <span class="math inline">u_x=0</span> on <span class="math inline">x=0</span>, where the free expansion has <span class="math inline">u_x=-\alpha y^2/2</span> (the edge bends) — <strong>that</strong> is the 14 %, not “the Poisson effect”.</li>
+<li>Plane strain: <span class="math inline">(1+\nu)\alpha/2=6.5\times10^{-6}</span>, in-plane stress zero, <span class="math inline">\sigma_{zz}=-E\alpha\Delta T</span> — exactly the Part A statements.</li>
+<li>An exact stress-free solution is the cheapest test of a thermal code: zero to round-off, and P2 reproduces the quadratic <span class="math inline">\mathbf u_{\rm free}</span> exactly.</li>
+</ul>
+</section>
+<section id="a-temperature-field-that-does-cause-stress" class="slide level2">
+<h2>A temperature field that does cause stress</h2>
+
+<img data-src="figs/w03_gauss.png" class="quarto-figure quarto-figure-center r-stretch" style="width:86.0%"><p>Gaussian source <span class="math inline">Q=1000\,e^{-r^2/(2\cdot0.1^2)}</span>, all walls at <span class="math inline">\Delta T=0</span>: <span class="math inline">T_{\max}=16.26</span> K. Not harmonic → stress even with free supports: 15.3 MPa (pin + roller), 16.4 MPa (rollers). <span class="math inline">\max\lvert\mathbf u\rvert</span>: <span class="math inline">5.01\times10^{-5}</span> / <span class="math inline">5.66\times10^{-5}</span> m.</p>
+</section>
+<section id="full-coupling-one-mixed-space" class="slide level2">
+<h2>Full coupling: one mixed space</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>el <span class="op">=</span> basix.ufl.mixed_element([basix.ufl.element(<span class="st">"Lagrange"</span>, <span class="st">"triangle"</span>, <span class="dv">1</span>),               <span class="co"># theta</span></span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>                              basix.ufl.element(<span class="st">"Lagrange"</span>, <span class="st">"triangle"</span>, <span class="dv">2</span>, shape<span class="op">=</span>(<span class="dv">2</span>,))])   <span class="co"># u</span></span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>W <span class="op">=</span> fem.functionspace(msh, el)</span>
+<span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a>(th, u), (s, v) <span class="op">=</span> ufl.TrialFunctions(W), ufl.TestFunctions(W)</span>
+<span id="cb4-5"><a href="" aria-hidden="true" tabindex="-1"></a>w_n <span class="op">=</span> fem.Function(W)<span class="op">;</span> th_n, u_n <span class="op">=</span> ufl.split(w_n)                                         <span class="co"># previous step</span></span>
+<span id="cb4-6"><a href="" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> (rho_c<span class="op">/</span>dt<span class="op">*</span>th<span class="op">*</span>s <span class="op">+</span> c<span class="op">*</span>T0<span class="op">*</span>beta<span class="op">/</span>dt<span class="op">*</span>ufl.tr(eps(u))<span class="op">*</span>s <span class="op">+</span> k<span class="op">*</span>ufl.inner(ufl.grad(th), ufl.grad(s)))<span class="op">*</span>ufl.dx <span class="op">\</span></span>
+<span id="cb4-7"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="op">+</span> ufl.inner(sig(u, th), eps(v))<span class="op">*</span>ufl.dx</span>
+<span id="cb4-8"><a href="" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> (rho_c<span class="op">/</span>dt<span class="op">*</span>th_n<span class="op">*</span>s <span class="op">+</span> c<span class="op">*</span>T0<span class="op">*</span>beta<span class="op">/</span>dt<span class="op">*</span>ufl.tr(eps(u_n))<span class="op">*</span>s)<span class="op">*</span>ufl.dx                             <span class="co"># c = 1 full, 0 one-way</span></span>
+<span id="cb4-9"><a href="" aria-hidden="true" tabindex="-1"></a>bc_T <span class="op">=</span> fem.dirichletbc(fem.Constant(msh, dT), fem.locate_dofs_topological(W.sub(<span class="dv">0</span>), <span class="dv">1</span>, left), W.sub(<span class="dv">0</span>))</span>
+<span id="cb4-10"><a href="" aria-hidden="true" tabindex="-1"></a>bc_ux <span class="op">=</span> fem.dirichletbc(<span class="fl">0.0</span>, fem.locate_dofs_topological(W.sub(<span class="dv">1</span>).sub(<span class="dv">0</span>), <span class="dv">1</span>, left), W.sub(<span class="dv">1</span>).sub(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Implicit Euler; the matrix does not change in time → assemble and factorise <strong>once</strong>, assemble only <span class="math inline">\mathbf b</span> per step.</li>
+<li>The matrix is <strong>not symmetric</strong> (<span class="math inline">\theta</span> in the mechanics, <span class="math inline">\operatorname{tr}\boldsymbol\varepsilon</span> in the heat equation with different factors): LU, not CG.</li>
+<li>Output from the mixed function through forms: <code>w_n.sub(0)*ds(1)</code> for the mean <span class="math inline">\theta</span> on a boundary.</li>
+</ul>
+</section>
+<section id="the-strip-one-way-vs-full-vs-exact" class="slide level2">
+<h2>The strip: one-way vs full vs exact</h2>
+
+<img data-src="figs/w03_strip.png" class="quarto-figure quarto-figure-center r-stretch" style="width:58.0%"><p><span class="math inline">\theta=\Delta T</span> at <span class="math inline">x=0</span>, insulated end <span class="math inline">x=L=1</span>; <span class="math inline">u_x=0</span> at <span class="math inline">x=0</span>, <span class="math inline">u_y=0</span> on top and bottom (uniaxial strain), <span class="math inline">x=L</span> free. Exact: a Fourier series with <span class="math inline">\kappa</span> or <span class="math inline">\kappa/(1+\delta)</span>.</p>
+</section>
+<section id="measuring-the-coupling" class="slide level2">
+<h2>Measuring the coupling</h2>
+<p>Half-rise time <span class="math inline">t_{50}</span> of <span class="math inline">\theta(L,t)</span>, <span class="math inline">\delta=0.5</span>, P1/P2, <span class="math inline">64\times2</span> cells:</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><span class="math inline">\Delta t</span></th>
+<th style="text-align: center;">one-way <span class="math inline">t_{50}</span></th>
+<th style="text-align: center;">full <span class="math inline">t_{50}</span></th>
+<th style="text-align: center;">ratio full/one-way</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">4\times10^{-3}</span></td>
+<td style="text-align: center;">0.38059</td>
+<td style="text-align: center;">0.56997</td>
+<td style="text-align: center;">1.49759</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><span class="math inline">2\times10^{-3}</span></td>
+<td style="text-align: center;">0.37967</td>
+<td style="text-align: center;">0.56905</td>
+<td style="text-align: center;">1.49879</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><span class="math inline">1\times10^{-3}</span></td>
+<td style="text-align: center;">0.37921</td>
+<td style="text-align: center;">0.56858</td>
+<td style="text-align: center;">1.49939</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">exact</td>
+<td style="text-align: center;">0.37875</td>
+<td style="text-align: center;">0.56812</td>
+<td style="text-align: center;"><span class="math inline">1+\delta=1.5</span></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Both <span class="math inline">t_{50}</span> converge at <strong>first order</strong> in <span class="math inline">\Delta t</span> (implicit Euler); the ratio error halves too: 2.4, 1.2, 0.6 <span class="math inline">\times10^{-3}</span>.</li>
+<li>The ratio is the quantity to test: most of the time-step error cancels in it.</li>
+</ul>
+</section></section>
+<section>
+<section id="part-d-llm-pitfalls-assignment" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part D · LLM pitfalls · assignment</h1>
+
+</section>
+<section id="what-goes-wrong-in-gps-and-thermal-codes" class="slide level2">
+<h2>What goes wrong in GPS and thermal codes</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pitfall</th>
+<th>Measured symptom (this week)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>The <span class="math inline">e_0=1</span> case solved <strong>without its load</strong> (<span class="math inline">\mathbf u_1=0</span>)</td>
+<td><span class="math inline">N_1=(\lambda+2\mu)A</span> instead of <span class="math inline">EA</span>: <span class="math inline">e_0=3.543\times10^{-4}</span> instead of <span class="math inline">4.769\times10^{-4}</span> (−26 %)</td>
+</tr>
+<tr class="even">
+<td>“<span class="math inline">N=0</span>, so <span class="math inline">e_0=0</span>: GPS reduces to plane strain”</td>
+<td><span class="math inline">N_0=-0.15</span> under an in-plane load: <span class="math inline">e_0=7.1\times10^{-7}\ne0</span></td>
+</tr>
+<tr class="odd">
+<td>Quarter model given the end force of the <strong>whole</strong> section</td>
+<td>closed tube: <span class="math inline">e_0=1.1333</span> instead of 0.1333, <span class="math inline">u_r(r_i)=1.5667</span> instead of 1.8667</td>
+</tr>
+<tr class="even">
+<td>Thermal test on a body with <strong>redundant supports</strong>, difference blamed on “the Poisson effect”</td>
+<td><span class="math inline">\max u_x</span> 14 % high, 1.19 MPa where the exact answer is 0</td>
+</tr>
+<tr class="odd">
+<td>Full coupling “verified” by a <strong>steady</strong> problem</td>
+<td>one-way and full both <span class="math inline">5.7164\times10^{-6}</span> m — the coupling term is zero at steady state: the test checks nothing</td>
+</tr>
+</tbody>
+</table>
+<p>All five are from an earlier version of these very examples. The fix: an exact solution with a nonzero answer for the thing being tested.</p>
+</section>
+<section id="prompting-for-a-coupled-or-gps-model" class="slide level2 scrollable">
+<h2>Prompting for a coupled or GPS model</h2>
+<ol type="1">
+<li>State the reduction <strong>and</strong> the end condition: plane strain, plane stress, or GPS with <span class="math inline">N</span> (and <span class="math inline">N</span> for the modelled part, if symmetry is used).</li>
+<li>State the supports and say whether they are meant to be statically determinate; give the boundary and initial conditions of every field.</li>
+<li>For a transient, state the time scheme and ask the model to factorise once.</li>
+<li>Ask for the <strong>checks</strong> with the code: a stress-free temperature field, the Lamé tube in GPS, a 1D transient with an exact series, a ratio that should equal <span class="math inline">1+\delta</span>.</li>
+<li>Run the checks before reading the physics.</li>
+</ol>
+</section>
+<section id="assignment-hw3-due-before-week-4" class="slide level2">
+<h2>Assignment HW3 (due before Week 4)</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Q</th>
+<th>Topic</th>
+<th style="text-align: center;">Points</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Thermal stress in the 2D reductions, stress-free temperature fields, the coupled 1D diffusion (theory)</td>
+<td style="text-align: center;">20</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>GPS with bending: <span class="math inline">\varepsilon_{zz}=e_0+\kappa_xx+\kappa_yy</span>, a linear temperature field, a bimetal cross-section</td>
+<td style="text-align: center;">35</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Fully coupled transient: the coupling number, real metals, what a steady test cannot see</td>
+<td style="text-align: center;">25</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Debugging an LLM-generated coupled thermoelastic script</td>
+<td style="text-align: center;">20</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Week 4 starts with a 10-minute quiz on today’s material (closed-AI).</strong></p>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Key point</th>
+<th>DOLFINx 0.11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2D reductions</td>
+<td>one 3D law; choose <span class="math inline">\varepsilon_{zz}</span>: <span class="math inline">0</span>, <span class="math inline">e_0</span>, or from <span class="math inline">\sigma_{zz}=0</span></td>
+<td><code>ezz_of(...)</code> in a <span class="math inline">3\times3</span> strain</td>
+</tr>
+<tr class="even">
+<td>GPS</td>
+<td>one global unknown <span class="math inline">e_0</span>, equation <span class="math inline">\int\sigma_{zz}=N</span></td>
+<td>bordered matrix <span class="math inline">\begin{pmatrix}K&amp;\mathbf g\\\mathbf g^\top&amp;c\end{pmatrix}</span></td>
+</tr>
+<tr class="odd">
+<td>Static condensation</td>
+<td>Schur complement; two solves, one LU</td>
+<td>one <code>KSP</code>, two right-hand sides</td>
+</tr>
+<tr class="even">
+<td>Thermal stress</td>
+<td><span class="math inline">-\beta\Delta T\,\mathbf I</span>, <span class="math inline">\beta=(3\lambda+2\mu)\alpha</span>; test with a stress-free field</td>
+<td><code>dT=Th</code> (a <code>Function</code>)</td>
+</tr>
+<tr class="odd">
+<td>Full coupling</td>
+<td><span class="math inline">T_0\beta\operatorname{tr}\dot{\boldsymbol\varepsilon}</span> in the heat equation; <span class="math inline">\delta</span></td>
+<td><code>basix.ufl.mixed_element</code>, <code>W.sub(i)</code></td>
+</tr>
+<tr class="even">
+<td>Verification</td>
+<td>exact solutions with a nonzero answer; ratios that cancel discretisation error</td>
+<td>Lamé in GPS, <span class="math inline">\alpha/2</span>, <span class="math inline">1+\delta</span></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Next week:</strong> J2 plasticity — quadrature spaces, radial return, the consistent tangent.</p>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="assets/seoultech_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="W03_lecture_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="W03_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="W03_lecture_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="W03_lecture_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="W03_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="W03_lecture_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="W03_lecture_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="W03_lecture_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="W03_lecture_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="W03_lecture_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true,"numbers":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

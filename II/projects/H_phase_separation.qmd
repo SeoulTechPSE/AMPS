@@ -1,0 +1,75 @@
+---
+title: "Topic H — Phase Separation and Coarsening in Polymer Blends and Emulsions"
+subtitle: "Cahn–Hilliard · linear stability · coarsening law · parallel performance · tier: standard"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: true
+---
+
+## Motivation
+
+Polymer blends, porous membranes made by phase inversion, emulsions and self-assembled soft materials all form by phase separation: an unstable
+mixture splits into domains that then coarsen. The Cahn–Hilliard equation describes both stages. Its verification is unusually clean (a dispersion
+relation for the early stage, a power law for the late stage, conservation and energy decay throughout), and the late stage needs large domains
+and long times — a natural case for parallel computing.
+
+**Related fields:** emulsions, foams and porous polymers (morphology control); self-assembly of polymers, liquid crystals and colloids; phase transitions in polymeric systems. **Course week:** 14 (Cahn–Hilliard, matrix-free solvers, parallel scaling).
+
+## Model
+
+Concentration $c$ (volume fraction of one component), chemical potential $\mu$, mixed form (the DOLFINx Cahn–Hilliard demo):
+$$
+\partial_tc=\nabla\cdot(M(c)\nabla\mu),\qquad \mu=f'(c)-\kappa\Delta c,
+$$
+with $f(c)=\frac{c\ln c+(1-c)\ln(1-c)}{N}+\chi c(1-c)$ (Flory–Huggins, polymer blend; $N$ = chain length) or the quartic double well $f=Ac^2(1-c)^2$
+(the demo), periodic or no-flux boundaries, a random perturbation of a uniform mixture $c_0$, and a time-adaptive implicit scheme (θ-method or
+convex splitting).
+
+**Design outputs:** the characteristic length $L(t)$ (from the structure factor or the interface area) against time, the morphology (droplets vs
+bicontinuous) against $c_0$, and the effect of $\chi N$.
+
+## Suggested parameters
+
+Quartic potential first ($A=100$, $\kappa=10^{-2}$ in the demo's units), then Flory–Huggins with $\chi N$ = 2.5–5 ($\chi N>2$ for $c_0=0.5$ to be
+unstable); $c_0$ = 0.3–0.5; domain 64–256 interface widths; $M$ constant, then $M=c(1-c)$.
+
+## Required tasks
+
+1. The demo reproduced and extended: energy and mass printed every step.
+2. Early stage: growth rates of Fourier modes against the linear theory.
+3. Late stage: $L(t)$ on two domain sizes; the exponent; morphology for three $c_0$.
+4. Parallel runs (1, 2 and more ranks on a large domain): time per step, iterations, and the scaling (Week 14).
+
+## Verification specific to this topic
+
+- **Dispersion relation:** linearising about $c_0$, a mode $e^{i\mathbf k\cdot\mathbf x+\sigma t}$ grows with $\sigma(k)=-Mk^2\big(f''(c_0)+\kappa k^2\big)$; the fastest mode has
+  $k^*=\sqrt{-f''(c_0)/(2\kappa)}$. Seed one mode with a small amplitude and compare the measured growth rate.
+- **Conservation and energy:** $\int c$ constant to round-off; the free energy $\int f(c)+\frac\kappa2|\nabla c|^2$ non-increasing (a property your time
+  scheme must keep — convex splitting guarantees it, the θ-method only for small steps).
+- **Coarsening law:** diffusive coarsening $L\propto t^{1/3}$ (Lifshitz–Slyozov) once the domains are much larger than the interface width.
+- **MMS** for the mixed system (space and time rates).
+
+## Stretch goals
+
+1. Phase separation in a shear flow (advected Cahn–Hilliard, coupled to Stokes: model H) — elongated domains.
+2. Ternary mixture (membrane formation by non-solvent induced phase separation, NIPS).
+3. Surface-directed spinodal decomposition at a wall with a preferential wetting energy.
+
+## Milestones
+
+M1 demo + conservation/energy · M2 dispersion relation · M3 coarsening with two domain sizes · M4 Flory–Huggins and morphology · M5 parallel scaling.
+
+## Pitfalls
+
+- $c$ leaves $(0,1)$ with the logarithmic potential: the logarithm is undefined — clip, regularise near the bounds, or use a variational-inequality
+  solver, and report how often it happens.
+- The interface width $\sim\sqrt{\kappa/|f''|}$ must be resolved by several cells; otherwise the dynamics are mesh-dependent (pinning).
+- A random seed per rank makes runs with different `-np` incomparable: generate the noise from coordinates (as in AMPS I, topic F).
+
+## References
+
+- J. W. Cahn, J. E. Hilliard, "Free energy of a nonuniform system. I. Interfacial free energy", *J. Chem. Phys.* 28 (1958) 258–267.
+- A. J. Bray, "Theory of phase-ordering kinetics", *Adv. Phys.* 43 (1994) 357–459.
+- DOLFINx demo: Cahn–Hilliard equation (docs.fenicsproject.org, v0.11).

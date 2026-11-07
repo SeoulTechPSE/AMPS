@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="W04_lecture_files/libs/clipboard/clipboard.min.js"></script>
+<script src="W04_lecture_files/libs/quarto-html/tabby.min.js"></script>
+<script src="W04_lecture_files/libs/quarto-html/popper.min.js"></script>
+<script src="W04_lecture_files/libs/quarto-html/tippy.umd.min.js"></script>
+<link href="W04_lecture_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="W04_lecture_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="W04_lecture_files/libs/quarto-html/quarto-syntax-highlighting-a06763021a52c43c40a351ac8b799b8f.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.36">
+
+  <meta name="author" content="Kee-Youn Yoo">
+  <title>AI-based Materials and Process Simulation II</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="W04_lecture_files/libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="W04_lecture_files/libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+      }
+    pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+    div.sourceCode
+      { color: #24292e;  }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #24292e; } /* Normal */
+    code span.al { color: #ff5555; font-weight: bold; } /* Alert */
+    code span.an { color: #6a737d; } /* Annotation */
+    code span.at { color: #d73a49; } /* Attribute */
+    code span.bn { color: #005cc5; } /* BaseN */
+    code span.bu { color: #d73a49; } /* BuiltIn */
+    code span.cf { color: #d73a49; } /* ControlFlow */
+    code span.ch { color: #032f62; } /* Char */
+    code span.cn { color: #005cc5; } /* Constant */
+    code span.co { color: #6a737d; } /* Comment */
+    code span.cv { color: #6a737d; } /* CommentVar */
+    code span.do { color: #6a737d; } /* Documentation */
+    code span.dt { color: #d73a49; } /* DataType */
+    code span.dv { color: #005cc5; } /* DecVal */
+    code span.er { color: #ff5555; text-decoration: underline; } /* Error */
+    code span.ex { color: #d73a49; font-weight: bold; } /* Extension */
+    code span.fl { color: #005cc5; } /* Float */
+    code span.fu { color: #6f42c1; } /* Function */
+    code span.im { color: #032f62; } /* Import */
+    code span.in { color: #6a737d; } /* Information */
+    code span.kw { color: #d73a49; } /* Keyword */
+    code span.op { color: #24292e; } /* Operator */
+    code span.ot { color: #6f42c1; } /* Other */
+    code span.pp { color: #d73a49; } /* Preprocessor */
+    code span.re { color: #6a737d; } /* RegionMarker */
+    code span.sc { color: #005cc5; } /* SpecialChar */
+    code span.ss { color: #032f62; } /* SpecialString */
+    code span.st { color: #032f62; } /* String */
+    code span.va { color: #e36209; } /* Variable */
+    code span.vs { color: #032f62; } /* VerbatimString */
+    code span.wa { color: #ff5555; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="W04_lecture_files/libs/revealjs/dist/theme/quarto-7af60fb36352a8d2af996e24a7cdd28d.css">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
+  <link href="W04_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="W04_lecture_files/libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="W04_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="W04_lecture_files/libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="W04_lecture_files/libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="W04_lecture_files/libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">AI-based Materials and Process Simulation II</h1>
+  <p class="subtitle">Week 04 — J2 Plasticity: Return Mapping, Quadrature Spaces, the Consistent Tangent, Limit Loads</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Kee-Youn Yoo 
+</div>
+        <p class="quarto-title-affiliation">
+            Process Systems Laboratory<br>Department of Chemical and Biomolecular Engineering, SeoulTech
+          </p>
+    </div>
+</div>
+
+</section>
+<section id="today" class="slide level2">
+<h2>Today</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Part</th>
+<th>Topic</th>
+<th style="text-align: center;">Time</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>Quiz on Week 3 (closed-AI)</td>
+<td style="text-align: center;">10 min</td>
+</tr>
+<tr class="even">
+<td><strong>A</strong></td>
+<td>Theory — J2 plasticity, backward Euler, radial return, the consistent tangent, the thick tube (first yield, limit load)</td>
+<td style="text-align: center;">55 min</td>
+</tr>
+<tr class="odd">
+<td><strong>B</strong></td>
+<td>Plasticity in code — quadrature spaces, the update in NumPy, an explicit Newton loop, displacement control</td>
+<td style="text-align: center;">45 min</td>
+</tr>
+<tr class="even">
+<td><strong>C</strong></td>
+<td>Verification — material-point tests, elastic and first-yield checks, Newton rates, limit load, a 1D reference</td>
+<td style="text-align: center;">40 min</td>
+</tr>
+<tr class="odd">
+<td><strong>D</strong></td>
+<td>LLM pitfalls · assignment</td>
+<td style="text-align: center;">20 min</td>
+</tr>
+</tbody>
+</table>
+<div class="box">
+<p>Lab notebook: <code>W04_lab.ipynb</code> · Assignment: <code>W04_HW4.ipynb</code> (due before Week 5)</p>
+</div>
+</section>
+<section id="week-3-in-one-slide" class="slide level2">
+<h2>Week 3 in one slide</h2>
+<ul>
+<li>One 3D law, three 2D reductions by the choice of <span class="math inline">\varepsilon_{zz}</span>; GPS adds one number <span class="math inline">e_0</span>, eliminated by static condensation (two solves, one LU).</li>
+<li>Thermal stress <span class="math inline">-\beta\Delta T\,\mathbf I</span>; harmonic <span class="math inline">\Delta T</span> is stress-free with statically determinate supports; full coupling slows heat by <span class="math inline">1+\delta</span>.</li>
+<li>Verification by exact answers that are <strong>not zero</strong> for the thing being tested.</li>
+</ul>
+<p><strong>Today:</strong> the first <strong>path-dependent</strong> material. The stress is no longer a function of the strain — it is the result of an update that remembers the past. New in code: data at quadrature points and a Newton loop we write ourselves.</p>
+</section>
+<section>
+<section id="part-a-j2-plasticity" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part A · J2 plasticity</h1>
+
+</section>
+<section id="small-strain-plasticity-the-equations" class="slide level2">
+<h2>Small-strain plasticity: the equations</h2>
+<p><span class="math display">
+\boldsymbol\varepsilon=\boldsymbol\varepsilon^e+\boldsymbol\varepsilon^p,\qquad \boldsymbol\sigma=\mathbb C:(\boldsymbol\varepsilon-\boldsymbol\varepsilon^p),\qquad
+f(\boldsymbol\sigma,p)=\sigma_{\rm eq}-(\sigma_0+Hp)\le0,\qquad \sigma_{\rm eq}=\sqrt{\tfrac32\,\mathbf s:\mathbf s}
+</span></p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Ingredient</th>
+<th>J2 (von Mises) with linear isotropic hardening</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>deviator</td>
+<td><span class="math inline">\mathbf s=\boldsymbol\sigma-\tfrac13(\operatorname{tr}\boldsymbol\sigma)\mathbf I</span> — all <strong>three</strong> normal components, also in a 2D model</td>
+</tr>
+<tr class="even">
+<td>flow rule (normality)</td>
+<td><span class="math inline">\dot{\boldsymbol\varepsilon}^p=\dot p\,\dfrac{\partial f}{\partial\boldsymbol\sigma}=\dot p\,\dfrac32\,\dfrac{\mathbf s}{\sigma_{\rm eq}}</span> — deviatoric: plastic flow keeps the volume</td>
+</tr>
+<tr class="odd">
+<td>equivalent plastic strain</td>
+<td><span class="math inline">\dot p=\sqrt{\tfrac23\,\dot{\boldsymbol\varepsilon}^p:\dot{\boldsymbol\varepsilon}^p}</span> (in uniaxial tension <span class="math inline">p=\varepsilon^p_{xx}</span>)</td>
+</tr>
+<tr class="even">
+<td>loading/unloading</td>
+<td><span class="math inline">\dot p\ge0,\quad f\le0,\quad \dot p\,f=0</span> (Kuhn–Tucker)</td>
+</tr>
+</tbody>
+</table>
+<p>Two material constants beyond elasticity: <span class="math inline">\sigma_0</span> and <span class="math inline">H</span> (<span class="math inline">H=0</span>: perfect plasticity). Uniaxial tangent after yield: <span class="math inline">E_t=EH/(E+H)</span>.</p>
+</section>
+<section id="backward-euler-the-return-mapping" class="slide level2 scrollable">
+<h2>Backward Euler: the return mapping</h2>
+<p>Step <span class="math inline">n\to n+1</span>, strain increment <span class="math inline">\Delta\boldsymbol\varepsilon</span> given (by the Newton iterate). With <span class="math inline">\mu</span> the shear modulus:</p>
+<ol type="1">
+<li><strong>Elastic predictor:</strong> <span class="math inline">\boldsymbol\sigma^{\rm tr}=\boldsymbol\sigma_n+\mathbb C:\Delta\boldsymbol\varepsilon</span>, <span class="math inline">\;f^{\rm tr}=\sigma_{\rm eq}^{\rm tr}-(\sigma_0+Hp_n)</span>. If <span class="math inline">f^{\rm tr}\le0</span>: done, <span class="math inline">\boldsymbol\sigma=\boldsymbol\sigma^{\rm tr}</span>.</li>
+<li><strong>Plastic corrector:</strong> <span class="math inline">\boldsymbol\sigma=\boldsymbol\sigma^{\rm tr}-2\mu\,\Delta p\,\tfrac32\,\mathbf s/\sigma_{\rm eq}</span>. The deviator shrinks along its own direction: <span class="math inline">\mathbf s=\big(1-3\mu\Delta p/\sigma^{\rm tr}_{\rm eq}\big)\mathbf s^{\rm tr}</span>, so <span class="math inline">\sigma_{\rm eq}=\sigma^{\rm tr}_{\rm eq}-3\mu\Delta p</span>, and <span class="math inline">f=0</span> gives</li>
+</ol>
+<p><span class="math display">
+\Delta p=\frac{f^{\rm tr}}{3\mu+H},\qquad \boldsymbol\sigma=\boldsymbol\sigma^{\rm tr}-2\mu\sqrt{\tfrac32}\,\Delta p\,\hat{\mathbf n},\qquad \hat{\mathbf n}=\frac{\mathbf s^{\rm tr}}{\lvert\mathbf s^{\rm tr}\rvert},\quad \lvert\mathbf s\rvert=\sqrt{\tfrac23}\,\sigma_{\rm eq}
+</span></p>
+<ul>
+<li><strong>Closed form</strong> for J2 + linear hardening — no local iteration. Exact on the discrete level: after the return <span class="math inline">f=0</span> to round-off.</li>
+<li>The return is <strong>radial</strong> in the deviatoric plane. The pressure <span class="math inline">\tfrac13\operatorname{tr}\boldsymbol\sigma</span> is untouched.</li>
+</ul>
+</section>
+<section id="the-return-in-one-picture" class="slide level2">
+<h2>The return in one picture</h2>
+
+<img data-src="figs/w04_return.png" class="quarto-figure quarto-figure-center r-stretch" style="width:82.0%"><p>Left: the trial deviator outside the circle goes back to it along the radius. Right: one material point, uniaxial stress, strain-controlled cycle ±4 <span class="math inline">\varepsilon_y</span>: with <span class="math inline">H=0</span> the stress stays at <span class="math inline">\pm\sigma_0</span>; <span class="math inline">H=E/10</span> peaks at <span class="math inline">318.18</span> MPa, the exact <span class="math inline">\sigma_0+E_t(4\varepsilon_y-\varepsilon_y)</span>.</p>
+</section>
+<section id="the-consistent-tangent" class="slide level2">
+<h2>The consistent tangent</h2>
+<p>Newton needs <span class="math inline">\partial\boldsymbol\sigma_{n+1}/\partial\Delta\boldsymbol\varepsilon</span> of the <strong>discrete</strong> update, not of the rate equations:</p>
+<p><span class="math display">
+\mathbb C^{\rm alg}=\mathbb C-2\mu\,\beta\,\mathbb I_{\rm dev}-2\mu\,\bar\theta\,\hat{\mathbf n}\otimes\hat{\mathbf n},\qquad
+\beta=\frac{3\mu\,\Delta p}{\sigma^{\rm tr}_{\rm eq}},\qquad \bar\theta=\frac{3\mu}{3\mu+H}-\beta
+</span></p>
+<ul>
+<li>Elastic points: <span class="math inline">\Delta p=0</span> → <span class="math inline">\mathbb C^{\rm alg}=\mathbb C</span>. Symmetric (associative flow).</li>
+<li><span class="math inline">\beta\,\mathbb I_{\rm dev}</span>: the deviator is scaled down; <span class="math inline">\bar\theta\,\hat{\mathbf n}\otimes\hat{\mathbf n}</span>: no stiffness along the flow direction (for <span class="math inline">H=0</span>).</li>
+<li>With <span class="math inline">\mathbb C^{\rm alg}</span> Newton converges <strong>quadratically</strong>; with the elastic <span class="math inline">\mathbb C</span> (“modified Newton”) <strong>linearly</strong>, and the rate degrades as the plastic zone grows.</li>
+<li>Check in code: compare <span class="math inline">\mathbb C^{\rm alg}</span> with a finite difference of <code>update</code> — relative difference <span class="math inline">3\times10^{-11}</span> (the elastic <span class="math inline">\mathbb C</span>: 0.25).</li>
+</ul>
+</section>
+<section id="mandel-notation-for-plane-strain" class="slide level2">
+<h2>Mandel notation for plane strain</h2>
+<p>Store symmetric tensors as 4-vectors so that <span class="math inline">\boldsymbol\sigma:\boldsymbol\varepsilon</span> is a dot product:</p>
+<p><span class="math display">
+\boldsymbol\sigma\mapsto(\sigma_{xx},\sigma_{yy},\sigma_{zz},\sqrt2\,\sigma_{xy}),\qquad \boldsymbol\varepsilon\mapsto(\varepsilon_{xx},\varepsilon_{yy},\varepsilon_{zz},\sqrt2\,\varepsilon_{xy}),\qquad
+\mathbb C=\lambda\,\mathbf m\mathbf m^\top+2\mu\,\mathbf I_4,\quad \mathbf m=(1,1,1,0)
+</span></p>
+<ul>
+<li>Plane strain: <span class="math inline">\varepsilon_{zz}=0</span>, but <span class="math inline">\sigma_{zz}\ne0</span> and it enters <span class="math inline">\mathbf s</span> and <span class="math inline">\sigma_{\rm eq}</span>. The 4th component is <strong>not optional</strong>.</li>
+<li><span class="math inline">\mathbb I_{\rm dev}=\mathbf I_4-\tfrac13\mathbf m\mathbf m^\top</span>, <span class="math inline">\;\lvert\mathbf s\rvert^2=\mathbf s\cdot\mathbf s</span> (the <span class="math inline">\sqrt2</span> makes the shear count twice).</li>
+<li>The same 4-vector works for the <strong>1D radial</strong> model of a tube: <span class="math inline">(\varepsilon_{rr},\varepsilon_{\theta\theta},\varepsilon_{zz},0)=(u',u/r,0,0)</span>.</li>
+</ul>
+</section>
+<section id="the-thick-tube-elastic-state-and-first-yield" class="slide level2">
+<h2>The thick tube: elastic state and first yield</h2>
+<p>Plane strain, inner radius <span class="math inline">a</span>, outer <span class="math inline">b</span>, inner pressure <span class="math inline">p</span>. Lamé: <span class="math inline">\sigma_{rr}=A-B/r^2</span>, <span class="math inline">\sigma_{\theta\theta}=A+B/r^2</span>, <span class="math inline">\sigma_{zz}=2\nu A</span>, with <span class="math inline">A=pa^2/(b^2-a^2)</span>, <span class="math inline">B=Ab^2</span>. At <span class="math inline">r=a</span>:</p>
+<p><span class="math display">
+\sigma_{\rm eq}^2=\frac{3B^2}{a^4}+(1-2\nu)^2A^2\quad\Rightarrow\quad
+p_y=\frac{\sigma_0\,(b^2-a^2)}{\sqrt{3b^4+(1-2\nu)^2a^4}}
+</span></p>
+<ul>
+<li><span class="math inline">\nu=\tfrac12</span>: <span class="math inline">p_y=\frac{\sigma_0}{\sqrt3}\big(1-\frac{a^2}{b^2}\big)</span> — the textbook formula; it assumes <span class="math inline">\sigma_{zz}</span> = the mean of <span class="math inline">\sigma_{rr},\sigma_{\theta\theta}</span>.</li>
+<li>Our tube (<span class="math inline">a=1</span>, <span class="math inline">b=1.3</span>, <span class="math inline">E=70</span> GPa, <span class="math inline">\nu=0.3</span>, <span class="math inline">\sigma_0=250</span> MPa): <span class="math inline">p_y=58.39</span> MPa; the <span class="math inline">\nu=\tfrac12</span> formula gives 58.93 (+0.93 %).</li>
+</ul>
+</section>
+<section id="the-limit-load" class="slide level2">
+<h2>The limit load</h2>
+<p>At collapse the stresses stop changing, so the strain <strong>rate</strong> is purely plastic. Plane strain: <span class="math inline">\dot\varepsilon_{zz}=\dot\varepsilon^p_{zz}=0</span> ⇒ <span class="math inline">s_{zz}=0</span> ⇒ <span class="math inline">\sigma_{zz}=\tfrac12(\sigma_{rr}+\sigma_{\theta\theta})</span> ⇒ <span class="math inline">\sigma_{\rm eq}=\tfrac{\sqrt3}{2}(\sigma_{\theta\theta}-\sigma_{rr})=\sigma_0</span>. Equilibrium <span class="math inline">\partial_r\sigma_{rr}=(\sigma_{\theta\theta}-\sigma_{rr})/r</span> from <span class="math inline">\sigma_{rr}(a)=-p</span> to <span class="math inline">\sigma_{rr}(b)=0</span>:</p>
+<p><span class="math display">
+p_{\rm lim}=\frac{2\sigma_0}{\sqrt3}\ln\frac ba=75.74\ \text{MPa}\qquad\text{— no }E,\ \text{no }\nu
+</span></p>
+<ul>
+<li>Above <span class="math inline">p_{\rm lim}</span> there is <strong>no equilibrium</strong>; at <span class="math inline">p_{\rm lim}</span> the displacement is unbounded (perfect plasticity).</li>
+<li>Elastic–plastic boundary <span class="math inline">c</span> (Hill, incompressible elastic zone, <span class="math inline">\nu=\tfrac12</span>): <span class="math inline">\;p=\frac{\sigma_0}{\sqrt3}\big[2\ln\frac ca+1-\frac{c^2}{b^2}\big]</span>.</li>
+</ul>
+</section></section>
+<section>
+<section id="part-b-plasticity-in-code" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part B · Plasticity in code</h1>
+
+</section>
+<section id="where-the-variables-live-quadrature-spaces" class="slide level2">
+<h2>Where the variables live: quadrature spaces</h2>
+<p><span class="math inline">\boldsymbol\sigma</span>, <span class="math inline">p</span> and <span class="math inline">\mathbb C^{\rm alg}</span> are not finite element fields — they are <strong>values at the quadrature points</strong>, updated pointwise.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>cell <span class="op">=</span> msh.basix_cell()</span>
+<span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>Q4  <span class="op">=</span> fem.functionspace(msh, basix.ufl.quadrature_element(cell, value_shape<span class="op">=</span>(<span class="dv">4</span>,),   degree<span class="op">=</span><span class="dv">2</span>))   <span class="co"># sigma, d eps</span></span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>Q44 <span class="op">=</span> fem.functionspace(msh, basix.ufl.quadrature_element(cell, value_shape<span class="op">=</span>(<span class="dv">4</span>, <span class="dv">4</span>), degree<span class="op">=</span><span class="dv">2</span>))   <span class="co"># C_alg</span></span>
+<span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>Q1  <span class="op">=</span> fem.functionspace(msh, basix.ufl.quadrature_element(cell, value_shape<span class="op">=</span>(),     degree<span class="op">=</span><span class="dv">2</span>))   <span class="co"># p</span></span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>sig, sig_n, Ct <span class="op">=</span> fem.Function(Q4), fem.Function(Q4), fem.Function(Q44)</span>
+<span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>p, p_n <span class="op">=</span> fem.Function(Q1), fem.Function(Q1)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Degree 2 on triangles = 3 points per cell; <code>sig.x.array.reshape(-1, 4)</code> is a plain <span class="math inline">(n_q,4)</span> NumPy array.</li>
+<li>A form with a quadrature function is integrated <strong>at those points</strong> — FFCx takes the rule from the element (measured: the <code>quadrature_degree</code> metadata is ignored).</li>
+<li>Two copies: the converged state <span class="math inline">(\boldsymbol\sigma_n,p_n)</span> and the current iterate <span class="math inline">(\boldsymbol\sigma,p)</span>.</li>
+</ul>
+</section>
+<section id="strain-at-the-points-update-in-numpy" class="slide level2">
+<h2>Strain at the points, update in NumPy</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> eps4(u):                                  <span class="co"># Mandel, plane strain</span></span>
+<span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>    e <span class="op">=</span> ufl.sym(ufl.grad(u))</span>
+<span id="cb2-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> ufl.as_vector([e[<span class="dv">0</span>, <span class="dv">0</span>], e[<span class="dv">1</span>, <span class="dv">1</span>], <span class="dv">0</span>, np.sqrt(<span class="dv">2</span>) <span class="op">*</span> e[<span class="dv">0</span>, <span class="dv">1</span>]])</span>
+<span id="cb2-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="" aria-hidden="true" tabindex="-1"></a>deps_expr <span class="op">=</span> fem.Expression(eps4(Du), Q4.element.interpolation_points)   <span class="co"># compiled once</span></span>
+<span id="cb2-6"><a href="" aria-hidden="true" tabindex="-1"></a>deps <span class="op">=</span> fem.Function(Q4)</span>
+<span id="cb2-7"><a href="" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> constitutive():</span>
+<span id="cb2-9"><a href="" aria-hidden="true" tabindex="-1"></a>    deps.interpolate(deps_expr)                                         <span class="co"># evaluate at all quadrature points</span></span>
+<span id="cb2-10"><a href="" aria-hidden="true" tabindex="-1"></a>    s, pp, C, pl <span class="op">=</span> mat.update(deps.x.array.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>), sig_n.x.array.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>), p_n.x.array)</span>
+<span id="cb2-11"><a href="" aria-hidden="true" tabindex="-1"></a>    sig.x.array[:] <span class="op">=</span> s.ravel()<span class="op">;</span> p.x.array[:] <span class="op">=</span> pp<span class="op">;</span> Ct.x.array[:] <span class="op">=</span> C.ravel()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>Du</code> is the displacement <strong>increment</strong> since the last converged step; <code>update</code> is vectorised over all points (<code>j2.py</code>, NumPy only).</li>
+<li>The material law knows nothing about DOLFINx: you can test it in an ordinary notebook cell.</li>
+</ul>
+</section>
+<section id="residual-and-jacobian" class="slide level2">
+<h2>Residual and Jacobian</h2>
+<p><span class="math display">
+R(\mathbf v)=\int_\Omega\boldsymbol\sigma\cdot\boldsymbol\varepsilon(\mathbf v)\,dA-\int_{\Gamma_i}(-p\,\mathbf n)\cdot\mathbf v\,ds,\qquad
+J(\delta\mathbf u,\mathbf v)=\int_\Omega\big(\mathbb C^{\rm alg}\boldsymbol\varepsilon(\delta\mathbf u)\big)\cdot\boldsymbol\varepsilon(\mathbf v)\,dA
+</span></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="" aria-hidden="true" tabindex="-1"></a>F <span class="op">=</span> fem.form(ufl.dot(sig, eps4(v)) <span class="op">*</span> dx <span class="op">+</span> pload <span class="op">*</span> ufl.dot(n, v) <span class="op">*</span> ds(INNER))</span>
+<span id="cb3-2"><a href="" aria-hidden="true" tabindex="-1"></a>J <span class="op">=</span> fem.form(ufl.dot(ufl.dot(Ct, eps4(du)), eps4(v)) <span class="op">*</span> dx)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li><code>sig</code> and <code>Ct</code> are <strong>coefficients</strong>, not UFL expressions of <code>u</code>: UFL cannot differentiate through the return mapping, so we supply the tangent.</li>
+<li>1D radial model: the same forms with <span class="math inline">(u',u/r,0,0)</span> and the weight <span class="math inline">r</span> (<code>* x[0] * dx</code>).</li>
+</ul>
+</section>
+<section id="the-newton-loop" class="slide level2">
+<h2>The Newton loop</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> step(load):</span>
+<span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>    Du.x.array[:] <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span>  pload.value <span class="op">=</span> load</span>
+<span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> it <span class="kw">in</span> <span class="bu">range</span>(maxit <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb4-4"><a href="" aria-hidden="true" tabindex="-1"></a>        constitutive()                                  <span class="co"># sigma, p, C_alg from Du</span></span>
+<span id="cb4-5"><a href="" aria-hidden="true" tabindex="-1"></a>        res <span class="op">=</span> residual()                                <span class="co"># assemble F, lifting, set_bc</span></span>
+<span id="cb4-6"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> it <span class="op">==</span> <span class="dv">0</span>: ref <span class="op">=</span> <span class="bu">max</span>(ref, res)</span>
+<span id="cb4-7"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> res <span class="op">&lt;=</span> rtol <span class="op">*</span> ref: <span class="cf">break</span>                     <span class="co"># converged</span></span>
+<span id="cb4-8"><a href="" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> it <span class="op">==</span> maxit: <span class="cf">return</span> <span class="va">False</span>                    <span class="co"># NOT converged: do not commit</span></span>
+<span id="cb4-9"><a href="" aria-hidden="true" tabindex="-1"></a>        A.zeroEntries()<span class="op">;</span> assemble_matrix(A, J, bcs<span class="op">=</span>bcs)<span class="op">;</span> A.assemble()</span>
+<span id="cb4-10"><a href="" aria-hidden="true" tabindex="-1"></a>        ksp.solve(b, du.x.petsc_vec)<span class="op">;</span> du.x.scatter_forward()</span>
+<span id="cb4-11"><a href="" aria-hidden="true" tabindex="-1"></a>        Du.x.array[:] <span class="op">-=</span> du.x.array</span>
+<span id="cb4-12"><a href="" aria-hidden="true" tabindex="-1"></a>    u.x.array[:] <span class="op">+=</span> Du.x.array                          <span class="co"># commit: the new converged state</span></span>
+<span id="cb4-13"><a href="" aria-hidden="true" tabindex="-1"></a>    sig_n.x.array[:] <span class="op">=</span> sig.x.array<span class="op">;</span>  p_n.x.array[:] <span class="op">=</span> p.x.array</span>
+<span id="cb4-14"><a href="" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="va">True</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>The state is committed <strong>once per step</strong>, after convergence. Iterates never touch <span class="math inline">(\boldsymbol\sigma_n,p_n)</span>.</li>
+<li><code>ref</code> = the largest first residual seen so far: a small last increment near <span class="math inline">p_{\rm lim}</span> must not tighten the tolerance below round-off.</li>
+<li>The function returns whether it converged. A non-converged step is <strong>not an exception</strong> — the caller must look.</li>
+</ul>
+</section>
+<section id="displacement-control-and-the-reaction" class="slide level2">
+<h2>Displacement control and the reaction</h2>
+<p>Prescribe the inner radial displacement instead of <span class="math inline">p</span>. The increment enters through the <strong>first correction</strong>, by lifting with the converged tangent:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>assemble_vector(b, F)</span>
+<span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>apply_lifting(b, [J], bcs<span class="op">=</span>[bcs], x0<span class="op">=</span>[Du.x.petsc_vec], alpha<span class="op">=-</span><span class="fl">1.0</span>)   <span class="co"># rows: Du - g on the boundary</span></span>
+<span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>b.ghostUpdate(addv<span class="op">=</span>PETSc.InsertMode.ADD, mode<span class="op">=</span>PETSc.ScatterMode.REVERSE)</span>
+<span id="cb5-4"><a href="" aria-hidden="true" tabindex="-1"></a>set_bc(b, bcs, Du.x.petsc_vec, <span class="op">-</span><span class="fl">1.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ul>
+<li>Setting the boundary DOFs of <code>Du</code> to the new value <strong>before</strong> the first solve puts the whole jump into one layer of cells: measured, the 2D tube’s first step (<span class="math inline">0.5\,u_y</span>) did not converge in 50 iterations.</li>
+<li>The pressure from the <strong>consistent reaction</strong>: <span class="math inline">p=\dfrac{1}{a\,\pi/2}\displaystyle\int_\Omega\boldsymbol\sigma\cdot\boldsymbol\varepsilon(\mathbf w_R)\,dA</span> with any <span class="math inline">\mathbf w_R</span> that equals <span class="math inline">\mathbf e_r</span> on <span class="math inline">r=a</span> and is admissible (here <span class="math inline">\mathbf e_r\,(b-r)/(b-a)</span>) — Week 1’s reaction, one form.</li>
+</ul>
+</section>
+<section id="the-model-modules" class="slide level2">
+<h2>The model modules</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><code>j2.py</code> (NumPy)</th>
+<th><code>plas.py</code> (DOLFINx)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>J2(E, nu, sig0, H)</code>: <span class="math inline">\mathbb C</span>, <code>update(deps, sig_n, p_n, tangent)</code></td>
+<td><code>annulus_mesh</code> (curved, as Week 3), <code>radial_mesh</code> (1D)</td>
+</tr>
+<tr class="even">
+<td><code>dev</code>, <code>von_mises</code>, <code>IDEV</code>, <code>ONE</code></td>
+<td><code>Tube(msh, ft, mat, ri, ro, control=, tangent=)</code></td>
+</tr>
+<tr class="odd">
+<td><code>uniaxial(mat, exx)</code>: one point in uniaxial stress</td>
+<td><code>step(load)</code> → <code>(converged, iterations, residuals)</code></td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>ur_inner</code>, <code>pressure_from_reaction</code>, <code>plastic_radius</code>, <code>max_von_mises</code></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>lame_ur</code>, <code>p_first_yield</code>, <code>p_limit</code></td>
+</tr>
+</tbody>
+</table>
+<p>The same <code>Tube</code> runs the 2D quarter section and the 1D radial model. The 1D model with 400–800 cells is the <strong>reference</strong> for the 2D one — a different discretisation of the same problem, not a different program.</p>
+</section></section>
+<section>
+<section id="part-c-verification" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part C · Verification</h1>
+
+</section>
+<section id="material-point-checks-no-dolfinx" class="slide level2">
+<h2>Material-point checks (no DOLFINx)</h2>
+<p><span class="math inline">10^4</span> random strain increments from <span class="math inline">\boldsymbol\sigma_n=0</span>, <span class="math inline">\lvert\Delta\varepsilon_{ij}\rvert\sim4\times10^{-3}</span> (8244 points yield):</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 38%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Check</th>
+<th style="text-align: center;"><span class="math inline">H=0</span></th>
+<th style="text-align: center;"><span class="math inline">H=E/10</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\max\lvert f\rvert/\sigma_0</span> at plastic points after the return</td>
+<td style="text-align: center;"><span class="math inline">1.1\times10^{-15}</span></td>
+<td style="text-align: center;"><span class="math inline">1.4\times10^{-15}</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\max f/\sigma_0</span> at elastic points</td>
+<td style="text-align: center;"><span class="math inline">&lt;0</span></td>
+<td style="text-align: center;"><span class="math inline">&lt;0</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\mathbb C^{\rm alg}</span> vs central difference (<span class="math inline">h=10^{-8}</span>)</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;"><span class="math inline">3.2\times10^{-11}</span></td>
+</tr>
+<tr class="even">
+<td>elastic <span class="math inline">\mathbb C</span> vs central difference</td>
+<td style="text-align: center;"></td>
+<td style="text-align: center;">0.25</td>
+</tr>
+<tr class="odd">
+<td>uniaxial cycle: peak at <span class="math inline">4\varepsilon_y</span> vs <span class="math inline">\sigma_0+E_t\cdot3\varepsilon_y</span></td>
+<td style="text-align: center;">250 = 250</td>
+<td style="text-align: center;">318.18 = 318.18</td>
+</tr>
+</tbody>
+</table>
+<p>The local Newton of the uniaxial driver converges in <strong>one</strong> iteration: for linear hardening the update is piecewise linear and <span class="math inline">\mathbb C^{\rm alg}</span> is exact.</p>
+</section>
+<section id="elastic-and-first-yield-checks-on-the-tube" class="slide level2">
+<h2>Elastic and first-yield checks on the tube</h2>
+<ul>
+<li><strong>Elastic</strong> (<span class="math inline">p=0.5\,p_y</span>, 2D, <span class="math inline">8\times24</span> curved cells, P2): <span class="math inline">u_r(a)=1.6422404\times10^{-3}</span> vs Lamé <span class="math inline">1.6422406\times10^{-3}</span> (relative <span class="math inline">8\times10^{-8}</span>), one Newton iteration.</li>
+<li><strong>First yield</strong> (1D, 400 cells):</li>
+</ul>
+<table class="caption-top">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>load</th>
+<th style="text-align: center;">plastic quadrature points</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">0.999\,p_y(\nu=0.3)</span></td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">1.001\,p_y(\nu=0.3)</span></td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">0.999\times58.93</span> (the <span class="math inline">\nu=\tfrac12</span> formula)</td>
+<td style="text-align: center;">11 (zone up to <span class="math inline">c=1.0039</span>)</td>
+</tr>
+</tbody>
+</table>
+<p>The textbook formula is not “approximately right” here — the model shows it is the formula of a <strong>different</strong> material.</p>
+</section>
+<section id="loaddisplacement-and-newton" class="slide level2">
+<h2>Load–displacement and Newton</h2>
+
+<img data-src="figs/w04_tube.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><p>Left: 2D and 1D curves coincide; displacement control (green) follows the plateau at <span class="math inline">p_{\rm lim}</span>. Right: one load step <span class="math inline">0.90\to0.95\,p_{\rm lim}</span> — consistent tangent <span class="math inline">1,\,4.3,\,1.2,\,6.8\times10^{-3},\,1.4\times10^{-6},\,5\times10^{-13}</span> (quadratic); elastic tangent a factor 0.74 per iteration (238 iterations to <span class="math inline">10^{-8}</span>).</p>
+</section>
+<section id="iterations-per-load-step" class="slide level2">
+<h2>Iterations per load step</h2>
+<p>20 equal steps of <span class="math inline">p</span> from 0 to <span class="math inline">0.99\,p_{\rm lim}</span>, <code>rtol</code> = <span class="math inline">10^{-8}</span> (steps 1–15 elastic: one iteration each):</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;">step 16</th>
+<th style="text-align: center;">17</th>
+<th style="text-align: center;">18</th>
+<th style="text-align: center;">19</th>
+<th style="text-align: center;">20 (<span class="math inline">0.99\,p_{\rm lim}</span>)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2D, consistent</td>
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">7</td>
+</tr>
+<tr class="even">
+<td>2D, elastic tangent</td>
+<td style="text-align: center;">49</td>
+<td style="text-align: center;">86</td>
+<td style="text-align: center;">124</td>
+<td style="text-align: center;">not converged (200)</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="odd">
+<td>1D, consistent</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">8</td>
+</tr>
+<tr class="even">
+<td>1D, elastic tangent</td>
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">23</td>
+<td style="text-align: center;">33</td>
+<td style="text-align: center;">55</td>
+<td style="text-align: center;">not converged (200)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>The elastic tangent is not “a bit slower”: its rate tends to 1 as the plastic zone spreads; near <span class="math inline">p_{\rm lim}</span> it stalls.</li>
+<li>The consistent tangent costs nothing extra — <code>update</code> returns it with the stress.</li>
+</ul>
+</section>
+<section id="mesh-convergence-and-the-1d-reference" class="slide level2">
+<h2>Mesh convergence and the 1D reference</h2>
+<p><span class="math inline">u_r(a)</span> at <span class="math inline">p=71.95</span> MPa (<span class="math inline">0.95\,p_{\rm lim}</span>), load steps as in the original source, <code>rtol</code> <span class="math inline">10^{-8}</span>:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>model</th>
+<th style="text-align: center;"><span class="math inline">u_r(a)</span> [mm]</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2D <span class="math inline">4\times12</span> / <span class="math inline">8\times24</span> / <span class="math inline">16\times48</span></td>
+<td style="text-align: center;">4.51853 / 4.52049 / 4.51909</td>
+</tr>
+<tr class="even">
+<td>1D 50 / 200 / 800</td>
+<td style="text-align: center;">4.51935 / 4.51930 / 4.51930</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>2D agrees with the 1D reference to 0.03 % on every mesh. The convergence is not monotone: the plastic front crosses quadrature points.</li>
+<li>Plastic radius at this load: 1D (800) 1.1711, 2D <span class="math inline">16\times48</span> 1.1656 (the radius of the outermost plastic quadrature point: resolution <span class="math inline">\sim h</span>).</li>
+</ul>
+</section>
+<section id="the-limit-load-pressure-vs-displacement-control" class="slide level2">
+<h2>The limit load: pressure vs displacement control</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 38%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pressure control (1D)</th>
+<th style="text-align: center;"><span class="math inline">u_r(a)/u_y</span></th>
+<th style="text-align: center;">converged</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>75.0 / 75.5 / 75.7 / 75.73 MPa</td>
+<td style="text-align: center;">1.72 / 2.80 / 4.92 / 6.59</td>
+<td style="text-align: center;">yes (6–7 iterations)</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">1.001\,p_{\rm lim}=75.81</span> MPa</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;"><strong>no</strong>: 50 iterations, residual <span class="math inline">10^2</span>–<span class="math inline">10^3</span>, not decreasing</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 62%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Displacement control, <span class="math inline">u_r(a)=50\,u_y</span></th>
+<th style="text-align: center;"><span class="math inline">p</span> from the reaction [MPa]</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1D 400</td>
+<td style="text-align: center;">75.73799</td>
+</tr>
+<tr class="even">
+<td>2D <span class="math inline">4\times12</span> / <span class="math inline">8\times24</span> / <span class="math inline">16\times48</span></td>
+<td style="text-align: center;">75.7388 / 75.7381 / 75.73804</td>
+</tr>
+<tr class="odd">
+<td>exact <span class="math inline">p_{\rm lim}</span></td>
+<td style="text-align: center;">75.73804</td>
+</tr>
+</tbody>
+</table>
+<p>Exact: <span class="math inline">75.738039</span>. Coarse 2D meshes come out <strong>above</strong> it (a displacement model is too stiff: <span class="math inline">+10^{-5}</span> on <span class="math inline">4\times12</span>); <span class="math inline">16\times48</span> agrees to 7 digits. The 1D curve at <span class="math inline">50\,u_y</span> is still <span class="math inline">5\times10^{-5}</span> MPa below the asymptote.</p>
+</section>
+<section id="the-plastic-zone" class="slide level2">
+<h2>The plastic zone</h2>
+
+<img data-src="figs/w04_zone.png" class="quarto-figure quarto-figure-center r-stretch" style="width:82.0%"><p>At <span class="math inline">0.98\,p_{\rm lim}</span>: <span class="math inline">c=1.2372</span> (<span class="math inline">\nu=0.3</span>), <span class="math inline">1.2087</span> (<span class="math inline">\nu=0.45</span>), Hill 1.2070. Hill’s formula is exact only for an incompressible elastic zone: the model converges to it as <span class="math inline">\nu\to\tfrac12</span>. Right: <span class="math inline">p</span> is largest at the bore and zero outside <span class="math inline">c</span>.</p>
+</section>
+<section id="the-original-source-re-run-on-0.11" class="slide level2">
+<h2>The original source, re-run on 0.11</h2>
+<p>The source of this week ran the same tube with its own return mapping: <code>n = s/sigma_eq</code>, <code>sigma = sigma_tr - 2*mu*dgamma*n</code>.</p>
+<ul>
+<li><span class="math inline">\mathbf s/\sigma_{\rm eq}</span> has length <span class="math inline">\sqrt{2/3}</span>, not 1 — the factor <span class="math inline">\tfrac32</span> of the flow rule is missing. After the return <span class="math inline">f=f^{\rm tr}/3</span> (<strong>measured</strong>: ratio 0.3333); the stress stays outside the yield surface.</li>
+<li>Its tube: <span class="math inline">u_r(a)=4.3786</span> mm at <span class="math inline">0.95\,p_{\rm lim}</span> (0.11 reproduces the source’s printout to every digit) — <strong>3.1 % stiff</strong> against 4.5193.</li>
+<li>The same mapping in our code converges at <span class="math inline">1.2\,p_{\rm lim}</span> with <span class="math inline">\sigma_{\rm eq}=1.27\,\sigma_0</span>: a “perfectly plastic” model that hardens.</li>
+<li>Also in the source: the elastic tangent (11–15 iterations at a loose <code>1e-4</code>), the <span class="math inline">\nu=\tfrac12</span> first-yield formula, the claim “FEM vs analytic ✅”.</li>
+</ul>
+<p>Nothing crashed, the curve looked smooth and the iterations converged. One line — <span class="math inline">f\le0</span> after the return — would have caught it.</p>
+</section></section>
+<section>
+<section id="part-d-llm-pitfalls-assignment" class="title-slide slide level1 center" data-background-color="#1f3864">
+<h1>Part D · LLM pitfalls · assignment</h1>
+
+</section>
+<section id="what-goes-wrong-in-plasticity-codes" class="slide level2">
+<h2>What goes wrong in plasticity codes</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Pitfall</th>
+<th>Measured symptom (this week)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Return with <span class="math inline">\mathbf s/\sigma_{\rm eq}</span> instead of a unit normal (factor <span class="math inline">\tfrac32</span> lost)</td>
+<td><span class="math inline">f=f^{\rm tr}/3&gt;0</span> after the return; tube 3.1 % stiff; converges above <span class="math inline">p_{\rm lim}</span></td>
+</tr>
+<tr class="even">
+<td>Elastic stiffness used as the Newton tangent</td>
+<td>49 → 124 iterations per step, no convergence at <span class="math inline">0.99\,p_{\rm lim}</span> (consistent: 3–7)</td>
+</tr>
+<tr class="odd">
+<td>First-yield formula of <span class="math inline">\nu=\tfrac12</span> used for <span class="math inline">\nu=0.3</span></td>
+<td>11 plastic points at “0.999 <span class="math inline">p_y</span>”; the true <span class="math inline">p_y</span> is 0.93 % lower</td>
+</tr>
+<tr class="even">
+<td>Pressure control beyond the limit load</td>
+<td>no equilibrium: the step does not converge — silently, unless the code returns a flag</td>
+</tr>
+<tr class="odd">
+<td>Prescribed displacement put into the boundary DOFs before the first solve</td>
+<td>first 2D step diverges (50 iterations); lifting with the converged tangent: 1 iteration</td>
+</tr>
+</tbody>
+</table>
+<p>The fix is the same each time: a test whose exact answer you know <strong>before</strong> you run — <span class="math inline">f=0</span>, a finite difference, Lamé, <span class="math inline">p_y</span>, <span class="math inline">p_{\rm lim}</span>.</p>
+</section>
+<section id="prompting-for-a-plasticity-model" class="slide level2 scrollable">
+<h2>Prompting for a plasticity model</h2>
+<ol type="1">
+<li>Paste the material update (<code>j2.py</code>) and ask for <strong>material-point tests first</strong>: <span class="math inline">f\le0</span> after the return, a finite-difference tangent, a uniaxial curve.</li>
+<li>State the kinematics: plane strain with <span class="math inline">\varepsilon_{zz}=0</span> and <span class="math inline">\sigma_{zz}</span> kept; or the 1D radial model.</li>
+<li>Ask for an explicit Newton loop that <strong>returns</strong> convergence and commits the state only after convergence; say which tangent.</li>
+<li>State the load path, including where it must stop (<span class="math inline">p&lt;p_{\rm lim}</span>) or switch to displacement control.</li>
+<li>Ask for the analytical checks with the code: Lamé, <span class="math inline">p_y(\nu)</span>, <span class="math inline">p_{\rm lim}</span>, a 1D reference.</li>
+</ol>
+</section>
+<section id="assignment-hw4-due-before-week-5" class="slide level2">
+<h2>Assignment HW4 (due before Week 5)</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 27%">
+<col style="width: 45%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Q</th>
+<th>Topic</th>
+<th style="text-align: center;">Points</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Radial return, the consistent tangent, first yield and limit load of the tube (theory)</td>
+<td style="text-align: center;">20</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>Hardening: the material point against the bilinear curve, the tube beyond <span class="math inline">p_{\rm lim}</span>, Newton rates</td>
+<td style="text-align: center;">25</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Autofrettage: overload, unload, residual stress, reverse yielding in a thick tube (<span class="math inline">b/a=3</span>)</td>
+<td style="text-align: center;">35</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Debugging an LLM-generated plasticity script</td>
+<td style="text-align: center;">20</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Week 5 starts with a 10-minute quiz on today’s material (closed-AI).</strong></p>
+</section>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concept</th>
+<th>Key point</th>
+<th>DOLFINx 0.11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>J2 plasticity</td>
+<td><span class="math inline">f=\sigma_{\rm eq}-(\sigma_0+Hp)\le0</span>, deviatoric flow, <span class="math inline">\sigma_{zz}</span> in the deviator</td>
+<td>NumPy <code>update</code> on <span class="math inline">(n_q,4)</span> arrays</td>
+</tr>
+<tr class="even">
+<td>Return mapping</td>
+<td><span class="math inline">\Delta p=f^{\rm tr}/(3\mu+H)</span>, radial; <span class="math inline">f=0</span> after the return</td>
+<td><code>j2.py</code>, testable without DOLFINx</td>
+</tr>
+<tr class="odd">
+<td>Internal variables</td>
+<td>values at quadrature points; converged copy + iterate</td>
+<td><code>basix.ufl.quadrature_element</code>, <code>fem.Expression</code></td>
+</tr>
+<tr class="even">
+<td>Newton</td>
+<td>consistent tangent → quadratic; commit after convergence</td>
+<td><code>assemble_matrix(A, J, bcs)</code>, own loop</td>
+</tr>
+<tr class="odd">
+<td>Limit load</td>
+<td>no equilibrium above <span class="math inline">p_{\rm lim}</span>; displacement control + reaction</td>
+<td><code>apply_lifting(..., x0=[Du], alpha=-1)</code></td>
+</tr>
+<tr class="even">
+<td>Verification</td>
+<td>material point, Lamé, <span class="math inline">p_y(\nu)</span>, <span class="math inline">p_{\rm lim}</span>, 1D reference</td>
+<td><code>Tube</code> in 1D and 2D</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Next week:</strong> viscoelasticity and phase-field fracture — more internal variables, time-dependent and history fields.</p>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<p><img src="assets/seoultech_logo.png" class="slide-logo"></p>
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="W04_lecture_files/libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="W04_lecture_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="W04_lecture_files/libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/search/search.js"></script>
+  <script src="W04_lecture_files/libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true,"numbers":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

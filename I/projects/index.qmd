@@ -1,0 +1,53 @@
+---
+title: "AMPS I — Term Project Topics"
+subtitle: "Choose one topic (A–F) or propose your own · proposal due before Week 9 · report and talk in Week 16"
+format:
+  html:
+    html-math-method: katex
+    embed-resources: true
+    toc: false
+    page-layout: full
+---
+
+## How to choose
+
+Six reactor-engineering topics, each a coupled flow–transport–reaction problem that combines several weeks of this course. You may also propose
+**your own topic** from your research (the Week 8 example: a cooling fin with $k(T)$). Every topic, including your own, is graded the same way
+(`week16/W16_final_project.html`): weak form, analysis, verification (MMS **and** a benchmark), results, LLM workflow.
+
+| | Topic | Tier | Physics | Course weeks used | New for you |
+|---|---|---|---|---|---|
+| **A** | [PEM fuel cell](A_pemfc_cathode.html) | standard | Brinkman flow (channel + porous GDL), O₂ transport, Butler–Volmer catalyst boundary | 6 (Robin BC), 11–12 (Stokes, Darcy), 13 (SUPG) | Brinkman equation, electrode kinetics |
+| **B** | [Packed-bed runaway](B_packed_bed_runaway.html) | standard | Darcy flow, coupled $(c,T)$ with Arrhenius kinetics, Robin wall cooling | 8–9 (Newton, continuation), 12 (Darcy), 13 (SUPG) | stiff exponential nonlinearity |
+| **C** | [Buoyant vertical bed](C_vertical_bed_buoyancy.html) | advanced | B + Boussinesq buoyancy feeding back into a Brinkman flow, time dependent | B + 10 (θ-method), 11, 14 (splitting) | two-way coupling, segregated iteration |
+| **D** | [Nernst–Planck](D_nernst_planck.html) | advanced | ion migration, electroneutrality, potential equation, coupled Butler–Volmer | 8–9, 11 (null spaces), 13 | migration, solution-dependent conductivity |
+| **E** | [Ignition–extinction (PAC)](E_ignition_extinction_pac.html) | advanced | B + pseudo-arclength continuation through folds, stability eigenvalues | B + 9, 15 (continuation) | bordering algorithm, eigenvalue stability |
+| **F** | [Catalyst map (adjoint)](F_catalyst_activity_inverse.html) | standard | advection–diffusion–reaction forward model; PDE-constrained inverse problem for a spatially varying rate $k(\mathbf x)$ | 5–7 (MMS, rates), 13 | adjoint gradients (`dolfinx-adjoint`), regularisation, optimisation |
+
+**Standard** topics have a well-defined required part and leave room for stretch goals. **Advanced** topics build on a standard one (C and E on B,
+D on A's electrode kinetics) — start them only if you are comfortable with Weeks 8–9 and 11–13. Each topic page lists required tasks, the
+verification that is specific to the topic, stretch goals, and milestones.
+
+## What every topic must contain
+
+1. **Weak form** of the full model with spaces, essential/natural conditions, and the nonlinear residual (or the reason the problem is linear).
+2. **Analysis**: which theorem covers the (linearised) problem, its constants, and where it can fail for your parameters (e.g. Péclet number, Arrhenius
+   stiffness, loss of coercivity).
+3. **Verification**: an MMS convergence study with **predicted** rates on at least four meshes, **and** the topic's own physical check (listed on each page),
+   **and** `-np 1` = `-np 2`.
+4. **Results**: the topic's design output, mesh-independent.
+5. **LLM workflow** with at least three concrete errors found and how.
+
+Units: all topics use lumped, dimensionless parameter values. State the dimensionless groups (Péclet, Damköhler, …) that your values correspond to.
+
+## Choosing and claiming
+
+- Write your choice and a two-line plan in the proposal (`week08/W08_project_proposal.ipynb`, Section 1). At most **three students per topic**;
+  topics are assigned in the order the proposals arrive. Students on the same topic must not share code (syllabus, *Academic Integrity*).
+- Own topic: it must be **nonlinear or a flow problem** and must allow an MMS study and one independent physical check.
+- Bonus (+2 points, `W16_final_project.html` §5): an adjoint-based inverse problem on top of topics A–E or your own topic. For topic F the inverse
+  problem is the project itself; F's bonus is its design-optimisation stretch goal instead.
+
+## Sources
+
+Background reading is listed on each topic page.
