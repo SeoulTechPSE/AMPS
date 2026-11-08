@@ -177,7 +177,7 @@ $Da_L=1$, Poiseuille, inert wall:
 
 ![](figs/w12_flow.png){width=100% fig-align="center"}
 
-Uniform inlet, no slip, do-nothing outlet, Taylor–Hood with the axisymmetric terms. Outlet $=2(1-r^2)$ to $10^{-13}$ ($Re=10$), $dp/dz=-8/Re$ to 5 digits; the centreline reaches 99 % at $z=2.7$ and 11.7 ($\approx0.24\,Re$).
+Uniform inlet, no slip, do-nothing outlet, Taylor–Hood with the axisymmetric terms. Outlet $=2(1-r^2)$ to $10^{-13}$ ($Re=10$), $dp/dz=-8/Re$ to 5 digits; the centerline reaches 99 % at $z=2.7$ and 11.7 ($\approx0.24\,Re$).
 
 ## One-way coupling: does the entrance matter?
 

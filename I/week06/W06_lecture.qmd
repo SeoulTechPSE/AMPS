@@ -390,7 +390,7 @@ bc = fem.dirichletbc(g_D, fem.locate_dofs_topological(V, fdim, ft.find(LEFT)))
 
 ## §C2 MMS with all three conditions
 
-$\tilde u=1+\sin(\pi x)e^{y}+xy^2$ — no special boundary behaviour needed: **all boundary data are computed from $\tilde u$**.
+$\tilde u=1+\sin(\pi x)e^{y}+xy^2$ — no special boundary behavior needed: **all boundary data are computed from $\tilde u$**.
 
 ```python
 n = ufl.FacetNormal(msh)

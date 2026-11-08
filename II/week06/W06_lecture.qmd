@@ -67,7 +67,7 @@ $$
 \dot{\mathbf u}_{n+1}=\dot{\mathbf u}_n+\Delta t\big[(1-\gamma)\ddot{\mathbf u}_n+\gamma\ddot{\mathbf u}_{n+1}\big]
 $$
 
-Predictor–corrector form: $(M+\gamma\Delta t\,C+\beta\Delta t^2K)\,\ddot{\mathbf u}_{n+1}=\mathbf f_{n+1}-C\tilde{\dot{\mathbf u}}-K\tilde{\mathbf u}$ — one matrix, factorised once.
+Predictor–corrector form: $(M+\gamma\Delta t\,C+\beta\Delta t^2K)\,\ddot{\mathbf u}_{n+1}=\mathbf f_{n+1}-C\tilde{\dot{\mathbf u}}-K\tilde{\mathbf u}$ — one matrix, factorized once.
 
 | $(\beta,\gamma)$ | name | stability | accuracy |
 |---|---|---|---|
@@ -158,7 +158,7 @@ $\lambda$ = 1, 4, 9, 25, 36, 49 (deflection y, x, y, y, x, y).
 
 ![](figs/w06_buckle.png){width=84% fig-align="center"}
 
-Modes 1–3 lie 0.1–0.3 % above Euler (discretisation, falling with refinement); modes 4–6 up to 0.5 % **below** (and further below on the finer mesh): shorter
+Modes 1–3 lie 0.1–0.3 % above Euler (discretization, falling with refinement); modes 4–6 up to 0.5 % **below** (and further below on the finer mesh): shorter
 waves feel shear deformation, $P_E/(\kappa GA)=1.4\,\%$ for the $x$-2 mode (Engesser's beam estimate $\lambda=35.49$).
 
 # Part C · Verification {background-color="#1f3864"}
@@ -172,7 +172,7 @@ waves feel shear deformation, $P_E/(\kappa GA)=1.4\,\%$ for the $x$-2 mode (Enge
 | `integrate(w, dt, n, ...)`, `step_exact` | `.newmark(dt, n, beta, gamma, aM, aK, record)` | `.euler(n, axis)`, `.Pref`, `.u0` |
 | | `.dense_modal()` (serial): the exact solution | |
 
-`newmark` works on PETSc vectors: predictor and corrector are `axpy`s, the matrix $M+\gamma\Delta tC+\beta\Delta t^2K$ is factorised once.
+`newmark` works on PETSc vectors: predictor and corrector are `axpy`s, the matrix $M+\gamma\Delta tC+\beta\Delta t^2K$ is factorized once.
 
 ## Newmark against the exact semi-discrete solution
 
@@ -218,7 +218,7 @@ waves feel shear deformation, $P_E/(\kappa GA)=1.4\,\%$ for the $x$-2 mode (Enge
 | Rayleigh coefficients $2\zeta\omega_1$, $2\zeta/\omega_1$ | twice the intended damping |
 | Modes numbered by index ("mode 3 = third bending mode") | mode 3 is axial (99.97 % $u_x^2$) |
 | Explicit scheme with $\Delta t$ from the lowest frequency | central difference needs $\omega_{\max}\Delta t\le2$: here $\Delta t\le1.0\,\mu$s, not $T_1/100=120\,\mu$s |
-| `A.convert("dense")` to inspect a matrix | **in place**: the PETSc matrix is now dense, MUMPS fails afterwards — use `A.convert("dense", B)` |
+| `A.convert("dense")` to inspect a matrix | **in place**: the PETSc matrix is now dense, MUMPS fails afterward — use `A.convert("dense", B)` |
 | `f(obj.static().x.petsc_vec)` | the temporary Function is freed before use: segmentation fault — keep the Function in a variable |
 | $K_G$ with only the axial component, or BC rows "fixed" by tiny diagonals | no buckling ($\lambda=7744$) / spurious eigenvalues; use $\sigma^0_{ij}u_{k,i}v_{k,j}$ and $B=K$ |
 
@@ -246,7 +246,7 @@ waves feel shear deformation, $P_E/(\kappa GA)=1.4\,\%$ for the $x$-2 mode (Enge
 | Concept | Key point | DOLFINx 0.11 / SLEPc |
 |---|---|---|
 | Semi-discrete dynamics | modes decouple; step load: each mode peaks at 2× static | `assemble_matrix(m, bcs, diag=0.0)` |
-| Newmark | $(\tfrac14,\tfrac12)$: unconditional, energy-conserving, period error $\Omega^2/12$ | one factorisation of $M+\gamma\Delta tC+\beta\Delta t^2K$ |
+| Newmark | $(\tfrac14,\tfrac12)$: unconditional, energy-conserving, period error $\Omega^2/12$ | one factorization of $M+\gamma\Delta tC+\beta\Delta t^2K$ |
 | Explicit | central difference: $\omega_{\max}\Delta t\le2$ | $\omega_{\max}$ from the eigen solver |
 | Rayleigh | $\zeta_i=\alpha_M/2\omega_i+\alpha_K\omega_i/2$ | $C=\alpha_MM+\alpha_KK$ |
 | Frequencies | shift-invert at 0; classify by shape | `EPS`, GHEP, `ST sinvert` |

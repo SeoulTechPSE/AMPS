@@ -187,7 +187,7 @@ You are the author of record (syllabus, *Academic Integrity*): every line, whoev
 | Kind | Examples |
 |---|---|
 | **Show where** | where the Dirichlet condition enters; where the Jacobian is made; where the reason is printed; where the QoI is reduced over ranks; where the manufactured source is built |
-| **Predict a change** | halve $h$: what happens to each error? P2 → P1? remove the stabilisation? a time step half as large? `-np 4`? start Newton from zero? |
+| **Predict a change** | halve $h$: what happens to each error? P2 → P1? remove the stabilization? a time step half as large? `-np 4`? start Newton from zero? |
 
 Prepare: *Restart and run all* the evening before; one section per verification step; the reason of every solve printed; your AI-usage log up to date — "which part did the LLM write, and which test checked it?" is a fair question.
 

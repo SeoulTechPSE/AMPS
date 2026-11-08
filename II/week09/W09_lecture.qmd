@@ -50,7 +50,7 @@ msh = mesh.create_mesh(comm, cells, el, X)            # X: (n, 3) points, cells:
 ```
 
 - A cylinder, a roof, a plate tilted in space: map a structured parameter grid $(s,t)\mapsto(x,y,z)$; a closed tube merges the seam.
-- **Non-manifold** surfaces work: in an I-beam the web edge *is* the flange centre line — three cells meet at one edge (shared vertices).
+- **Non-manifold** surfaces work: in an I-beam the web edge *is* the flange center line — three cells meet at one edge (shared vertices).
 - On such a mesh `ufl.grad(u)` is a $3\times3$ **tangential** gradient (derivatives along the surface only).
 - Flat facets: a curved shell is approximated by flat triangles → a geometry error $O(h^2)$ (measured on the cylinder, Part B).
 
@@ -103,7 +103,7 @@ $$
 
 ::: {.callout-important}
 ## Check the solver
-Without the drilling term MUMPS stops with KSP reason **−11** (factorisation failed) — `LinearProblem.solve()` does **not** raise, the field is NaN. Read `problem.solver.getConvergedReason()`.
+Without the drilling term MUMPS stops with KSP reason **−11** (factorization failed) — `LinearProblem.solve()` does **not** raise, the field is NaN. Read `problem.solver.getConvergedReason()`.
 :::
 
 # Part B · Shell verification {background-color="#1f3864"}
@@ -149,7 +149,7 @@ The source (curved I-beam, `I_beam.msh`, 1100 cells, $f=(0,0.2,-1)$, "both ends 
 
 ## The cell problem
 
-A periodic microstructure (fibres in a matrix, pores in an electrode, inclusions in a gel) with period $\ell\ll L$: at each macroscopic point the strain is $\mathbf E+\boldsymbol\varepsilon(\mathbf v)$,
+A periodic microstructure (fibers in a matrix, pores in an electrode, inclusions in a gel) with period $\ell\ll L$: at each macroscopic point the strain is $\mathbf E+\boldsymbol\varepsilon(\mathbf v)$,
 with a **periodic** fluctuation $\mathbf v$ on the cell $Y$:
 
 $$

@@ -32,7 +32,7 @@ format:
 | **A** | Theory — Péclet numbers, layers, why Galerkin oscillates, upwinding, SUPG | 55 min |
 | **B** | DOLFINx 0.11 — SUPG forms, $\tau$, test problems with layers | 35 min |
 | **C** | Measurements — 1D, 2D boundary layers, $\tau$, internal layers | 35 min |
-| **D** | LLM pitfalls with stabilised methods · HW12 | 15 min |
+| **D** | LLM pitfalls with stabilized methods · HW12 | 15 min |
 
 ::: {.box}
 Lab notebook: `W13_lab.ipynb` · Homework: `W13_HW12.ipynb` (due before Week 14)
@@ -40,7 +40,7 @@ Lab notebook: `W13_lab.ipynb` · Homework: `W13_HW12.ipynb` (due before Week 14)
 
 ## Where we are
 
-| Week | Operator | What made the discretisation work |
+| Week | Operator | What made the discretization work |
 |---|---|---|
 | 5–7 | $-\nabla\cdot(k\nabla u)$ | coercive and symmetric: Galerkin is the best approximation in the energy norm (Céa) |
 | 11–12 | Stokes | inf-sup: the right pair of spaces |
@@ -117,7 +117,7 @@ $\xi(z)\approx z/3$ for small $z$ (no diffusion added when the mesh resolves the
 :::
 
 ::: {.fragment}
-In 2D, isotropic artificial diffusion also smears **across** the streamlines (crosswind), where no stabilisation was needed. Brooks & Hughes (1982): add the diffusion
+In 2D, isotropic artificial diffusion also smears **across** the streamlines (crosswind), where no stabilization was needed. Brooks & Hughes (1982): add the diffusion
 **only along $\mathbf b$**, and do it in a consistent way.
 :::
 
@@ -133,7 +133,7 @@ $$a(u_h,v_h)+\sum_K\tau_K\big(-\varepsilon\Delta u_h+\mathbf b\cdot\nabla u_h-f,
 - **Petrov–Galerkin**: the test function is $v_h+\tau\,\mathbf b\cdot\nabla v_h$ — upwind-weighted along the streamline.
 - **Consistent**: the added term is the element **residual** times $\mathbf b\cdot\nabla v_h$; it vanishes for the exact solution, so Galerkin orthogonality
   $a_{\text{SUPG}}(u-u_h,v_h)=0$ holds.
-- Stabilisation acts **only along $\mathbf b$**: $\tau(\mathbf b\cdot\nabla u_h,\mathbf b\cdot\nabla v_h)$ is diffusion in the streamline direction.
+- Stabilization acts **only along $\mathbf b$**: $\tau(\mathbf b\cdot\nabla u_h,\mathbf b\cdot\nabla v_h)$ is diffusion in the streamline direction.
 - For P1, $\Delta u_h=0$ inside each cell; for P2 and higher, the term $-\varepsilon\Delta u_h$ must stay.
 - 1D, P1: SUPG with this $\tau$ = the optimal artificial diffusion of §A4.
 :::
@@ -263,7 +263,7 @@ Range of $u_h$ (exact solution in $[0,1]$), $N=16/32/64$: Galerkin up to $9.7\ti
 is smeared over many cells; SUPG $[-0.027,1.177]$, $[-0.042,1.176]$, $[-0.048,1.176]$ — sharp layer, bounded over/undershoots **that do not go away with $h$**.
 :::
 
-# Part D — LLMs and Stabilised Methods · HW12
+# Part D — LLMs and Stabilized Methods · HW12
 
 ## §D1 Where LLM-generated advection–diffusion code goes wrong
 
@@ -272,7 +272,7 @@ is smeared over many cells; SUPG $[-0.027,1.177]$, $[-0.042,1.176]$, $[-0.048,1.
 | **$\mathbf b=0$ somewhere** | $\tau=\frac{h}{2|\mathbf b|}(\coth\mathrm{Pe}_h-1/\mathrm{Pe}_h)$ evaluated where $\mathbf b=0$ | `nan` in the matrix: MUMPS reason −11 (test: $\mathbf b=0$ on half the unit square) |
 | **Overflowing exact solution** | $(e^{x/\varepsilon}-1)/(e^{1/\varepsilon}-1)$ | `inf/inf = nan` for $\varepsilon=10^{-4}$ |
 | **Wrong error measure** | only the global $L^2$ error | every method "converges at 0.5": the layer hides the difference (§C2) |
-| **Refinement instead of stabilisation** | "increase N until the wiggles go away" | $h<2\varepsilon/|\mathbf b|$: millions of cells per direction |
+| **Refinement instead of stabilization** | "increase N until the wiggles go away" | $h<2\varepsilon/|\mathbf b|$: millions of cells per direction |
 | **Over-claiming** | "SUPG removes all oscillations" | 13–18 % overshoots at layers (§C3, §C5) |
 | **Older API** | `ufl.CellSize(msh)`, `uh.vector` (legacy FEniCS) | `AttributeError` in 0.11 / UFL 2026 |
 

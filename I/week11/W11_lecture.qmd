@@ -40,7 +40,7 @@ Lab notebook: `W11_lab.ipynb` · Homework: `W11_HW10.ipynb` (due before Week 12)
 
 ## Where we are
 
-| Weeks | Problem | Existence | Discretisation |
+| Weeks | Problem | Existence | Discretization |
 |---|---|---|---|
 | 1–7 | elliptic, scalar | Lax–Milgram (coercive) | any conforming $V_h$ works (Céa) |
 | 8–9 | nonlinear | Newton = a sequence of linear problems | same |
@@ -267,7 +267,7 @@ $\beta_h$ (smallest non-zero) and [zero modes incl. the constant], `right` diago
 ![](figs/w11_pressure_modes.png){width="100%"}
 
 ::: {.fragment}
-- **P1–P1, `right` mesh:** $B^\top$ has a kernel beyond the constant; pinning one pressure DOF does not remove it. MUMPS reports a failed factorisation:
+- **P1–P1, `right` mesh:** $B^\top$ has a kernel beyond the constant; pinning one pressure DOF does not remove it. MUMPS reports a failed factorization:
   **KSP reason −11** (`DIVERGED_PC_FAILED`) on every mesh, the solution is `inf`. Feeding that `inf` (a pressure mean) into a UFL form even breaks the JIT compiler.
 - **P1–P1, `crossed` mesh:** 3 spurious modes remain, yet LU "succeeds" (reason 4) and returns a checkerboard pressure of size $10^2$–$10^3$ (the exact $p$ lies in $[0,1]$;
   $-420\dots910$ in this run, $\pm5000$ in another — the garbage is not even reproducible). The velocity converges at the right rate — **only the pressure shows it**.
@@ -302,7 +302,7 @@ $\mathbf f=\nabla\bigl(\sin2\pi x\cos2\pi y\bigr)$, $\mathbf u=0$ on $\partial\O
 ::: {.fragment}
 - Exactly $\propto1/\mu$: the velocity error is driven by the **pressure** approximation error. Low viscosity, strong body forces (buoyancy, Week 13 of Course II)
   or large pressure gradients ⇒ visible spurious velocities.
-- Cure: divergence-free pairs (Scott–Vogelius on special meshes, $H(\mathrm{div})$-conforming DG — Week 15) or grad-div stabilisation.
+- Cure: divergence-free pairs (Scott–Vogelius on special meshes, $H(\mathrm{div})$-conforming DG — Week 15) or grad-div stabilization.
 :::
 
 ## §C5 A benchmark with a symmetry: the Stokes cavity

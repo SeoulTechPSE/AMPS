@@ -1,6 +1,6 @@
 ---
 title: "AI-based Materials and Process Simulation I"
-subtitle: "Week 09 — Nonlinear Problems II: Well-posedness · Globalisation · Continuation · PETSc SNES in DOLFINx · HW8"
+subtitle: "Week 09 — Nonlinear Problems II: Well-posedness · Globalization · Continuation · PETSc SNES in DOLFINx · HW8"
 author:
    - name: "Kee-Youn Yoo"
      affiliation: "Process Systems Laboratory<br>Department of Chemical and Biomolecular Engineering, SeoulTech"
@@ -73,7 +73,7 @@ Then $\mathcal A(u)=\ell$ has exactly one solution for every $\ell\in V'$, and $
 - For a linear $\mathcal A$ this **is** Lax–Milgram (coercivity $\alpha$, continuity $L$).
 - Proof: $u\mapsto u-\rho R^{-1}(\mathcal A(u)-\ell)$ is a contraction for $0<\rho<2\alpha/L^2$ ($R$ = Riesz map) — a Picard-type iteration.
 - Typical example: a flux that depends on the **gradient**, $\mathcal A(u)=-\nabla\cdot\mathbf a(\nabla u)$ with $(\mathbf a(\xi)-\mathbf a(\eta))\cdot(\xi-\eta)\ge\alpha|\xi-\eta|^2$
-  (regularised power-law fluids, nonlinear elasticity with small strains).
+  (regularized power-law fluids, nonlinear elasticity with small strains).
 :::
 
 ## §A2 Two model problems that are not monotone
@@ -91,7 +91,7 @@ Then $w=K(u)$ solves the **linear** problem $-\Delta w=f$, $w=K(g)$ on $\partial
 ::: {.column width="50%"}
 **Bratu / Frank-Kamenetskii** $-\Delta u=\lambda e^u$, $u=0$
 
-Steady thermal explosion: heat release $\propto e^{u}$ (linearised Arrhenius), conduction to a cold wall; $\lambda$ = Frank-Kamenetskii parameter.
+Steady thermal explosion: heat release $\propto e^{u}$ (linearized Arrhenius), conduction to a cold wall; $\lambda$ = Frank-Kamenetskii parameter.
 
 - the reaction term **helps** $u$ grow — the opposite of monotone;
 - there is a critical $\lambda^*$: **two** solutions for $0<\lambda<\lambda^*$, one at $\lambda^*$, **none** for $\lambda>\lambda^*$ (no steady state: ignition);
@@ -120,7 +120,7 @@ Read it as: **(conditioning × nonlinearity) × (size of the first step) must be
 Two remedies: make the step smaller (**damping / line search**) or make $\|\delta u^0\|$ smaller (**continuation**).
 :::
 
-## §A4 Globalisation: line search on a merit function
+## §A4 Globalization: line search on a merit function
 
 Merit function $\phi(u)=\tfrac12\|F(u)\|^2$ (discrete residual vector). Newton direction $d=-J^{-1}F$:
 $$\nabla\phi\cdot d=(J^\top F)\cdot(-J^{-1}F)=-\|F\|^2<0 \quad\Rightarrow\quad d \text{ is a descent direction.}$$
@@ -298,7 +298,7 @@ Week 8 problem, P1, $u^0=g$ on $\partial\Omega$:
 - For this course (2D, $\lesssim10^5$ DOFs): `preonly` + `lu` (MUMPS in parallel) is the safe choice. Say so explicitly — the default is **not** LU.
 :::
 
-## §B6 Stopping tests and the discretisation error
+## §B6 Stopping tests and the discretization error
 
 `snes_rtol` is relative to $\|F(u^0)\|$ — it depends on the guess and on the scaling of the equation. Same problem, P2, $u^0=g$ on $\partial\Omega$:
 
@@ -319,7 +319,7 @@ P1 with $10^{-2}$: rates $-0.02,\ 4.03,\ 1.96$ — reason 3 ("converged") every 
 :::
 
 ::: {.fragment}
-Rule: algebraic error ≪ discretisation error **on the finest mesh** — tight `rtol`, an `atol` in the units of $F$, and check $\|F\|$ at exit, not just the reason.
+Rule: algebraic error ≪ discretization error **on the finest mesh** — tight `rtol`, an `atol` in the units of $F$, and check $\|F\|$ at exit, not just the reason.
 :::
 
 # Part C — Continuation in Practice
@@ -362,7 +362,7 @@ $-\Delta u=\lambda e^u$ on the unit square, $u=0$, P1, $N=32$, SNES `newtonls`/`
 
 ## §C3 Passing the fold: a custom Newton solver
 
-Unknowns $(u,\lambda)$, constraint $\int_\Omega u\,dx=m$, step in $m$. Block elimination of the bordered system (§A5) with **one** factorisation of $J$:
+Unknowns $(u,\lambda)$, constraint $\int_\Omega u\,dx=m$, step in $m$. Block elimination of the bordered system (§A5) with **one** factorization of $J$:
 $$J a=F,\quad Jz=F_\lambda,\qquad \delta\lambda=\frac{\ell\cdot a-c}{\ell\cdot z},\qquad \delta u=a-\delta\lambda\,z .$$
 
 ```python
@@ -458,6 +458,6 @@ Rules as always: *Restart session and run all*, `-np 2` where stated, the AI-usa
 | Line search | Newton direction = descent direction for $\frac12\|F\|^2$ | `snes_linesearch_type` |
 | Continuation | small steps in a parameter; folds need a different parameter | `fem.Constant` + loop; bordered Newton |
 | SNES | `NonlinearProblem(F, uh, bcs=, petsc_options_prefix=, petsc_options=)` | `getConvergedReason()` > 0, `setMonitor` |
-| Verification | algebraic error ≪ discretisation error; benchmark numbers | tight `rtol`, $\|F\|$ history, `-np 2` |
+| Verification | algebraic error ≪ discretization error; benchmark numbers | tight `rtol`, $\|F\|$ history, `-np 2` |
 
 **Next week — time-dependent problems:** heat equation, θ-method and stability, space–time error $O(h^{k+1}+\Delta t^p)$; HW9.

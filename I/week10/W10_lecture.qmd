@@ -1,6 +1,6 @@
 ---
 title: "AI-based Materials and Process Simulation I"
-subtitle: "Week 10 — Time-Dependent Problems: Semi-discretisation · θ-Method · Stability · Space–Time Convergence · Cahn–Hilliard"
+subtitle: "Week 10 — Time-Dependent Problems: Semi-discretization · θ-Method · Stability · Space–Time Convergence · Cahn–Hilliard"
 author:
    - name: "Kee-Youn Yoo"
      affiliation: "Process Systems Laboratory<br>Department of Chemical and Biomolecular Engineering, SeoulTech"
@@ -50,7 +50,7 @@ Weeks 1–7: elliptic, linear. Weeks 8–9: elliptic, nonlinear. Now: **paraboli
 | start-up flow | $\rho\mathbf u_t-\mu\Delta\mathbf u+\nabla p=\mathbf f$ (Week 14) |
 
 ::: {.fragment}
-Strategy: **discretise space first** (FEM, Weeks 1–7) → a system of ODEs → **discretise time** (θ-method) → at each step an elliptic problem
+Strategy: **discretize space first** (FEM, Weeks 1–7) → a system of ODEs → **discretize time** (θ-method) → at each step an elliptic problem
 (linear: Weeks 5–6; nonlinear: Weeks 8–9).
 :::
 
@@ -66,9 +66,9 @@ $$(u_t,v)+\kappa(\nabla u,\nabla v)=(f(t),v)\qquad\forall v\in H^1_0 .$$
 :::
 
 ::: {.fragment}
-**Semi-discretisation** (Galerkin in space, $u_h(x,t)=\sum_jU_j(t)\phi_j(x)$):
+**Semi-discretization** (Galerkin in space, $u_h(x,t)=\sum_jU_j(t)\phi_j(x)$):
 $$M\,\dot U(t)+K\,U(t)=F(t),\qquad M_{ij}=(\phi_j,\phi_i),\ \ K_{ij}=\kappa(\nabla\phi_j,\nabla\phi_i).$$
-A stiff ODE system: the generalised eigenvalues $K\varphi=\lambda M\varphi$ range from $\lambda_{\min}=O(1)$ to $\lambda_{\max}=O(h^{-2})$.
+A stiff ODE system: the generalized eigenvalues $K\varphi=\lambda M\varphi$ range from $\lambda_{\min}=O(1)$ to $\lambda_{\max}=O(h^{-2})$.
 :::
 
 ## §A2 Energy stability
@@ -113,7 +113,7 @@ $$M\frac{U^{n+1}-U^n}{\Delta t}+K\bigl(\theta U^{n+1}+(1-\theta)U^n\bigr)=\theta
 | ½ | Crank–Nicolson | 2 |
 | 1 | implicit (backward) Euler | 1 |
 
-Each step solves $(M+\theta\Delta tK)\,U^{n+1}=\text{rhs}$: an elliptic problem with a **constant** matrix (if $\Delta t$, θ fixed) — factorise once.
+Each step solves $(M+\theta\Delta tK)\,U^{n+1}=\text{rhs}$: an elliptic problem with a **constant** matrix (if $\Delta t$, θ fixed) — factorize once.
 :::
 ::: {.column width="52%"}
 Modal analysis: in an eigenvector $K\varphi=\lambda M\varphi$ (with $F=0$) one step multiplies by
@@ -172,7 +172,7 @@ a = fem.form(u * v * ufl.dx + dt * theta * kappa * ufl.inner(ufl.grad(u), ufl.gr
 L = fem.form(u_n * v * ufl.dx - dt * (1 - theta) * kappa * ufl.inner(ufl.grad(u_n), ufl.grad(v)) * ufl.dx
              + dt * (theta * f_new + (1 - theta) * f_old) * v * ufl.dx)
 A = assemble_matrix(a, bcs=[bc]); A.assemble()                # once
-ksp = PETSc.KSP().create(comm); ksp.setOperators(A); ksp.setType("preonly"); ksp.getPC().setType("lu")   # factorised once
+ksp = PETSc.KSP().create(comm); ksp.setOperators(A); ksp.setType("preonly"); ksp.getPC().setType("lu")   # factorized once
 
 for n in range(1, nsteps + 1):                                # integer counter: t_n = n * dt
     t.value = n * dt_value
@@ -190,7 +190,7 @@ for n in range(1, nsteps + 1):                                # integer counter:
 |---|---|
 | $t_n$, $\Delta t$, θ | `fem.Constant` — read at every assembly; change `.value`, never rebuild forms |
 | $u^n$ in the right-hand side | a `fem.Function` `u_n` inside `L`; update with `u_n.x.array[:] = uh.x.array` |
-| $M+\theta\Delta tK$ | `a`, assembled and factorised **once** (re-assemble only if $\Delta t$, θ or coefficients change) |
+| $M+\theta\Delta tK$ | `a`, assembled and factorized **once** (re-assemble only if $\Delta t$, θ or coefficients change) |
 | $g(t_{n+1})$ | `g.interpolate(fem.Expression(u_exact(t), ...))` after `t.value = ...` |
 | $\theta f^{n+1}+(1-\theta)f^n$ | two `Constant`s `t_old`, `t_new` in UFL; $\partial_t u$ for MMS by `ufl.diff(u_ex, ufl.variable(t))` |
 | $\|u(T)-u_h^N\|$ | `assemble_scalar` + `allreduce` with the exact solution at the **same** $t$ |
@@ -287,7 +287,7 @@ Indicator of $(-\frac12,\frac12)^2$ as $u_0$, $u=0$ on $\partial\Omega$, P1, $N=
 ::: {.fragment}
 **Positivity.** The exact solution is $\ge0$. Measured $\min u_h$ over all steps: BE $-7\times10^{-4}$ at $\Delta t=T/16$, $-1.6\times10^{-2}$ at $T/128$; CN down to $-2.7\times10^{-2}$.
 With a consistent mass matrix even backward Euler violates the maximum principle when $\Delta t$ is **small** compared with $h^2$ (a known lower bound);
-mass lumping on acute meshes restores it. Concentrations and temperatures that go negative are a discretisation artefact, not physics.
+mass lumping on acute meshes restores it. Concentrations and temperatures that go negative are a discretization artifact, not physics.
 :::
 
 # Part D — Cahn–Hilliard · LLMs · HW9
@@ -339,7 +339,7 @@ Checks with a known answer even without an exact solution: energy decay, mass co
 | **Stale boundary data** | `g.interpolate(...)` once, before the loop | boundary values stay at $t=0$ — **invisible** to the Gaussian benchmark ($<10^{-3}$ on $\partial\Omega$: error $5.2\times10^{-3}$ with or without the bug); test with an MMS whose boundary data change |
 | **Float loop** | `while t < T: t += dt` | one extra step (11 instead of 10 for $\Delta t=0.1$) |
 | **Data at the wrong time** | $f(t_n)$ or $f(t_{n+1})$ in Crank–Nicolson | first order instead of second (HW9) |
-| **Cost** | `LinearProblem(...)` or `fem.form(...)` inside the loop | re-assembly and re-factorisation of a constant matrix every step |
+| **Cost** | `LinearProblem(...)` or `fem.form(...)` inside the loop | re-assembly and re-factorization of a constant matrix every step |
 | **Error at the wrong time** | exact solution at $t_n$ compared with $u_h^{n+1}$ | an $O(\Delta t)$ error floor |
 
 ::: {.fragment}
@@ -372,7 +372,7 @@ For every rate: **prediction first**, then measurement, then explanation.
 |---|---|---|
 | Method of lines | $M\dot U+KU=F$, stiff: $\lambda_{\max}\sim h^{-2}$ | mass and stiffness forms |
 | Semi-discrete error | Ritz projection: $O(h^{k+1})$ if $u_h(0)$ is good | interpolate $u_0$ |
-| θ-method | $R(z)=\frac{1-(1-\theta)z}{1+\theta z}$; θ ≥ ½ A-stable; BE L-stable | `Constant` dt, θ; factorise once |
+| θ-method | $R(z)=\frac{1-(1-\theta)z}{1+\theta z}$; θ ≥ ½ A-stable; BE L-stable | `Constant` dt, θ; factorize once |
 | Explicit limit | $\Delta t\le2/\lambda_{\max}=O(h^2)$, may hide for smooth data | — |
 | Space–time error | $O(h^{k+1}+\Delta t^p)$; data at consistent times | `t_old`, `t_new` Constants |
 | Non-smooth data | CN oscillates; Rannacher start | a few BE half steps |

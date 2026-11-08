@@ -405,7 +405,7 @@ Kee-Youn Yoo
 </section>
 <section id="a4-the-linear-solver-from-m_p-to-pcd" class="slide level2">
 <h2>§A4 The linear solver: from <span class="math inline">M_p</span> to PCD</h2>
-<p>Newton/Oseen matrix and its block factorisation (Week 12): <span class="math inline">\begin{pmatrix}F&amp;B^\top\\B&amp;0\end{pmatrix}</span>, <span class="math inline">\ F=\nu A+N(\mathbf w)</span> (+ the Newton term), <span class="math inline">\ S=-BF^{-1}B^\top</span>.</p>
+<p>Newton/Oseen matrix and its block factorization (Week 12): <span class="math inline">\begin{pmatrix}F&amp;B^\top\\B&amp;0\end{pmatrix}</span>, <span class="math inline">\ F=\nu A+N(\mathbf w)</span> (+ the Newton term), <span class="math inline">\ S=-BF^{-1}B^\top</span>.</p>
 <div class="columns">
 <div class="column" style="width:48%;">
 <div class="fragment">
@@ -467,7 +467,7 @@ Kee-Youn Yoo
 <ul>
 <li><code>J=None</code>: <code>NonlinearProblem</code> differentiates <code>F</code> with <code>ufl.derivative</code> — the full Newton Jacobian, no hand derivation.</li>
 <li><strong>Picard</strong>: pass your own <code>J</code> with the convecting velocity frozen: <code>inner(dot(grad(du), u), v)</code> (<code>du</code> trial, <code>u</code> the current iterate).</li>
-<li>BCs: the lid by interpolating <code>isclose(x[1], 1)</code> on all boundary DOFs (the corners get 0 or 1 — a discretisation choice); the pressure pinned at <span class="math inline">(0,0)</span>.</li>
+<li>BCs: the lid by interpolating <code>isclose(x[1], 1)</code> on all boundary DOFs (the corners get 0 or 1 — a discretization choice); the pressure pinned at <span class="math inline">(0,0)</span>.</li>
 </ul>
 </div>
 </section>
@@ -601,9 +601,9 @@ Kee-Youn Yoo
 <section id="c1-cont.-reading-the-comparison" class="slide level2">
 <h2>§C1 (cont.) Reading the comparison</h2>
 <ul>
-<li>Re = 400, 1000: the deviation <strong>halves</strong> with every refinement — our discretisation error dominates.</li>
+<li>Re = 400, 1000: the deviation <strong>halves</strong> with every refinement — our discretization error dominates.</li>
 <li>Re = 100: it stops at 0.005 — now <strong>Ghia’s</strong> error dominates (a 129 × 129 grid, second order, 5 digits). A benchmark is a measurement too.</li>
-<li>Re = 400, <span class="math inline">v</span>: one point gets worse with refinement — <span class="math inline">v(0.9063,0.5)</span>: ours <span class="math inline">-0.352</span>, <span class="math inline">-0.370</span>, <span class="math inline">-0.380</span>; Ghia <span class="math inline">-0.23827</span>. Without it the deviation is 0.036 / 0.016 / 0.0076. Ghia’s value does not fit its neighbours (the × in the figure): a probable misprint in the table, noted in several transcriptions.</li>
+<li>Re = 400, <span class="math inline">v</span>: one point gets worse with refinement — <span class="math inline">v(0.9063,0.5)</span>: ours <span class="math inline">-0.352</span>, <span class="math inline">-0.370</span>, <span class="math inline">-0.380</span>; Ghia <span class="math inline">-0.23827</span>. Without it the deviation is 0.036 / 0.016 / 0.0076. Ghia’s value does not fit its neighbors (the × in the figure): a probable misprint in the table, noted in several transcriptions.</li>
 </ul>
 <div class="fragment">
 <div class="box">
@@ -746,7 +746,7 @@ Kee-Youn Yoo
 <tbody>
 <tr class="odd">
 <td><strong>A Picard Jacobian sold as Newton</strong></td>
-<td>a hand-written <code>J</code> with the convecting velocity frozen, labelled “Newton”</td>
+<td>a hand-written <code>J</code> with the convecting velocity frozen, labeled “Newton”</td>
 <td>linear convergence: 12 / 27 instead of 5 / 5 iterations (§C2)</td>
 </tr>
 <tr class="even">

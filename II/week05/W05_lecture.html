@@ -362,7 +362,7 @@ Kee-Youn Yoo
 </tbody>
 </table>
 <ul>
-<li>Effective stiffness <span class="math inline">E_\infty+\sum b_iE_i</span>: constant for a constant <span class="math inline">\Delta t</span> — <strong>one factorisation</strong> for the whole run.</li>
+<li>Effective stiffness <span class="math inline">E_\infty+\sum b_iE_i</span>: constant for a constant <span class="math inline">\Delta t</span> — <strong>one factorization</strong> for the whole run.</li>
 <li>A load applied at <span class="math inline">t=0</span> is a jump: take an elastic step at <span class="math inline">0^+</span>, then the time steps.</li>
 </ul>
 </section>
@@ -388,15 +388,15 @@ Kee-Youn Yoo
 <h1>Part B · Phase-field fracture</h1>
 
 </section>
-<section id="from-griffith-to-a-regularised-crack" class="slide level2">
-<h2>From Griffith to a regularised crack</h2>
+<section id="from-griffith-to-a-regularized-crack" class="slide level2">
+<h2>From Griffith to a regularized crack</h2>
 <p>Griffith: a crack grows when the energy released per unit crack area reaches <span class="math inline">G_c</span>. Total energy of a body with a crack set <span class="math inline">\Gamma</span>: <span class="math inline">\mathcal E=\int_{\Omega\setminus\Gamma}\psi(\boldsymbol\varepsilon)\,dA+G_c\,|\Gamma|</span>. Replace the sharp crack by a damage field <span class="math inline">d\in[0,1]</span> of width <span class="math inline">\sim\ell</span> (AT2):</p>
 <p><span class="math display">
 \mathcal E_\ell(\mathbf u,d)=\int_\Omega g(d)\,\psi(\boldsymbol\varepsilon(\mathbf u))\,dA+\frac{G_c}{2}\int_\Omega\Big(\frac{d^2}{\ell}+\ell|\nabla d|^2\Big)dA,\qquad g(d)=(1-d)^2+k
 </span></p>
 <ul>
 <li>The second integral is a <strong>length</strong> in disguise: for the optimal profile <span class="math inline">d=e^{-|x|/\ell}</span> across a straight crack it equals <span class="math inline">G_c</span> per unit crack length.</li>
-<li>As <span class="math inline">\ell\to0</span> the minimisers converge to Griffith’s (Γ-convergence) — but <span class="math inline">\ell</span> also sets a strength (next slide), so it is a <strong>material parameter</strong>.</li>
+<li>As <span class="math inline">\ell\to0</span> the minimizers converge to Griffith’s (Γ-convergence) — but <span class="math inline">\ell</span> also sets a strength (next slide), so it is a <strong>material parameter</strong>.</li>
 <li><span class="math inline">k\sim10^{-6}</span> keeps the broken material from making the stiffness matrix singular.</li>
 </ul>
 </section>
@@ -443,7 +443,7 @@ Kee-Youn Yoo
 <section id="the-homogeneous-response-and-the-profile" class="slide level2">
 <h2>The homogeneous response and the profile</h2>
 
-<img data-src="figs/w05_at2.png" class="quarto-figure quarto-figure-center r-stretch" style="width:86.0%"><p>Left: the strength of the regularised model scales as <span class="math inline">\ell^{-1/2}</span>. Right: P1 with <span class="math inline">h=\ell</span> already follows the exact profile (energy +4 %).</p>
+<img data-src="figs/w05_at2.png" class="quarto-figure quarto-figure-center r-stretch" style="width:86.0%"><p>Left: the strength of the regularized model scales as <span class="math inline">\ell^{-1/2}</span>. Right: P1 with <span class="math inline">h=\ell</span> already follows the exact profile (energy +4 %).</p>
 </section>
 <section id="irreversibility-and-the-driving-force" class="slide level2">
 <h2>Irreversibility and the driving force</h2>
@@ -456,8 +456,8 @@ Kee-Youn Yoo
 </ul>
 <p>Which energy drives the crack: <span class="math inline">\psi^+</span> (a <strong>split</strong>). Amor: <span class="math inline">\psi^+=\tfrac K2\langle\operatorname{tr}\boldsymbol\varepsilon\rangle_+^2+\mu\,\mathbf e:\mathbf e</span> (all three normal components, plane strain); compression of the volume does not damage. “Hybrid” form: the <span class="math inline">\mathbf u</span>-problem keeps <span class="math inline">g(d)\boldsymbol\sigma(\boldsymbol\varepsilon)</span> (linear), only <span class="math inline">d</span> sees the split.</p>
 </section>
-<section id="alternate-minimisation-staggered-scheme" class="slide level2 scrollable">
-<h2>Alternate minimisation (staggered scheme)</h2>
+<section id="alternate-minimization-staggered-scheme" class="slide level2 scrollable">
+<h2>Alternate minimization (staggered scheme)</h2>
 <p>For each displacement step <span class="math inline">U_n</span>:</p>
 <ol type="1">
 <li>solve <span class="math inline">\mathbf u</span> with <span class="math inline">d</span> fixed (linear, <span class="math inline">g(d)</span> stiffness);</li>
@@ -524,7 +524,7 @@ Kee-Youn Yoo
 <h2>Viscoelasticity in code: a linear problem per step</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>Ceff.x.array[:] <span class="op">=</span> np.tile((Cinf <span class="op">+</span> <span class="bu">sum</span>(b <span class="op">*</span> Ci <span class="cf">for</span> (a, b), Ci <span class="kw">in</span> <span class="bu">zip</span>(ab, Cb))).ravel(), nq)   <span class="co"># constant for a fixed dt</span></span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>hist.x.array[:] <span class="op">=</span> <span class="bu">sum</span>((a <span class="op">*</span> ev_i <span class="op">+</span> (b <span class="op">-</span> a) <span class="op">*</span> e_old) <span class="op">@</span> Ci <span class="cf">for</span> ...).ravel()                    <span class="co"># history stress at the points</span></span>
-<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> ufl.dot(ufl.dot(Ceff, eps4(du)), eps4(v)) <span class="op">*</span> dx            <span class="co"># assembled and factorised once per step size</span></span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> ufl.dot(ufl.dot(Ceff, eps4(du)), eps4(v)) <span class="op">*</span> dx            <span class="co"># assembled and factorized once per step size</span></span>
 <span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> ufl.dot(hist, eps4(v)) <span class="op">*</span> dx <span class="op">-</span> p <span class="op">*</span> ufl.dot(n, v) <span class="op">*</span> ds(INNER)</span>
 <span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="co"># after the solve: e_new at the points, then  ev_i &lt;- a ev_i + (1 - b) e_new + (b - a) e_old,  e_old &lt;- e_new</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
@@ -581,7 +581,7 @@ Kee-Youn Yoo
 <span id="cb2-9"><a href="" aria-hidden="true" tabindex="-1"></a>H_n <span class="op">=</span> H.x.array.copy()<span class="op">;</span>  <span class="cf">return</span> err <span class="op">&lt;</span> tol, it</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>Reaction: <span class="math inline">F=\int_\Omega g\,\sigma_{yy}\,dA</span> — the virtual work with <span class="math inline">\mathbf w=(0,y)</span> (Week 4’s consistent reaction, one line).</li>
-<li>Both matrices change every iteration (<span class="math inline">g(d)</span> and <span class="math inline">\mathcal H</span>): reassemble, refactorise.</li>
+<li>Both matrices change every iteration (<span class="math inline">g(d)</span> and <span class="math inline">\mathcal H</span>): reassemble, refactorize.</li>
 </ul>
 </section>
 <section id="a-notch-in-the-mesh-not-in-the-damage" class="slide level2">
@@ -737,7 +737,7 @@ Kee-Youn Yoo
 </tr>
 <tr class="even">
 <td>Mesh coarser than <span class="math inline">\ell</span> along the crack path</td>
-<td>the crack band and <span class="math inline">F_{\max}</span> are mesh artefacts</td>
+<td>the crack band and <span class="math inline">F_{\max}</span> are mesh artifacts</td>
 </tr>
 <tr class="odd">
 <td>Notch as an initial value of <span class="math inline">d</span> / as one line of nodes</td>

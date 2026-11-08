@@ -89,7 +89,7 @@ A heuristic (Hughes), not a theorem — but it predicts the table: ratio well ab
 
 ![](figs/w08_plates.png){width=92% fig-align="center"}
 
-Left: clamped square, $L/h=1000$, centre deflection over Kirchhoff. P1 triangles with one shear point: ratio $1.5/2=0.75$ — **still locked** (0.008 at $N=32$). P2-SRI recovers slowly,
+Left: clamped square, $L/h=1000$, center deflection over Kirchhoff. P1 triangles with one shear point: ratio $1.5/2=0.75$ — **still locked** (0.008 at $N=32$). P2-SRI recovers slowly,
 P3 works. Right: thickness effect (black, physics, $\propto(h/L)^2$) against locking (blue, error, $\to1$).
 
 ## DOLFINx 0.11
@@ -123,7 +123,7 @@ Compare with a reference of the **same model**; use a limit only where it applie
 
 ## Convergence against the exact Reissner–Mindlin plate
 
-Simply supported (hard), $h=0.01$, centre deflection against $w_K+\mathcal M/F$:
+Simply supported (hard), $h=0.01$, center deflection against $w_K+\mathcal M/F$:
 
 | $N$ | 4 | 8 | 16 | 32 | 64 | rate |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|

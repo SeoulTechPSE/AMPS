@@ -217,7 +217,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">AI-based Materials and Process Simulation I</h1>
-  <p class="subtitle">Week 10 — Time-Dependent Problems: Semi-discretisation · θ-Method · Stability · Space–Time Convergence · Cahn–Hilliard</p>
+  <p class="subtitle">Week 10 — Time-Dependent Problems: Semi-discretization · θ-Method · Stability · Space–Time Convergence · Cahn–Hilliard</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -312,7 +312,7 @@ Kee-Youn Yoo
 </tbody>
 </table>
 <div class="fragment">
-<p>Strategy: <strong>discretise space first</strong> (FEM, Weeks 1–7) → a system of ODEs → <strong>discretise time</strong> (θ-method) → at each step an elliptic problem (linear: Weeks 5–6; nonlinear: Weeks 8–9).</p>
+<p>Strategy: <strong>discretize space first</strong> (FEM, Weeks 1–7) → a system of ODEs → <strong>discretize time</strong> (θ-method) → at each step an elliptic problem (linear: Weeks 5–6; nonlinear: Weeks 8–9).</p>
 </div>
 </section>
 <section>
@@ -327,7 +327,7 @@ Kee-Youn Yoo
 <p>Weak form: for a.e. <span class="math inline">t</span>, find <span class="math inline">u(t)\in H^1</span>, <span class="math inline">u=g(t)</span> on <span class="math inline">\partial\Omega</span>, with <span class="math display">(u_t,v)+\kappa(\nabla u,\nabla v)=(f(t),v)\qquad\forall v\in H^1_0 .</span></p>
 </div>
 <div class="fragment">
-<p><strong>Semi-discretisation</strong> (Galerkin in space, <span class="math inline">u_h(x,t)=\sum_jU_j(t)\phi_j(x)</span>): <span class="math display">M\,\dot U(t)+K\,U(t)=F(t),\qquad M_{ij}=(\phi_j,\phi_i),\ \ K_{ij}=\kappa(\nabla\phi_j,\nabla\phi_i).</span> A stiff ODE system: the generalised eigenvalues <span class="math inline">K\varphi=\lambda M\varphi</span> range from <span class="math inline">\lambda_{\min}=O(1)</span> to <span class="math inline">\lambda_{\max}=O(h^{-2})</span>.</p>
+<p><strong>Semi-discretization</strong> (Galerkin in space, <span class="math inline">u_h(x,t)=\sum_jU_j(t)\phi_j(x)</span>): <span class="math display">M\,\dot U(t)+K\,U(t)=F(t),\qquad M_{ij}=(\phi_j,\phi_i),\ \ K_{ij}=\kappa(\nabla\phi_j,\nabla\phi_i).</span> A stiff ODE system: the generalized eigenvalues <span class="math inline">K\varphi=\lambda M\varphi</span> range from <span class="math inline">\lambda_{\min}=O(1)</span> to <span class="math inline">\lambda_{\max}=O(h^{-2})</span>.</p>
 </div>
 </section>
 <section id="a2-energy-stability" class="slide level2">
@@ -411,7 +411,7 @@ Kee-Youn Yoo
 </tr>
 </tbody>
 </table>
-<p>Each step solves <span class="math inline">(M+\theta\Delta tK)\,U^{n+1}=\text{rhs}</span>: an elliptic problem with a <strong>constant</strong> matrix (if <span class="math inline">\Delta t</span>, θ fixed) — factorise once.</p>
+<p>Each step solves <span class="math inline">(M+\theta\Delta tK)\,U^{n+1}=\text{rhs}</span>: an elliptic problem with a <strong>constant</strong> matrix (if <span class="math inline">\Delta t</span>, θ fixed) — factorize once.</p>
 </div><div class="column" style="width:52%;">
 <p>Modal analysis: in an eigenvector <span class="math inline">K\varphi=\lambda M\varphi</span> (with <span class="math inline">F=0</span>) one step multiplies by <span class="math display">R(z)=\frac{1-(1-\theta)z}{1+\theta z},\qquad z=\lambda\Delta t .</span> <img data-src="figs/w10_amplification.png" style="width:95.0%"></p>
 </div></div>
@@ -516,7 +516,7 @@ Kee-Youn Yoo
 <span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a>L <span class="op">=</span> fem.form(u_n <span class="op">*</span> v <span class="op">*</span> ufl.dx <span class="op">-</span> dt <span class="op">*</span> (<span class="dv">1</span> <span class="op">-</span> theta) <span class="op">*</span> kappa <span class="op">*</span> ufl.inner(ufl.grad(u_n), ufl.grad(v)) <span class="op">*</span> ufl.dx</span>
 <span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a>             <span class="op">+</span> dt <span class="op">*</span> (theta <span class="op">*</span> f_new <span class="op">+</span> (<span class="dv">1</span> <span class="op">-</span> theta) <span class="op">*</span> f_old) <span class="op">*</span> v <span class="op">*</span> ufl.dx)</span>
 <span id="cb1-9"><a href="" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> assemble_matrix(a, bcs<span class="op">=</span>[bc])<span class="op">;</span> A.assemble()                <span class="co"># once</span></span>
-<span id="cb1-10"><a href="" aria-hidden="true" tabindex="-1"></a>ksp <span class="op">=</span> PETSc.KSP().create(comm)<span class="op">;</span> ksp.setOperators(A)<span class="op">;</span> ksp.setType(<span class="st">"preonly"</span>)<span class="op">;</span> ksp.getPC().setType(<span class="st">"lu"</span>)   <span class="co"># factorised once</span></span>
+<span id="cb1-10"><a href="" aria-hidden="true" tabindex="-1"></a>ksp <span class="op">=</span> PETSc.KSP().create(comm)<span class="op">;</span> ksp.setOperators(A)<span class="op">;</span> ksp.setType(<span class="st">"preonly"</span>)<span class="op">;</span> ksp.getPC().setType(<span class="st">"lu"</span>)   <span class="co"># factorized once</span></span>
 <span id="cb1-11"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-12"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> n <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, nsteps <span class="op">+</span> <span class="dv">1</span>):                                <span class="co"># integer counter: t_n = n * dt</span></span>
 <span id="cb1-13"><a href="" aria-hidden="true" tabindex="-1"></a>    t.value <span class="op">=</span> n <span class="op">*</span> dt_value</span>
@@ -551,7 +551,7 @@ Kee-Youn Yoo
 </tr>
 <tr class="odd">
 <td><span class="math inline">M+\theta\Delta tK</span></td>
-<td><code>a</code>, assembled and factorised <strong>once</strong> (re-assemble only if <span class="math inline">\Delta t</span>, θ or coefficients change)</td>
+<td><code>a</code>, assembled and factorized <strong>once</strong> (re-assemble only if <span class="math inline">\Delta t</span>, θ or coefficients change)</td>
 </tr>
 <tr class="even">
 <td><span class="math inline">g(t_{n+1})</span></td>
@@ -707,7 +707,7 @@ Kee-Youn Yoo
 <li><strong>Rannacher start:</strong> a few L-stable steps (backward Euler, half step size) damp the stiff components, then CN: second order from the start.</li>
 </ul>
 <div class="fragment">
-<p><strong>Positivity.</strong> The exact solution is <span class="math inline">\ge0</span>. Measured <span class="math inline">\min u_h</span> over all steps: BE <span class="math inline">-7\times10^{-4}</span> at <span class="math inline">\Delta t=T/16</span>, <span class="math inline">-1.6\times10^{-2}</span> at <span class="math inline">T/128</span>; CN down to <span class="math inline">-2.7\times10^{-2}</span>. With a consistent mass matrix even backward Euler violates the maximum principle when <span class="math inline">\Delta t</span> is <strong>small</strong> compared with <span class="math inline">h^2</span> (a known lower bound); mass lumping on acute meshes restores it. Concentrations and temperatures that go negative are a discretisation artefact, not physics.</p>
+<p><strong>Positivity.</strong> The exact solution is <span class="math inline">\ge0</span>. Measured <span class="math inline">\min u_h</span> over all steps: BE <span class="math inline">-7\times10^{-4}</span> at <span class="math inline">\Delta t=T/16</span>, <span class="math inline">-1.6\times10^{-2}</span> at <span class="math inline">T/128</span>; CN down to <span class="math inline">-2.7\times10^{-2}</span>. With a consistent mass matrix even backward Euler violates the maximum principle when <span class="math inline">\Delta t</span> is <strong>small</strong> compared with <span class="math inline">h^2</span> (a known lower bound); mass lumping on acute meshes restores it. Concentrations and temperatures that go negative are a discretization artifact, not physics.</p>
 </div>
 </section></section>
 <section>
@@ -792,7 +792,7 @@ Kee-Youn Yoo
 <tr class="even">
 <td><strong>Cost</strong></td>
 <td><code>LinearProblem(...)</code> or <code>fem.form(...)</code> inside the loop</td>
-<td>re-assembly and re-factorisation of a constant matrix every step</td>
+<td>re-assembly and re-factorization of a constant matrix every step</td>
 </tr>
 <tr class="odd">
 <td><strong>Error at the wrong time</strong></td>
@@ -852,7 +852,7 @@ Kee-Youn Yoo
 <tr class="odd">
 <td>θ-method</td>
 <td><span class="math inline">R(z)=\frac{1-(1-\theta)z}{1+\theta z}</span>; θ ≥ ½ A-stable; BE L-stable</td>
-<td><code>Constant</code> dt, θ; factorise once</td>
+<td><code>Constant</code> dt, θ; factorize once</td>
 </tr>
 <tr class="even">
 <td>Explicit limit</td>

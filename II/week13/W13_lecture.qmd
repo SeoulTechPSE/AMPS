@@ -102,7 +102,7 @@ Taylor–Hood, $1/K$ a **DG0** field set per cell; Newton for the Forchheimer te
 | $K=10^{-4}$: flow-rate error | 0.015 | 0.0040 | 0.00067 | 0.000068 | 0.000005 |
 
 - The flow rate is right to 1.5 % on 8 cells while the velocity in the layer is off by 39 %: an integral hides the layer (a functional, Week 11).
-- The wall shear (the drag) is worse still: −11.5 % on 64 uniform cells. A mesh graded towards the walls (first cell $\le\sqrt K$) gives 0.4 % on 32 cells (HW12 Q2).
+- The wall shear (the drag) is worse still: −11.5 % on 64 uniform cells. A mesh graded toward the walls (first cell $\le\sqrt K$) gives 0.4 % on 32 cells (HW12 Q2).
 
 ## The interface on mesh lines — or not
 
@@ -202,7 +202,7 @@ Two submeshes coupled by $\int_\Gamma h_c(T_s-T_f)(w_s-w_f)$:
 | $10^6$ | **−5 (30)** | ✓ 1 | $1.0\times10^{-6}$ | 0.974188 |
 | $10^8$ | **−5 (30)** | **−5 (30)** | $1.0\times10^{-8}$ | 0.974185 |
 
-The linear problem is solved in one step; afterwards round-off times $h_c$ keeps the residual above the tolerance — "diverged", with the right answer. A penalty large enough to mimic perfect contact ruins the
+The linear problem is solved in one step; afterward round-off times $h_c$ keeps the residual above the tolerance — "diverged", with the right answer. A penalty large enough to mimic perfect contact ruins the
 conditioning: perfect contact = one continuous space (or Nitsche with a moderate penalty).
 
 # Part D · LLM · HW12 {background-color="#1f3864"}

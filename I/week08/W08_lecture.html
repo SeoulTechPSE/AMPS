@@ -315,7 +315,7 @@ Kee-Youn Yoo
 </table>
 </div>
 <div class="fragment">
-<p>Plan: write the problem as <span class="math inline">F(u;v)=0</span>, linearise it (Gâteaux derivative), solve a <strong>sequence of linear problems</strong> — each one exactly the machinery of Weeks 5–7.</p>
+<p>Plan: write the problem as <span class="math inline">F(u;v)=0</span>, linearize it (Gâteaux derivative), solve a <strong>sequence of linear problems</strong> — each one exactly the machinery of Weeks 5–7.</p>
 </div>
 </section>
 <section>
@@ -348,7 +348,7 @@ Kee-Youn Yoo
 <p><strong>Definition — Gâteaux (directional) derivative</strong></p>
 </div>
 <div class="callout-content">
-<p><span class="math display">J(u;w,v):=\frac{d}{d\varepsilon}F(u+\varepsilon w;v)\Big|_{\varepsilon=0}</span> — linear in the direction <span class="math inline">w</span> and in <span class="math inline">v</span>: a <strong>bilinear form</strong>, the linearisation of <span class="math inline">F</span> at <span class="math inline">u</span>.</p>
+<p><span class="math display">J(u;w,v):=\frac{d}{d\varepsilon}F(u+\varepsilon w;v)\Big|_{\varepsilon=0}</span> — linear in the direction <span class="math inline">w</span> and in <span class="math inline">v</span>: a <strong>bilinear form</strong>, the linearization of <span class="math inline">F</span> at <span class="math inline">u</span>.</p>
 </div>
 </div>
 </div>
@@ -388,7 +388,7 @@ Kee-Youn Yoo
 </section>
 <section id="a3-newtons-method" class="slide level2">
 <h2>§A3 Newton’s method</h2>
-<p>Linearise at the current iterate <span class="math inline">u^k</span>: <span class="math inline">F(u^k+\delta;v)\approx F(u^k;v)+J(u^k;\delta,v)</span>. Set the right side to zero:</p>
+<p>Linearize at the current iterate <span class="math inline">u^k</span>: <span class="math inline">F(u^k+\delta;v)\approx F(u^k;v)+J(u^k;\delta,v)</span>. Set the right side to zero:</p>
 <div title="Newton's method">
 <div class="callout callout-important callout-titled callout-style-default">
 <div class="callout-body">
@@ -444,7 +444,7 @@ Kee-Youn Yoo
 </section>
 <section id="a5-what-the-nonlinear-solver-does-not-change" class="slide level2">
 <h2>§A5 What the nonlinear solver does not change</h2>
-<p>The discretisation error is a property of <span class="math inline">u_h</span>, not of the iteration:</p>
+<p>The discretization error is a property of <span class="math inline">u_h</span>, not of the iteration:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -471,9 +471,9 @@ Kee-Youn Yoo
 </table>
 <div class="fragment">
 <ul>
-<li><strong>Mesh independence:</strong> the number of Newton iterations does not grow with <span class="math inline">N</span> — Newton converges in function space, the discretisations inherit it.</li>
+<li><strong>Mesh independence:</strong> the number of Newton iterations does not grow with <span class="math inline">N</span> — Newton converges in function space, the discretizations inherit it.</li>
 <li><strong>MMS works unchanged:</strong> choose <span class="math inline">\tilde u</span>, compute <span class="math inline">f=-\nabla\cdot(q(\tilde u)\nabla\tilde u)</span> with UFL, check the rates — once the iteration has converged.</li>
-<li>Stop on <span class="math inline">\|\delta u\|</span> or <span class="math inline">\|F\|</span> far below the discretisation error — and <strong>check that it stopped because it converged</strong>.</li>
+<li>Stop on <span class="math inline">\|\delta u\|</span> or <span class="math inline">\|F\|</span> far below the discretization error — and <strong>check that it stopped because it converged</strong>.</li>
 </ul>
 </div>
 </section>
@@ -630,7 +630,7 @@ Kee-Youn Yoo
 </ol>
 </div>
 <div class="fragment">
-<p><strong>Six prepared topics</strong> (<code>projects/index.html</code>): A PEM fuel-cell cathode · B packed-bed thermal runaway · C buoyant vertical bed · D Nernst–Planck electrochemistry · E ignition–extinction by arclength continuation · F catalyst-activity map by adjoint optimisation — or your own topic, e.g. power-law channel flow, natural convection, heat conduction with <span class="math inline">k(T)</span>.</p>
+<p><strong>Six prepared topics</strong> (<code>projects/index.html</code>): A PEM fuel-cell cathode · B packed-bed thermal runaway · C buoyant vertical bed · D Nernst–Planck electrochemistry · E ignition–extinction by arclength continuation · F catalyst-activity map by adjoint optimization — or your own topic, e.g. power-law channel flow, natural convection, heat conduction with <span class="math inline">k(T)</span>.</p>
 </div>
 </section>
 <section id="c2-the-proposal-due-before-week-9" class="slide level2">
@@ -658,7 +658,7 @@ Kee-Youn Yoo
 </tr>
 <tr class="odd">
 <td>Analysis plan</td>
-<td>which theorem applies (Lax–Milgram for the linearisation? monotone operators? inf-sup?)</td>
+<td>which theorem applies (Lax–Milgram for the linearization? monotone operators? inf-sup?)</td>
 </tr>
 <tr class="even">
 <td>Verification plan</td>

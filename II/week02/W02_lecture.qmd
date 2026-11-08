@@ -74,7 +74,7 @@ For $\nu=0.3$: $\lambda^*/\lambda=(1-2\nu)/(1-\nu)=0.571$. One line of code diff
 
 ## Orthotropic materials
 
-Three mirror planes of symmetry (wood, rolled sheet, unidirectional fibre composite). In plane stress, in the material axes $(1,2)$, Voigt notation with
+Three mirror planes of symmetry (wood, rolled sheet, unidirectional fiber composite). In plane stress, in the material axes $(1,2)$, Voigt notation with
 **engineering** shear strain $\gamma_{12}=2\varepsilon_{12}$:
 $$
 \begin{pmatrix}\varepsilon_{11}\\\varepsilon_{22}\\\gamma_{12}\end{pmatrix}=
@@ -87,7 +87,7 @@ $$
 
 ## Material axes at an angle
 
-Fibres at angle $\theta$ to $x$: rotation $\mathbf Q=\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{pmatrix}$ (columns = material axes).
+Fibers at angle $\theta$ to $x$: rotation $\mathbf Q=\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{pmatrix}$ (columns = material axes).
 
 ::: {.callout-note}
 ## Rotate in, apply $\mathbf C$, rotate out
@@ -109,7 +109,7 @@ $$
 $K_t=1+\sqrt{2\big(\sqrt{E_1/E_2}-\nu_{12}\big)+E_1/G_{12}}\qquad$ (isotropic: $1+\sqrt{2(1-\nu)+2(1+\nu)}=3$)
 :::
 
-Fibre composite $E_1=200$, $E_2=20$ GPa, $\nu_{12}=0.3$, $G_{12}=10$ GPa: load along the fibres $K_t=6.07$, across the fibres $2.60$.
+Fiber composite $E_1=200$, $E_2=20$ GPa, $\nu_{12}=0.3$, $G_{12}=10$ GPa: load along the fibers $K_t=6.07$, across the fibers $2.60$.
 Both are **infinite-plate** values: a finite plate gives something else.
 
 ## Axisymmetry
@@ -176,7 +176,7 @@ gmsh.initialize()
 if comm.rank == 0:                                   # build the model on one rank only
     s = occ.addRectangle(0, 0, 0, L, L); d = occ.addDisk(0, 0, 0, R, R)
     occ.cut([(2, s)], [(2, d)]); occ.synchronize()    # plate minus disk; object and tool are removed
-    ... addPhysicalGroup(1, curves, tag) for left/bottom/right/top/hole (sorted by centre of mass)
+    ... addPhysicalGroup(1, curves, tag) for left/bottom/right/top/hole (sorted by center of mass)
     ... size field: h_hole on the hole -> h_far at distance L/2
     gmsh.model.mesh.generate(2); gmsh.model.mesh.setOrder(2)    # curved triangles
 md = gmshio.model_to_mesh(gmsh.model, comm, 0, gdim=2)            # MeshData: .mesh, .facet_tags
@@ -218,13 +218,13 @@ Straight-sided triangles: 3.154 → 3.128 → 3.099 → 3.087 → 3.085 — the 
 
 - Same stress in plane stress and plane strain (tractions only: the 2D stress field does not depend on $E,\nu$); different displacement.
 - 3.085 is the converged value of a **finite** plate; Kirsch's 3 is reached only as $L/R\to\infty$.
-  Two sources of difference from a reference: discretisation (mesh study) and model (size study). Report both.
+  Two sources of difference from a reference: discretization (mesh study) and model (size study). Report both.
 
 ## Orthotropic plate
 
 ![](figs/w02_hole_stress.png){width=82% fig-align="center"}
 
-$L/R=10$: fibres along the load $K_t=6.486$ (Lekhnitskii 6.072), across $2.654$ (2.604). Stiff fibres pull the load past the hole: higher, narrower peak.
+$L/R=10$: fibers along the load $K_t=6.486$ (Lekhnitskii 6.072), across $2.654$ (2.604). Stiff fibers pull the load past the hole: higher, narrower peak.
 
 # Part C · Axisymmetry in code {background-color="#1f3864"}
 
@@ -264,7 +264,7 @@ The rate is the test, not the size of the error:
 
 - right model, right reference: the error falls at rate $k+1$ (P2: 3.01);
 - right model, **reference of another end condition**: the error **stalls** at a constant on every mesh (lab §5);
-- a few % "error" on a fine mesh is never "discretisation error" in a smooth problem like this one.
+- a few % "error" on a fine mesh is never "discretization error" in a smooth problem like this one.
 
 The same holds for the plate: Kirsch's 3 vs 3.085 is a model difference, which a size study (not a mesh study) shows.
 
@@ -285,7 +285,7 @@ The first three rows are from an earlier version of this very example. The fix f
 ## Prompting for a 2D model
 
 1. State the **reduction**: plane stress, plane strain, or axisymmetric — and the condition in $z$ (free, fixed, closed ends).
-2. State the material data as measured: $E_1,E_2,\nu_{12},G_{12}$ and the fibre angle, and ask for $\mathbf C=\mathbf S^{-1}$ computed numerically.
+2. State the material data as measured: $E_1,E_2,\nu_{12},G_{12}$ and the fiber angle, and ask for $\mathbf C=\mathbf S^{-1}$ computed numerically.
 3. Ask for the **checks** with the code: mesh area, a reduction test ($E_1=E_2$ gives the isotropic result), an exact solution with its convergence rate, a force balance.
 4. Run the checks before reading the physics.
 
@@ -294,7 +294,7 @@ The first three rows are from an earlier version of this very example. The fix f
 | Q | Topic | Points |
 |---|---|:---:|
 | 1 | Plane stress and $\lambda^*$, orthotropic compliance, rigid motions and the axis in $(r,z)$ | 20 |
-| 2 | Orthotropic plate with a hole: plate size, fibre angle, quarter vs full model | 40 |
+| 2 | Orthotropic plate with a hole: plate size, fiber angle, quarter vs full model | 40 |
 | 3 | Rotating shaft: the axis $r=0$, stresses on the axis, the axial force | 20 |
 | 4 | Debugging an LLM-generated closed-end pressure-vessel script | 20 |
 

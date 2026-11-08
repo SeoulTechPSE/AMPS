@@ -176,7 +176,7 @@ def constitutive():
     sig.x.array[:] = s.ravel(); p.x.array[:] = pp; Ct.x.array[:] = C.ravel()
 ```
 
-- `Du` is the displacement **increment** since the last converged step; `update` is vectorised over all points (`j2.py`, NumPy only).
+- `Du` is the displacement **increment** since the last converged step; `update` is vectorized over all points (`j2.py`, NumPy only).
 - The material law knows nothing about DOLFINx: you can test it in an ordinary notebook cell.
 
 ## Residual and Jacobian
@@ -247,7 +247,7 @@ set_bc(b, bcs, Du.x.petsc_vec, -1.0)
 | | `lame_ur`, `p_first_yield`, `p_limit` |
 
 The same `Tube` runs the 2D quarter section and the 1D radial model. The 1D model with 400–800 cells is the **reference** for the 2D one —
-a different discretisation of the same problem, not a different program.
+a different discretization of the same problem, not a different program.
 
 # Part C · Verification {background-color="#1f3864"}
 
@@ -324,7 +324,7 @@ $u_r(a)$ at $p=71.95$ MPa ($0.95\,p_{\rm lim}$), load steps as in the original s
 | 2D $4\times12$ / $8\times24$ / $16\times48$ | 75.73878 / 75.73811 / 75.738045 |
 | exact $p_{\rm lim}$ | 75.738039 |
 
-`rtol=1e-12` here. 2D comes out **above** $p_{\rm lim}$ (a displacement model is too stiff): $+7.5\times10^{-4}$, $+6.9\times10^{-5}$, $+5.2\times10^{-6}$ — a discretisation error.
+`rtol=1e-12` here. 2D comes out **above** $p_{\rm lim}$ (a displacement model is too stiff): $+7.5\times10^{-4}$, $+6.9\times10^{-5}$, $+5.2\times10^{-6}$ — a discretization error.
 At the default `rtol=1e-8` the same steps give 1D 75.73799 ($-4.7\times10^{-5}$; other step sequences $-2$ to $-12\times10^{-5}$, not monotone in the step count): the lifting puts the prescribed jump into the first residual,
 so `ref` grows to $6\times10^5$–$2\times10^7$ and final residuals of $2$–$9\times10^{-3}$ pass. The pressure read from the reaction carries that error.
 

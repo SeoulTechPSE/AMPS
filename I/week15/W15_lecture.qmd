@@ -133,7 +133,7 @@ The solution depends smoothly on Re (away from bifurcations): $\mathbf u(\mathrm
 
 ## §A4 The linear solver: from $M_p$ to PCD
 
-Newton/Oseen matrix and its block factorisation (Week 12):
+Newton/Oseen matrix and its block factorization (Week 12):
 $\begin{pmatrix}F&B^\top\\B&0\end{pmatrix}$, $\ F=\nu A+N(\mathbf w)$ (+ the Newton term), $\ S=-BF^{-1}B^\top$.
 
 ::: {.columns}
@@ -204,7 +204,7 @@ problem = NonlinearProblem(F, w, bcs=bcs, petsc_options_prefix="cav_",
 ::: {.fragment}
 - `J=None`: `NonlinearProblem` differentiates `F` with `ufl.derivative` — the full Newton Jacobian, no hand derivation.
 - **Picard**: pass your own `J` with the convecting velocity frozen: `inner(dot(grad(du), u), v)` (`du` trial, `u` the current iterate).
-- BCs: the lid by interpolating `isclose(x[1], 1)` on all boundary DOFs (the corners get 0 or 1 — a discretisation choice); the pressure pinned at $(0,0)$.
+- BCs: the lid by interpolating `isclose(x[1], 1)` on all boundary DOFs (the corners get 0 or 1 — a discretization choice); the pressure pinned at $(0,0)$.
 :::
 
 ## §B2 Continuation and point values
@@ -288,10 +288,10 @@ Run time (`-np 2`, MUMPS, continuation): $N=32$ under 0.5 s per Re; $N=128$ (≈
 
 ## §C1 (cont.) Reading the comparison
 
-- Re = 400, 1000: the deviation **halves** with every refinement — our discretisation error dominates.
+- Re = 400, 1000: the deviation **halves** with every refinement — our discretization error dominates.
 - Re = 100: it stops at 0.005 — now **Ghia's** error dominates (a 129 × 129 grid, second order, 5 digits). A benchmark is a measurement too.
 - Re = 400, $v$: one point gets worse with refinement — $v(0.9063,0.5)$: ours $-0.352$, $-0.370$, $-0.380$; Ghia $-0.23827$. Without it the
-  deviation is 0.036 / 0.016 / 0.0076. Ghia's value does not fit its neighbours (the × in the figure): a probable misprint in the table, noted in several transcriptions.
+  deviation is 0.036 / 0.016 / 0.0076. Ghia's value does not fit its neighbors (the × in the figure): a probable misprint in the table, noted in several transcriptions.
 
 ::: {.fragment}
 ::: {.box}
@@ -350,7 +350,7 @@ H(div)-DG: RT2 × DG1 (16 512 DOFs at $n=32$), 25 implicit steps to $t=10$. Tayl
 
 | Kind | What it looks like | Symptom (measured) |
 |---|---|---|
-| **A Picard Jacobian sold as Newton** | a hand-written `J` with the convecting velocity frozen, labelled "Newton" | linear convergence: 12 / 27 instead of 5 / 5 iterations (§C2) |
+| **A Picard Jacobian sold as Newton** | a hand-written `J` with the convecting velocity frozen, labeled "Newton" | linear convergence: 12 / 27 instead of 5 / 5 iterations (§C2) |
 | **The Stokes preconditioner at high Re** | `fieldsplit` with $M_p/\nu$ for the Schur complement | 215 GMRES per Newton step at Re = 400, failure at Re = 1000 (§C3) |
 | **"Taylor–Hood is divergence-free"** | $\nabla\cdot\mathbf u_h=0$ assumed for transport or post-processing | $\lVert\nabla\cdot\mathbf u_h\rVert=1.4\times10^{-3}$ at $n=32$ (§C4) |
 | **Agreement with a table taken on trust** | one bad benchmark point "explained" by mesh or method | Ghia Re = 400, $x=0.9063$: the gap grows under refinement (§C1) |

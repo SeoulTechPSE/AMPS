@@ -54,7 +54,7 @@ Most process models are **nonlinear**:
 :::
 
 ::: {.fragment}
-Plan: write the problem as $F(u;v)=0$, linearise it (Gâteaux derivative), solve a **sequence of linear problems** — each one exactly the
+Plan: write the problem as $F(u;v)=0$, linearize it (Gâteaux derivative), solve a **sequence of linear problems** — each one exactly the
 machinery of Weeks 5–7.
 :::
 
@@ -80,7 +80,7 @@ $F$ is **linear in $v$**, **nonlinear in $u$**. There is no bilinear form, so La
 
 ::: {.callout-note title="Definition — Gâteaux (directional) derivative"}
 $$J(u;w,v):=\frac{d}{d\varepsilon}F(u+\varepsilon w;v)\Big|_{\varepsilon=0}$$
-— linear in the direction $w$ and in $v$: a **bilinear form**, the linearisation of $F$ at $u$.
+— linear in the direction $w$ and in $v$: a **bilinear form**, the linearization of $F$ at $u$.
 :::
 
 ::: {.fragment}
@@ -100,7 +100,7 @@ The second term is the one that is easy to forget.
 
 ## §A3 Newton's method
 
-Linearise at the current iterate $u^k$: $F(u^k+\delta;v)\approx F(u^k;v)+J(u^k;\delta,v)$. Set the right side to zero:
+Linearize at the current iterate $u^k$: $F(u^k+\delta;v)\approx F(u^k;v)+J(u^k;\delta,v)$. Set the right side to zero:
 
 ::: {.callout-important title="Newton's method"}
 Given $u^0$ with $u^0=g$ on $\partial\Omega$, repeat: find $\delta u\in V_0$ with
@@ -138,7 +138,7 @@ $u=1+\sin(\pi x)y^2$, P1, $N=32$, initial guess = solution with $q=1$:
 
 ## §A5 What the nonlinear solver does not change
 
-The discretisation error is a property of $u_h$, not of the iteration:
+The discretization error is a property of $u_h$, not of the iteration:
 
 | P$k$, $N=8\to64$ | Newton iterations | $L^2$ errors | rates |
 |---|:---:|---|:---:|
@@ -146,9 +146,9 @@ The discretisation error is a property of $u_h$, not of the iteration:
 | P2 | 5, 5, 5, 5 | 2.0e-4 → 3.9e-7 | 3.01, 3.00, 3.00 |
 
 ::: {.fragment}
-- **Mesh independence:** the number of Newton iterations does not grow with $N$ — Newton converges in function space, the discretisations inherit it.
+- **Mesh independence:** the number of Newton iterations does not grow with $N$ — Newton converges in function space, the discretizations inherit it.
 - **MMS works unchanged:** choose $\tilde u$, compute $f=-\nabla\cdot(q(\tilde u)\nabla\tilde u)$ with UFL, check the rates — once the iteration has converged.
-- Stop on $\|\delta u\|$ or $\|F\|$ far below the discretisation error — and **check that it stopped because it converged**.
+- Stop on $\|\delta u\|$ or $\|F\|$ far below the discretization error — and **check that it stopped because it converged**.
 :::
 
 ## §A6 The initial guess
@@ -260,7 +260,7 @@ One **nonlinear or flow** problem, ideally from your own research. You must:
 
 ::: {.fragment}
 **Six prepared topics** (`projects/index.html`): A PEM fuel-cell cathode · B packed-bed thermal runaway · C buoyant vertical bed · D Nernst–Planck
-electrochemistry · E ignition–extinction by arclength continuation · F catalyst-activity map by adjoint optimisation — or your own topic, e.g.
+electrochemistry · E ignition–extinction by arclength continuation · F catalyst-activity map by adjoint optimization — or your own topic, e.g.
 power-law channel flow, natural convection, heat conduction with $k(T)$.
 :::
 
@@ -272,7 +272,7 @@ power-law channel flow, natural convection, heat conduction with $k(T)$.
 |---|---|
 | Problem | physical setting, governing equations, parameters with units, dimensionless groups |
 | Weak form | spaces, boundary conditions (essential/natural), the nonlinear residual $F(u;v)$ |
-| Analysis plan | which theorem applies (Lax–Milgram for the linearisation? monotone operators? inf-sup?) |
+| Analysis plan | which theorem applies (Lax–Milgram for the linearization? monotone operators? inf-sup?) |
 | Verification plan | manufactured solution and **predicted** rates; benchmark/reference data with a citation |
 | Smoke test | one `%%fenicsx -np 2` cell that builds the mesh and solves a linear simplification |
 | LLM plan and risks | what you will delegate, how you will check it; what could fail and the fallback |

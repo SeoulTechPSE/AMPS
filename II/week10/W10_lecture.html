@@ -275,7 +275,7 @@ Kee-Youn Yoo
 </tbody>
 </table>
 <div class="box">
-<p>Lab notebook: <code>W10_lab.ipynb</code> (≈ 80 min) · Homework: <code>W10_HW9.ipynb</code> (due before Week 11) · Interfaces in chemical engineering: particle–binder debonding in battery electrodes, coating delamination, fibre–matrix interfaces in membranes and composites</p>
+<p>Lab notebook: <code>W10_lab.ipynb</code> (≈ 80 min) · Homework: <code>W10_HW9.ipynb</code> (due before Week 11) · Interfaces in chemical engineering: particle–binder debonding in battery electrodes, coating delamination, fiber–matrix interfaces in membranes and composites</p>
 </div>
 </section>
 <section>
@@ -491,7 +491,7 @@ u(\delta)=\frac{L}{E}\,T(\delta)+\delta,\qquad \frac{du}{d\delta}=\frac{L}{E}\,T
 \quad\Rightarrow\quad
 \mathbf K\mathbf a=-\mathbf R,\ \ \mathbf K\mathbf b=\mathbf f,\ \ \Delta\lambda=\frac{\hat\delta-g(\mathbf u)-\mathbf g\cdot\mathbf a}{\mathbf g\cdot\mathbf b},\ \ \Delta\mathbf u=\mathbf a+\Delta\lambda\,\mathbf b .
 </span></p>
-<p>Two solves with one factorisation per Newton step — Week 3’s global unknown by static condensation again. <span class="math inline">g</span> is linear in <span class="math inline">\mathbf u</span>: its vector <span class="math inline">\mathbf g</span> is assembled once. The residual and Jacobian come from the <code>NonlinearProblem</code> (<code>solver.computeFunction</code>, <code>solver.computeJacobian</code>).</p>
+<p>Two solves with one factorization per Newton step — Week 3’s global unknown by static condensation again. <span class="math inline">g</span> is linear in <span class="math inline">\mathbf u</span>: its vector <span class="math inline">\mathbf g</span> is assembled once. The residual and Jacobian come from the <code>NonlinearProblem</code> (<code>solver.computeFunction</code>, <code>solver.computeJacobian</code>).</p>
 <p><strong>Never stop exactly at the peak:</strong> there the interface stiffness <span class="math inline">T'</span> is zero, one half of the strip is a free rigid body, <span class="math inline">\mathbf K</span> is singular — the next step started from it diverged. A step grid that misses <span class="math inline">\delta_0</span> by a little works.</p>
 </section>
 <section id="the-strip-exact-through-the-snap-back" class="slide level2">
@@ -553,7 +553,7 @@ u(\delta)=\frac{L}{E}\,T(\delta)+\delta,\qquad \frac{du}{d\delta}=\frac{L}{E}\,T
 </section>
 <section id="the-sources-intrinsic-model-compliance-grows-with-refinement" class="slide level2">
 <h2>The source’s intrinsic model: compliance grows with refinement</h2>
-<p>Source chapter 1: DG everywhere, the exponential law on <strong>every</strong> interior facet (stronger in the bulk, <span class="math inline">K_{\rm bulk}=295</span>, weaker on the interface), Nitsche for the supports. Linearised initial stiffness (left clamped as in the source, reference 5.95; plotted on the next slide):</p>
+<p>Source chapter 1: DG everywhere, the exponential law on <strong>every</strong> interior facet (stronger in the bulk, <span class="math inline">K_{\rm bulk}=295</span>, weaker on the interface), Nitsche for the supports. Linearized initial stiffness (left clamped as in the source, reference 5.95; plotted on the next slide):</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -588,7 +588,7 @@ u(\delta)=\frac{L}{E}\,T(\delta)+\delta,\qquad \frac{du}{d\delta}=\frac{L}{E}\,T
 </tr>
 </tbody>
 </table>
-<p>Each facet is a spring in series with a cell: the added compliance <span class="math inline">\propto1/(Kh)</span> — doubles with every halving of <span class="math inline">h</span> (0.114, 0.211, 0.404, 0.797). An intrinsic law on all facets needs <span class="math inline">K\,h/E\gg1</span>; with the source’s <span class="math inline">K</span> it is 1.8. The source’s “elastic stiffness 2.6 N/mm ✅” is a mesh-dependent artefact; chapter 2’s “4.18 N/mm, stiffer because CG matches nodes” is the ‘+’ trap (reproduced on 0.11: 4.43 with the slightly different Gmsh mesh), with a different left support than chapter 1 (5.95 vs 5.87 for perfect bond).</p>
+<p>Each facet is a spring in series with a cell: the added compliance <span class="math inline">\propto1/(Kh)</span> — doubles with every halving of <span class="math inline">h</span> (0.114, 0.211, 0.404, 0.797). An intrinsic law on all facets needs <span class="math inline">K\,h/E\gg1</span>; with the source’s <span class="math inline">K</span> it is 1.8. The source’s “elastic stiffness 2.6 N/mm ✅” is a mesh-dependent artifact; chapter 2’s “4.18 N/mm, stiffer because CG matches nodes” is the ‘+’ trap (reproduced on 0.11: 4.43 with the slightly different Gmsh mesh), with a different left support than chapter 1 (5.95 vs 5.87 for perfect bond).</p>
 </section>
 <section id="artificial-compliance" class="slide level2">
 <h2>Artificial compliance</h2>

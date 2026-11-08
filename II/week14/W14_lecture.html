@@ -260,7 +260,7 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 <td><span class="math inline">(1+a)/(1+ab)</span></td>
 </tr>
 <tr class="odd">
-<td>linear stabilised (S)</td>
+<td>linear stabilized (S)</td>
 <td><span class="math inline">f'(c^n)+S(c^{n+1}-c^n)-\varepsilon^2\Delta c^{n+1}</span></td>
 <td><span class="math inline">(1+a(1+S))/(1+a(S+b))</span></td>
 </tr>
@@ -271,7 +271,7 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 <section id="each-scheme-against-its-own-prediction" class="slide level2">
 <h2>Each scheme against its own prediction</h2>
 
-<img data-src="figs/w14_growth.png" class="quarto-figure quarto-figure-center r-stretch" style="width:72.0%"><p>Strip <span class="math inline">128\times2</span>, <span class="math inline">\varepsilon=0.05</span>, <span class="math inline">k=4\pi</span> (<span class="math inline">\sigma=95.57</span>). Every scheme is first order in <span class="math inline">\Delta t</span>; the FE rate sits on its own discrete rate to 0.03 %. Stabilisation costs accuracy: <span class="math inline">-4</span> % at <span class="math inline">\Delta t=10^{-4}</span> (BE +0.5 %, CS −1.1 %).</p>
+<img data-src="figs/w14_growth.png" class="quarto-figure quarto-figure-center r-stretch" style="width:72.0%"><p>Strip <span class="math inline">128\times2</span>, <span class="math inline">\varepsilon=0.05</span>, <span class="math inline">k=4\pi</span> (<span class="math inline">\sigma=95.57</span>). Every scheme is first order in <span class="math inline">\Delta t</span>; the FE rate sits on its own discrete rate to 0.03 %. Stabilization costs accuracy: <span class="math inline">-4</span> % at <span class="math inline">\Delta t=10^{-4}</span> (BE +0.5 %, CS −1.1 %).</p>
 </section>
 <section id="the-last-0.03-the-meshs-wavenumber" class="slide level2">
 <h2>The last 0.03 %: the mesh’s wavenumber</h2>
@@ -279,7 +279,7 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 <li>On a uniform P1/Q1 mesh <span class="math inline">\cos kx</span> is an eigenvector of the mass and stiffness matrices, with <span class="math inline">k_h^2=\frac{6}{h^2}\frac{1-\cos kh}{2+\cos kh}=k^2\big(1-\frac{(kh)^2}{12}+\dots\big)</span> instead of <span class="math inline">k^2</span>.</li>
 <li>Per step, the FE factor differs from <span class="math inline">g(k)</span> by <span class="math inline">1.0\times10^{-5}</span>, <span class="math inline">2.5\times10^{-6}</span>, <span class="math inline">6.3\times10^{-7}</span> (64, 128, 256 cells: second order) — and from <span class="math inline">g(k_h)</span> by at most <span class="math inline">6.3\times10^{-9}</span> for all schemes and steps.</li>
 <li>What is left is the cubic term the linear analysis drops: an initial amplitude <span class="math inline">10^{-5}</span> instead of <span class="math inline">10^{-4}</span> reduces it from <span class="math inline">1.3\times10^{-9}</span> to <span class="math inline">1.3\times10^{-11}</span> — the factor 100 of a term in (amplitude)².</li>
-<li>Code, scheme and spatial discretisation are separated <strong>exactly</strong>: every part of the error has a formula.</li>
+<li>Code, scheme and spatial discretization are separated <strong>exactly</strong>: every part of the error has a formula.</li>
 </ul>
 </section>
 <section id="three-schemes-three-properties" class="slide level2">
@@ -296,7 +296,7 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 <th></th>
 <th>BE</th>
 <th>CS (Eyre)</th>
-<th>stabilised</th>
+<th>stabilized</th>
 </tr>
 </thead>
 <tbody>
@@ -322,7 +322,7 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 <td>matrix</td>
 <td>changes every iteration</td>
 <td>changes every iteration</td>
-<td><strong>constant</strong> — factorise once</td>
+<td><strong>constant</strong> — factorize once</td>
 </tr>
 <tr class="odd">
 <td>growth error at <span class="math inline">\Delta t=10^{-4}</span></td>
@@ -336,7 +336,7 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 <section id="large-time-steps-the-energy" class="slide level2">
 <h2>Large time steps: the energy</h2>
 
-<img data-src="figs/w14_energy.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>Green: <span class="math inline">\Delta t=10^{-2}</span> — BE leaves the scale after a failed Newton step, CS lags, the stabilised scheme hardly moves.</p>
+<img data-src="figs/w14_energy.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"><p>Green: <span class="math inline">\Delta t=10^{-2}</span> — BE leaves the scale after a failed Newton step, CS lags, the stabilized scheme hardly moves.</p>
 </section>
 <section id="large-time-steps-the-field-at-t0.05" class="slide level2">
 <h2>Large time steps: the field at <span class="math inline">t=0.05</span></h2>
@@ -357,7 +357,7 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 <th><span class="math inline">\Delta t</span></th>
 <th style="text-align: center;">BE</th>
 <th style="text-align: center;">CS</th>
-<th style="text-align: center;">stabilised</th>
+<th style="text-align: center;">stabilized</th>
 </tr>
 </thead>
 <tbody>
@@ -377,7 +377,7 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 </table>
 <ul>
 <li>BE fails <strong>loudly</strong> — if the reason is checked. Unchecked, the loop continues from garbage and ends <em>below</em> the reference.</li>
-<li>CS and the stabilised scheme fail <strong>quietly</strong>: energy stability guarantees that nothing blows up, not that anything is right.</li>
+<li>CS and the stabilized scheme fail <strong>quietly</strong>: energy stability guarantees that nothing blows up, not that anything is right.</li>
 <li>Use large steps where the dynamics are slow (late coarsening), with an adaptive <span class="math inline">\Delta t</span>, and measure the accuracy separately.</li>
 </ul>
 </section>
@@ -427,7 +427,7 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 </tbody>
 </table>
 <ul>
-<li>At <span class="math inline">t=0.4</span> the profile error <strong>does not fall with the mesh</strong>: not a discretisation error — the interface is still relaxing (diffusion through the bulk is slow). Relaxed (<span class="math inline">t=2</span>; to <span class="math inline">t=10</span> nothing changes), profile and <span class="math inline">\gamma</span> are second order (2.0).</li>
+<li>At <span class="math inline">t=0.4</span> the profile error <strong>does not fall with the mesh</strong>: not a discretization error — the interface is still relaxing (diffusion through the bulk is slow). Relaxed (<span class="math inline">t=2</span>; to <span class="math inline">t=10</span> nothing changes), profile and <span class="math inline">\gamma</span> are second order (2.0).</li>
 <li>A test against an equilibrium needs the equilibrium. <span class="math inline">64\times64</span> at <span class="math inline">\varepsilon=0.02</span> has 1.8 cells per interface width: fine for the pattern, 1 % in the interfacial energy.</li>
 </ul>
 </section></section>
@@ -461,7 +461,7 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 </section>
 <section id="where-the-time-goes" class="slide level2">
 <h2>Where the time goes</h2>
-<p>A solve has three parts with different costs and different parallel behaviour:</p>
+<p>A solve has three parts with different costs and different parallel behavior:</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -489,7 +489,7 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 <tr class="odd">
 <td>solve</td>
 <td>LU: triangular solves; Krylov: iterations × (product + reductions)</td>
-<td>Krylov: one neighbour exchange and global reductions per iteration</td>
+<td>Krylov: one neighbor exchange and global reductions per iteration</td>
 </tr>
 </tbody>
 </table>
@@ -555,12 +555,12 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 </table>
 <ul>
 <li>Iterations: Jacobi and matrix-free CG grow like <span class="math inline">N\propto h^{-1}</span> (condition number <span class="math inline">h^{-2}</span>), GAMG stays at 7–8, LU is exact. On these sizes Jacobi is still the fastest — multigrid wins as <span class="math inline">n</span> grows.</li>
-<li>Matrix-free CG stores no matrix (0 against <span class="math inline">1.8\times10^6</span> nonzeros at <span class="math inline">N=40</span>) but assembles the action of the form in Python at every iteration: slow here. Production matrix-free codes use compiled, sum-factorised kernels (high order).</li>
+<li>Matrix-free CG stores no matrix (0 against <span class="math inline">1.8\times10^6</span> nonzeros at <span class="math inline">N=40</span>) but assembles the action of the form in Python at every iteration: slow here. Production matrix-free codes use compiled, sum-factorized kernels (high order).</li>
 <li>Uniform hexahedra and <span class="math inline">f\propto</span> a product of sines: the right-hand side is an eigenvector of the discrete operator and CG converges in <strong>one</strong> iteration — a benchmark that measures nothing.</li>
 </ul>
 </section>
-<section id="communication-ghosts-and-neighbours" class="slide level2">
-<h2>Communication: ghosts and neighbours</h2>
+<section id="communication-ghosts-and-neighbors" class="slide level2">
+<h2>Communication: ghosts and neighbors</h2>
 <p><span class="math inline">N=64</span> (275 k unknowns), vertices per rank:</p>
 <table class="caption-top">
 <thead>
@@ -569,7 +569,7 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 <th style="text-align: center;">owned vertices</th>
 <th style="text-align: center;">ghost vertices</th>
 <th style="text-align: center;">ghost / owned</th>
-<th style="text-align: center;">neighbours</th>
+<th style="text-align: center;">neighbors</th>
 </tr>
 </thead>
 <tbody>
@@ -604,7 +604,7 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 </tbody>
 </table>
 <ul>
-<li>Each matrix–vector product exchanges the ghost values with the neighbours; each inner product is a global reduction.</li>
+<li>Each matrix–vector product exchanges the ghost values with the neighbors; each inner product is a global reduction.</li>
 <li>Ghost fraction <span class="math inline">\propto</span> surface/volume <span class="math inline">\sim p^{1/3}/N</span>: it grows with the rank count and falls with the problem size — keep <span class="math inline">\gtrsim10^4</span>–<span class="math inline">10^5</span> unknowns per rank.</li>
 </ul>
 </section>
@@ -669,9 +669,9 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 <li>Colab gives 2 virtual CPUs. Scaling studies belong on a cluster with identical cores — and <strong>measure, don’t assume</strong>.</li>
 </ul>
 </section>
-<section id="reuse-one-factorisation" class="slide level2">
-<h2>Reuse one factorisation</h2>
-<p>The stabilised scheme’s matrix is constant: assemble and factorise it <strong>once</strong>, then every step is a right-hand side and two triangular solves.</p>
+<section id="reuse-one-factorization" class="slide level2">
+<h2>Reuse one factorization</h2>
+<p>The stabilized scheme’s matrix is constant: assemble and factorize it <strong>once</strong>, then every step is a right-hand side and two triangular solves.</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -687,23 +687,23 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 <td style="text-align: center;">264.1 ms</td>
 </tr>
 <tr class="even">
-<td>stabilised, Newton</td>
+<td>stabilized, Newton</td>
 <td style="text-align: center;">44.2 ms</td>
 <td style="text-align: center;">117.3 ms</td>
 </tr>
 <tr class="odd">
-<td>stabilised, linear, re-factorised</td>
+<td>stabilized, linear, re-factorized</td>
 <td style="text-align: center;">39.6 ms</td>
 <td style="text-align: center;">110.1 ms</td>
 </tr>
 <tr class="even">
-<td>stabilised, <strong>one factorisation</strong></td>
+<td>stabilized, <strong>one factorization</strong></td>
 <td style="text-align: center;">8.8 ms</td>
 <td style="text-align: center;">16.4 ms</td>
 </tr>
 </tbody>
 </table>
-<p>Same energy to all printed digits for the three stabilised variants. Backward Euler cannot reuse anything: its Jacobian contains <span class="math inline">3c^2</span>. Cost per unit of simulated time = (time per step)/<span class="math inline">\Delta t</span> — weigh it against the accuracy per step (HW13 Q6).</p>
+<p>Same energy to all printed digits for the three stabilized variants. Backward Euler cannot reuse anything: its Jacobian contains <span class="math inline">3c^2</span>. Cost per unit of simulated time = (time per step)/<span class="math inline">\Delta t</span> — weigh it against the accuracy per step (HW13 Q6).</p>
 </section>
 <section id="math-dolfinx-0.11" class="slide level2">
 <h2>Math → DOLFINx 0.11</h2>
@@ -741,7 +741,7 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 </tr>
 <tr class="even">
 <td>ghosts</td>
-<td><code>msh.topology.index_map(0).num_ghosts</code>, <code>.owners</code> (neighbour ranks)</td>
+<td><code>msh.topology.index_map(0).num_ghosts</code>, <code>.owners</code> (neighbor ranks)</td>
 </tr>
 </tbody>
 </table>
@@ -771,7 +771,7 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 </tr>
 <tr class="even">
 <td>“Energy-stable” taken for “accurate”</td>
-<td>stabilised scheme frozen at <span class="math inline">\Delta t=10^{-2}</span> (<span class="math inline">E</span> 0.249 vs 0.130)</td>
+<td>stabilized scheme frozen at <span class="math inline">\Delta t=10^{-2}</span> (<span class="math inline">E</span> 0.249 vs 0.130)</td>
 </tr>
 <tr class="odd">
 <td><code>len(dofs)</code> with <code>dofs</code> from <code>collapse()</code></td>
@@ -831,7 +831,7 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 </tr>
 <tr class="even">
 <td>Schemes</td>
-<td>BE (accurate, conditionally solvable), CS (stable), stabilised (stable, linear)</td>
+<td>BE (accurate, conditionally solvable), CS (stable), stabilized (stable, linear)</td>
 <td><code>scheme="be" / "cs" / "stab"</code></td>
 </tr>
 <tr class="odd">
@@ -856,7 +856,7 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 </tr>
 <tr class="odd">
 <td>Reuse</td>
-<td>constant matrix → factorise once</td>
+<td>constant matrix → factorize once</td>
 <td><code>assemble_matrix</code> once, <code>ksp.solve</code> per step</td>
 </tr>
 </tbody>

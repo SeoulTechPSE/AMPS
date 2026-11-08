@@ -141,7 +141,7 @@ Take `up` not parallel to any member, or one per member. With `up = e_y`: sway /
 
 ## Rotation vector and exponential map
 
-Rotation $\Lambda\in SO(3)$ of the cross-section, parametrised by $\boldsymbol\theta$ (axis × angle), $\varphi=|\boldsymbol\theta|$, $S=\widehat{\boldsymbol\theta}$ ($S\mathbf a=\boldsymbol\theta\times\mathbf a$):
+Rotation $\Lambda\in SO(3)$ of the cross-section, parametrized by $\boldsymbol\theta$ (axis × angle), $\varphi=|\boldsymbol\theta|$, $S=\widehat{\boldsymbol\theta}$ ($S\mathbf a=\boldsymbol\theta\times\mathbf a$):
 
 $$
 \Lambda=I+\frac{\sin\varphi}{\varphi}S+\frac{1-\cos\varphi}{\varphi^2}S^2,\qquad
@@ -155,7 +155,7 @@ $$
 $$
 
 $\Psi=\tfrac12\boldsymbol\Gamma\cdot C_N\boldsymbol\Gamma+\tfrac12\mathbf K\cdot C_M\mathbf K$, $C_N=\operatorname{diag}(ES,GS,GS)$, $C_M=\operatorname{diag}(GJ,EI,EI)$. Small $\boldsymbol\theta$: $\Lambda\approx I+S$ and the strains of Part B return.
-$\varphi\to0$: regularise with $\sqrt{\boldsymbol\theta\cdot\boldsymbol\theta+10^{-12}}$.
+$\varphi\to0$: regularize with $\sqrt{\boldsymbol\theta\cdot\boldsymbol\theta+10^{-12}}$.
 
 ## Energy → residual → SNES
 
@@ -176,7 +176,7 @@ for t in steps:  F.value[:] = t * F_max;  problem.solve()              # total l
 ## Three exact answers
 
 - **Circle.** End moment $M$ about $-\mathbf e_y$, no force: $\boldsymbol\Gamma=0$, $\mathbf K=(0,M/EI,0)$ — an arc, for any $ES$, $GS$. $M=2\pi EI/L$ closes it.
-- **Helix.** $EI=GJ$, dead end moment $\mathbf m$: the spatial curvature is $\mathbf m/EI$, so $\boldsymbol\theta(s)=s\,\mathbf m/EI$ **exactly** (linear in $s$!) and the centre line is a helix about $\mathbf m$.
+- **Helix.** $EI=GJ$, dead end moment $\mathbf m$: the spatial curvature is $\mathbf m/EI$, so $\boldsymbol\theta(s)=s\,\mathbf m/EI$ **exactly** (linear in $s$!) and the center line is a helix about $\mathbf m$.
 - **Elastica.** Dead tip force: shooting on $EI\varphi'=F(x_{\rm tip}-x)$ (inextensible), or with $\varepsilon=N/ES$, $\gamma=Q/GS$ (Reissner). With $ES=GS$: $\varepsilon\mathbf d_1+\gamma\mathbf d_2=\frac F{ES}(0,-1)$ — a
   **uniform** extra translation, $w_{\rm Reissner}=w_{\rm elastica}+FL/ES$ exactly.
 
@@ -199,7 +199,7 @@ Helix, $|\mathbf m|L/EI=3\pi$, tip error $|\mathbf u-\mathbf u_{\rm ex}|$:
 | P2/P1, two-point force term | $3.2\times10^{-4}$ | $2.0\times10^{-5}$ | $1.2\times10^{-6}$ | $7.6\times10^{-8}$ | 4 |
 | P2/P1, full integration (the source's) | 4.86 | 1.62 | Newton fails | Newton fails | — |
 
-- With the reduced rule $\boldsymbol\Gamma$ can vanish at the quadrature points: $\boldsymbol\theta$ is then **exact** ($10^{-15}$), and $\mathbf u$ is the centre line integrated by the midpoint / 2-point Gauss rule.
+- With the reduced rule $\boldsymbol\Gamma$ can vanish at the quadrature points: $\boldsymbol\theta$ is then **exact** ($10^{-15}$), and $\mathbf u$ is the center line integrated by the midpoint / 2-point Gauss rule.
 - P2/P1 is locking-free in the linear theory only: in a curved state $\boldsymbol\Gamma$ is not a polynomial, and the stiff force term locks. P1/P1 full: elastica $w/L$ 0.209 instead of 0.302.
 
 ## Newton for rods

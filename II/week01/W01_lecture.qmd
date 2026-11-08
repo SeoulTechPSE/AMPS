@@ -110,7 +110,7 @@ a(\mathbf u,\mathbf v)=\int_\Omega\boldsymbol\sigma(\mathbf u):\boldsymbol\varep
 =\int_\Omega\mathbf f\cdot\mathbf v\,dx+\int_{\Gamma_N}\mathbf t\cdot\mathbf v\,ds=\ell(\mathbf v)\qquad\forall\mathbf v\in V .
 $$
 
-- $a$ is symmetric; $\tfrac12a(\mathbf v,\mathbf v)-\ell(\mathbf v)$ is the **potential energy**: the solution minimises it (Course I Week 5, Ritz).
+- $a$ is symmetric; $\tfrac12a(\mathbf v,\mathbf v)-\ell(\mathbf v)$ is the **potential energy**: the solution minimizes it (Course I Week 5, Ritz).
 - $\boldsymbol\sigma:\boldsymbol\varepsilon(\mathbf v)=\boldsymbol\sigma:\nabla\mathbf v$ because $\boldsymbol\sigma$ is symmetric — the code may use either.
 
 ## Coercivity needs Korn's inequality
@@ -144,7 +144,7 @@ $$
 $$
 
 $\delta_{\rm T}/\delta_{\rm EB}=1.00765$ here. The 3D solid is not a beam: the clamp also suppresses the Poisson contraction, so a converged 3D
-solution sits slightly **below** $\delta_{\rm T}$. Beam theory is a reference with a known modelling error — report the deviation, do not hide it.
+solution sits slightly **below** $\delta_{\rm T}$. Beam theory is a reference with a known modeling error — report the deviation, do not hide it.
 
 # Part B · Implementation and solvers {background-color="#1f3864"}
 

@@ -77,7 +77,7 @@ Split by the test functions:
 - $\mathbf v=0$: $\displaystyle\int_\Omega\sigma_{zz}\,dA=N$ — **one** scalar equation.
 :::
 ::: {.column width="45%"}
-Discretised, a **bordered** matrix:
+Discretized, a **bordered** matrix:
 $$
 \begin{pmatrix}K&\mathbf g\\\mathbf g^\top&c\end{pmatrix}\begin{pmatrix}\mathbf u\\e_0\end{pmatrix}=\begin{pmatrix}\mathbf f\\N\end{pmatrix}
 $$
@@ -97,7 +97,7 @@ $$
 ::: {.callout-important}
 ## Two solves with one matrix
 Case 1: loads on, $e_0=0$ → $\mathbf u_0$, axial force $N_0$. Case 2: loads off, $e_0=1$ → $\mathbf u_1$, axial force $N_1$.
-Then $N_0+e_0N_1=N$ and $\mathbf u=\mathbf u_0+e_0\mathbf u_1$ — exact for a linear problem, **one LU factorisation**.
+Then $N_0+e_0N_1=N$ and $\mathbf u=\mathbf u_0+e_0\mathbf u_1$ — exact for a linear problem, **one LU factorization**.
 :::
 
 - $N_1$ is the **Schur complement**: the axial stiffness of the section once the in-plane response has been solved for. Case 2 is not "nothing happens": $e_0=1$ loads the section through $\lambda e_0$.
@@ -144,7 +144,7 @@ $\Delta T$ is only a load if the thermal strain $\alpha\Delta T\,\mathbf I$ is *
 
 ## Temperature as an unknown: full coupling
 
-The energy balance contains the rate of the elastic volume change. Linearised about $T_0$, with $\theta=T-T_0$:
+The energy balance contains the rate of the elastic volume change. Linearized about $T_0$, with $\theta=T-T_0$:
 $$
 \rho c\,\dot\theta+T_0\,\beta\,\operatorname{tr}\dot{\boldsymbol\varepsilon}-\nabla\!\cdot(k\nabla\theta)=Q,\qquad \nabla\!\cdot\boldsymbol\sigma(\mathbf u,\theta)+\mathbf f=\mathbf 0
 $$
@@ -168,9 +168,9 @@ $$
 | $T_0=293$ K | $\delta$ | one-way: time scale off by | measured $t_{50}$ ratio | $1+\delta$ |
 |---|:---:|:---:|:---:|:---:|
 | steel | 0.0114 | 1.1 % | 1.01138 | 1.01139 |
-| aluminium | 0.0261 | 2.6 % | 1.02604 | 1.02607 |
+| aluminum | 0.0261 | 2.6 % | 1.02604 | 1.02607 |
 
-Steel: $E$ 210 GPa, $\alpha$ $1.2\times10^{-5}$; aluminium: 70 GPa, $2.3\times10^{-5}$. Measured: the strip of Part C with each metal's $\delta$, $\Delta t=10^{-3}$, half-rise time full / one-way. Small for metals — but a model error you can
+Steel: $E$ 210 GPa, $\alpha$ $1.2\times10^{-5}$; aluminum: 70 GPa, $2.3\times10^{-5}$. Measured: the strip of Part C with each metal's $\delta$, $\Delta t=10^{-3}$, half-rise time full / one-way. Small for metals — but a model error you can
 **measure**, not a belief. Part C uses $\delta=0.5$ ("what if") to make it visible.
 
 # Part B · Generalized plane strain in code {background-color="#1f3864"}
@@ -188,12 +188,12 @@ Steel: $E$ 210 GPa, $\alpha$ $1.2\times10^{-5}$; aluminium: 70 GPa, $2.3\times10
 
 Material data can be numbers or DG0 functions (`Material.regions`), so the same code runs layered sections.
 
-## One factorisation, two right-hand sides
+## One factorization, two right-hand sides
 
 ```python
 A = assemble_matrix(a, bcs=bcs); A.assemble()
 ksp = PETSc.KSP().create(comm); ksp.setOperators(A); ksp.setType("preonly")
-ksp.getPC().setType("lu"); ksp.getPC().setFactorSolverType("mumps")     # factorised at the first solve
+ksp.getPC().setType("lu"); ksp.getPC().setFactorSolverType("mumps")     # factorized at the first solve
 
 def solve(lf_, e0_):                                   # load factor, e0
     lf.value, e0c.value = lf_, e0_
@@ -206,7 +206,7 @@ e0 = (N - Nz(u0, 0.0, 1.0)) / Nz(u1, 1.0, 0.0)
 uh.x.array[:] = u0.x.array + e0 * u1.x.array
 ```
 
-`LinearProblem` would assemble and factorise again for each case; for one extra unknown that doubles the cost, for many (Week 9: periodic cells) it matters.
+`LinearProblem` would assemble and factorize again for each case; for one extra unknown that doubles the cost, for many (Week 9: periodic cells) it matters.
 
 ## A curved mesh without Gmsh
 
@@ -298,7 +298,7 @@ bc_T = fem.dirichletbc(fem.Constant(msh, dT), fem.locate_dofs_topological(W.sub(
 bc_ux = fem.dirichletbc(0.0, fem.locate_dofs_topological(W.sub(1).sub(0), 1, left), W.sub(1).sub(0))
 ```
 
-- Implicit Euler; the matrix does not change in time → assemble and factorise **once**, assemble only $\mathbf b$ per step.
+- Implicit Euler; the matrix does not change in time → assemble and factorize **once**, assemble only $\mathbf b$ per step.
 - The matrix is **not symmetric** ($\theta$ in the mechanics, $\operatorname{tr}\boldsymbol\varepsilon$ in the heat equation with different factors): LU, not CG.
 - Output from the mixed function through forms: `w_n.sub(0)*ds(1)` for the mean $\theta$ on a boundary.
 
@@ -338,9 +338,9 @@ All five are from an earlier version of these very examples. The fix: an exact s
 
 ## Prompting for a coupled or GPS model
 
-1. State the reduction **and** the end condition: plane strain, plane stress, or GPS with $N$ (and $N$ for the modelled part, if symmetry is used).
+1. State the reduction **and** the end condition: plane strain, plane stress, or GPS with $N$ (and $N$ for the modeled part, if symmetry is used).
 2. State the supports and say whether they are meant to be statically determinate; give the boundary and initial conditions of every field.
-3. For a transient, state the time scheme and ask the model to factorise once.
+3. For a transient, state the time scheme and ask the model to factorize once.
 4. Ask for the **checks** with the code: a stress-free temperature field, the Lamé tube in GPS, a 1D transient with an exact series, a ratio that should equal $1+\delta$.
 5. Run the checks before reading the physics.
 
@@ -364,6 +364,6 @@ All five are from an earlier version of these very examples. The fix: an exact s
 | Static condensation | Schur complement; two solves, one LU | one `KSP`, two right-hand sides |
 | Thermal stress | $-\beta\Delta T\,\mathbf I$, $\beta=(3\lambda+2\mu)\alpha$; test with a stress-free field | `dT=Th` (a `Function`) |
 | Full coupling | $T_0\beta\operatorname{tr}\dot{\boldsymbol\varepsilon}$ in the heat equation; $\delta$ | `basix.ufl.mixed_element`, `W.sub(i)` |
-| Verification | exact solutions with a nonzero answer; ratios that cancel discretisation error | Lamé in GPS, $\alpha/2$, $1+\delta$ |
+| Verification | exact solutions with a nonzero answer; ratios that cancel discretization error | Lamé in GPS, $\alpha/2$, $1+\delta$ |
 
 **Next week:** J2 plasticity — quadrature spaces, radial return, the consistent tangent.

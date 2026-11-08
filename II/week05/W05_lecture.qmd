@@ -92,7 +92,7 @@ $$
 | exponential (EXP) | $e^{-\Delta t/\tau}$ | $\dfrac{(1-a)\tau}{\Delta t}$ | the strain is linear in time over the step |
 | instantaneous step ($\Delta t=0$) | 1 | 1 | always: a jump is elastic, $\sigma$ jumps by $E_0\Delta\varepsilon$ |
 
-- Effective stiffness $E_\infty+\sum b_iE_i$: constant for a constant $\Delta t$ — **one factorisation** for the whole run.
+- Effective stiffness $E_\infty+\sum b_iE_i$: constant for a constant $\Delta t$ — **one factorization** for the whole run.
 - A load applied at $t=0$ is a jump: take an elastic step at $0^+$, then the time steps.
 
 ## The schemes against the exact solutions
@@ -117,7 +117,7 @@ $$
 
 # Part B · Phase-field fracture {background-color="#1f3864"}
 
-## From Griffith to a regularised crack
+## From Griffith to a regularized crack
 
 Griffith: a crack grows when the energy released per unit crack area reaches $G_c$. Total energy of a body with a crack set $\Gamma$:
 $\mathcal E=\int_{\Omega\setminus\Gamma}\psi(\boldsymbol\varepsilon)\,dA+G_c\,|\Gamma|$. Replace the sharp crack by a damage field $d\in[0,1]$ of width $\sim\ell$ (AT2):
@@ -127,7 +127,7 @@ $$
 $$
 
 - The second integral is a **length** in disguise: for the optimal profile $d=e^{-|x|/\ell}$ across a straight crack it equals $G_c$ per unit crack length.
-- As $\ell\to0$ the minimisers converge to Griffith's (Γ-convergence) — but $\ell$ also sets a strength (next slide), so it is a **material parameter**.
+- As $\ell\to0$ the minimizers converge to Griffith's (Γ-convergence) — but $\ell$ also sets a strength (next slide), so it is a **material parameter**.
 - $k\sim10^{-6}$ keeps the broken material from making the stiffness matrix singular.
 
 ## Two exact tests of AT2
@@ -162,7 +162,7 @@ AT2 damages from the first strain (no elastic range); AT1 ($w(d)=d$) is elastic 
 
 ![](figs/w05_at2.png){width=86% fig-align="center"}
 
-Left: the strength of the regularised model scales as $\ell^{-1/2}$. Right: P1 with $h=\ell$ already follows the exact profile (energy +4 %).
+Left: the strength of the regularized model scales as $\ell^{-1/2}$. Right: P1 with $h=\ell$ already follows the exact profile (energy +4 %).
 
 ## Irreversibility and the driving force
 
@@ -177,7 +177,7 @@ $$
 Which energy drives the crack: $\psi^+$ (a **split**). Amor: $\psi^+=\tfrac K2\langle\operatorname{tr}\boldsymbol\varepsilon\rangle_+^2+\mu\,\mathbf e:\mathbf e$ (all three normal components, plane strain);
 compression of the volume does not damage. "Hybrid" form: the $\mathbf u$-problem keeps $g(d)\boldsymbol\sigma(\boldsymbol\varepsilon)$ (linear), only $d$ sees the split.
 
-## Alternate minimisation (staggered scheme)
+## Alternate minimization (staggered scheme)
 
 For each displacement step $U_n$:
 
@@ -208,7 +208,7 @@ The structure of Week 4 again: internal variables at quadrature points, NumPy up
 ```python
 Ceff.x.array[:] = np.tile((Cinf + sum(b * Ci for (a, b), Ci in zip(ab, Cb))).ravel(), nq)   # constant for a fixed dt
 hist.x.array[:] = sum((a * ev_i + (b - a) * e_old) @ Ci for ...).ravel()                    # history stress at the points
-a = ufl.dot(ufl.dot(Ceff, eps4(du)), eps4(v)) * dx            # assembled and factorised once per step size
+a = ufl.dot(ufl.dot(Ceff, eps4(du)), eps4(v)) * dx            # assembled and factorized once per step size
 L = ufl.dot(hist, eps4(v)) * dx - p * ufl.dot(n, v) * ds(INNER)
 # after the solve: e_new at the points, then  ev_i <- a ev_i + (1 - b) e_new + (b - a) e_old,  e_old <- e_new
 ```
@@ -243,7 +243,7 @@ H_n = H.x.array.copy();  return err < tol, it
 ```
 
 - Reaction: $F=\int_\Omega g\,\sigma_{yy}\,dA$ — the virtual work with $\mathbf w=(0,y)$ (Week 4's consistent reaction, one line).
-- Both matrices change every iteration ($g(d)$ and $\mathcal H$): reassemble, refactorise.
+- Both matrices change every iteration ($g(d)$ and $\mathcal H$): reassemble, refactorize.
 
 ## A notch in the mesh, not in the damage
 
@@ -301,7 +301,7 @@ the faint background in the ligament is AT2's diffuse damage.
 | "Analytic" reference computed with the same algorithm | agreement proves only that the code reproduces itself |
 | Load applied at the first time step (no elastic step at $0^+$) | relaxation starts at 1.5167 instead of 1.8; $O(\Delta t)$ error that does not show up late |
 | Long-time limit with the wrong reduced modulus ($E/(1-\nu^2)$ for a free bar) | a 10 % "discrepancy" that is the reference's |
-| Mesh coarser than $\ell$ along the crack path | the crack band and $F_{\max}$ are mesh artefacts |
+| Mesh coarser than $\ell$ along the crack path | the crack band and $F_{\max}$ are mesh artifacts |
 | Notch as an initial value of $d$ / as one line of nodes | erased by the first solve / false first peak, $F_{\max}$ −11.5 %, iterations at the cap |
 | Staggered loop with a silent iteration cap | non-converged steps plotted as results: cap 50 ($\ell=0.02$, $h=0.01$) — same $F_{\max}$ (the peak step converges), but 3 later steps stop at the cap and the crack energy is $1.483\,G_ca$ instead of 1.426 |
 | All of $\int\gamma(d)$ reported as crack energy | AT2's diffuse damage ($0.08$–$0.10\,G_ca$ here) counted as crack |

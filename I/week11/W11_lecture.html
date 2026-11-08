@@ -292,7 +292,7 @@ Kee-Youn Yoo
 <th>Weeks</th>
 <th>Problem</th>
 <th>Existence</th>
-<th>Discretisation</th>
+<th>Discretization</th>
 </tr>
 </thead>
 <tbody>
@@ -691,7 +691,7 @@ Kee-Youn Yoo
 
 <img data-src="figs/w11_pressure_modes.png" style="width:100.0%" class="r-stretch"><div class="fragment">
 <ul>
-<li><strong>P1–P1, <code>right</code> mesh:</strong> <span class="math inline">B^\top</span> has a kernel beyond the constant; pinning one pressure DOF does not remove it. MUMPS reports a failed factorisation: <strong>KSP reason −11</strong> (<code>DIVERGED_PC_FAILED</code>) on every mesh, the solution is <code>inf</code>. Feeding that <code>inf</code> (a pressure mean) into a UFL form even breaks the JIT compiler.</li>
+<li><strong>P1–P1, <code>right</code> mesh:</strong> <span class="math inline">B^\top</span> has a kernel beyond the constant; pinning one pressure DOF does not remove it. MUMPS reports a failed factorization: <strong>KSP reason −11</strong> (<code>DIVERGED_PC_FAILED</code>) on every mesh, the solution is <code>inf</code>. Feeding that <code>inf</code> (a pressure mean) into a UFL form even breaks the JIT compiler.</li>
 <li><strong>P1–P1, <code>crossed</code> mesh:</strong> 3 spurious modes remain, yet LU “succeeds” (reason 4) and returns a checkerboard pressure of size <span class="math inline">10^2</span>–<span class="math inline">10^3</span> (the exact <span class="math inline">p</span> lies in <span class="math inline">[0,1]</span>; <span class="math inline">-420\dots910</span> in this run, <span class="math inline">\pm5000</span> in another — the garbage is not even reproducible). The velocity converges at the right rate — <strong>only the pressure shows it</strong>.</li>
 </ul>
 </div>
@@ -791,7 +791,7 @@ Kee-Youn Yoo
 <div class="fragment">
 <ul>
 <li>Exactly <span class="math inline">\propto1/\mu</span>: the velocity error is driven by the <strong>pressure</strong> approximation error. Low viscosity, strong body forces (buoyancy, Week 13 of Course II) or large pressure gradients ⇒ visible spurious velocities.</li>
-<li>Cure: divergence-free pairs (Scott–Vogelius on special meshes, <span class="math inline">H(\mathrm{div})</span>-conforming DG — Week 15) or grad-div stabilisation.</li>
+<li>Cure: divergence-free pairs (Scott–Vogelius on special meshes, <span class="math inline">H(\mathrm{div})</span>-conforming DG — Week 15) or grad-div stabilization.</li>
 </ul>
 </div>
 </section>

@@ -44,13 +44,13 @@ Lab notebook: `W12_lab.ipynb` · Homework: `W12_HW11.ipynb` (due before Week 13)
 |---|---|---|
 | 5 | Poisson | SPD: CG + AMG, iterations $\approx$ const in $h$ |
 | 9–10 | nonlinear, time-dependent | a linear solve per Newton step / time step |
-| 11 | Stokes, discretised | **MUMPS LU** on the indefinite matrix |
+| 11 | Stokes, discretized | **MUMPS LU** on the indefinite matrix |
 | **12** | **the same matrix, solved iteratively** | **block preconditioners built from Week 11's $\beta_h$** |
 | 14–15 | Navier–Stokes | same structure, $A$ non-symmetric, Schur complement depends on $\mathbf u$ |
 
 ::: {.fragment}
 Week 11 used LU everywhere. LU is exact and robust — and its cost grows faster than the problem: in 3D, 14 times more DOFs made today's
-factorisation 135 times slower (0.98 s → 132 s). This week: **why** iterative solvers work for saddle points, and how to make them $h$-independent.
+factorization 135 times slower (0.98 s → 132 s). This week: **why** iterative solvers work for saddle points, and how to make them $h$-independent.
 :::
 
 # Part A — Theory
@@ -75,7 +75,7 @@ $$
 Factor 4 per refinement, $\propto h^{-2}$, like the Poisson stiffness matrix. MINRES without preconditioner: about 320, 770, 1480, 2670 iterations for $N=8,\dots,64$.
 :::
 
-## §A2 Block factorisation and the Schur complement
+## §A2 Block factorization and the Schur complement
 
 $$
 \begin{pmatrix}A&B^\top\\B&0\end{pmatrix}
@@ -291,7 +291,7 @@ MINRES, diag(BoomerAMG, Jacobi), $N=32$. Same answers, more iterations: the unsc
 
 ::: {.fragment}
 **The tolerance is relative to the preconditioned residual**, not the error. $N=256$, rtol $10^{-8}$: MINRES $\|\mathbf u-\mathbf u_h\|_0=2.57\times10^{-8}$, LU $2.38\times10^{-8}$ —
-the algebraic error is already visible. Rule: tighten rtol until the discretisation error stops changing (Week 7, again).
+the algebraic error is already visible. Rule: tighten rtol until the discretization error stops changing (Week 7, again).
 :::
 
 ## §C4 Time vs DOFs: 2D and 3D
@@ -310,7 +310,7 @@ KSP setup + solve, minimum of two runs, `-np 2` on the build machine (Colab has 
 ::: {.fragment}
 - 2D: sparse LU (nested dissection, $O(n^{1.5})$ flops) is hard to beat on a laptop.
 - 3D: separators are larger ($O(n^2)$ flops, $O(n^{4/3})$ memory) — LU and MINRES tie near $1.5\times10^4$ DOFs, and LU memory runs out before its time does.
-- Single timings scatter by tens of percent between runs on a shared machine: compare growth factors over a wide range, not two neighbouring points.
+- Single timings scatter by tens of percent between runs on a shared machine: compare growth factors over a wide range, not two neighboring points.
 :::
 
 ## §C5 Darcy: L² vs H(div) preconditioners
@@ -348,11 +348,11 @@ The solve itself: 0.01–0.02 s. Time the **solver** (`ksp.solve` incl. setup), 
 | **Recipe transferred** | the Stokes block diagonal $\mathrm{diag}(A,M)$ for Darcy | iterations $\propto h^{-1}$ (104 → 510, §C5) |
 | **JIT in the timing** | the first `LinearProblem` or `fem.form` inside the timer | 2.4 s of compilation in a 0.02 s solve (§C6) |
 | **Pin in a blocked form** | `dirichletbc` on the pressure with a `None` $(1,1)$ block | `RuntimeError` (§B4) |
-| **Constant pressure** | neither a pinned DOF nor a null space | LU: a pressure shifted by an arbitrary constant, or a failed factorisation (Week 11) |
+| **Constant pressure** | neither a pinned DOF nor a null space | LU: a pressure shifted by an arbitrary constant, or a failed factorization (Week 11) |
 | **Older API** | `fem.petsc.create_vector_block`, `assemble_matrix_block` (not in 0.11) | `AttributeError` |
 
 ::: {.fragment}
-Verification habit: first the discretisation (Week 11's MMS rates), then the solver — iterations vs $h$ and $\mu$, and the answer against something you trust.
+Verification habit: first the discretization (Week 11's MMS rates), then the solver — iterations vs $h$ and $\mu$, and the answer against something you trust.
 :::
 
 ## HW11 — solver iterations and time, due before the Week 13 lecture

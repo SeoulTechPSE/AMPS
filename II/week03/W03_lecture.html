@@ -349,7 +349,7 @@ Kee-Youn Yoo
 <li><span class="math inline">\mathbf v=0</span>: <span class="math inline">\displaystyle\int_\Omega\sigma_{zz}\,dA=N</span> — <strong>one</strong> scalar equation.</li>
 </ul>
 </div><div class="column" style="width:45%;">
-<p>Discretised, a <strong>bordered</strong> matrix: <span class="math display">
+<p>Discretized, a <strong>bordered</strong> matrix: <span class="math display">
 \begin{pmatrix}K&amp;\mathbf g\\\mathbf g^\top&amp;c\end{pmatrix}\begin{pmatrix}\mathbf u\\e_0\end{pmatrix}=\begin{pmatrix}\mathbf f\\N\end{pmatrix}
 </span> <span class="math inline">g_i=\int\lambda\,\nabla\!\cdot\boldsymbol\phi_i</span>, <span class="math inline">\;c=\int(\lambda+2\mu)\,dA</span>.</p>
 </div></div>
@@ -369,7 +369,7 @@ Kee-Youn Yoo
 <p><strong>Two solves with one matrix</strong></p>
 </div>
 <div class="callout-content">
-<p>Case 1: loads on, <span class="math inline">e_0=0</span> → <span class="math inline">\mathbf u_0</span>, axial force <span class="math inline">N_0</span>. Case 2: loads off, <span class="math inline">e_0=1</span> → <span class="math inline">\mathbf u_1</span>, axial force <span class="math inline">N_1</span>. Then <span class="math inline">N_0+e_0N_1=N</span> and <span class="math inline">\mathbf u=\mathbf u_0+e_0\mathbf u_1</span> — exact for a linear problem, <strong>one LU factorisation</strong>.</p>
+<p>Case 1: loads on, <span class="math inline">e_0=0</span> → <span class="math inline">\mathbf u_0</span>, axial force <span class="math inline">N_0</span>. Case 2: loads off, <span class="math inline">e_0=1</span> → <span class="math inline">\mathbf u_1</span>, axial force <span class="math inline">N_1</span>. Then <span class="math inline">N_0+e_0N_1=N</span> and <span class="math inline">\mathbf u=\mathbf u_0+e_0\mathbf u_1</span> — exact for a linear problem, <strong>one LU factorization</strong>.</p>
 </div>
 </div>
 </div>
@@ -476,7 +476,7 @@ Kee-Youn Yoo
 </section>
 <section id="temperature-as-an-unknown-full-coupling" class="slide level2">
 <h2>Temperature as an unknown: full coupling</h2>
-<p>The energy balance contains the rate of the elastic volume change. Linearised about <span class="math inline">T_0</span>, with <span class="math inline">\theta=T-T_0</span>: <span class="math display">
+<p>The energy balance contains the rate of the elastic volume change. Linearized about <span class="math inline">T_0</span>, with <span class="math inline">\theta=T-T_0</span>: <span class="math display">
 \rho c\,\dot\theta+T_0\,\beta\,\operatorname{tr}\dot{\boldsymbol\varepsilon}-\nabla\!\cdot(k\nabla\theta)=Q,\qquad \nabla\!\cdot\boldsymbol\sigma(\mathbf u,\theta)+\mathbf f=\mathbf 0
 </span></p>
 <ul>
@@ -529,7 +529,7 @@ Kee-Youn Yoo
 <td style="text-align: center;">1.01139</td>
 </tr>
 <tr class="even">
-<td>aluminium</td>
+<td>aluminum</td>
 <td style="text-align: center;">0.0261</td>
 <td style="text-align: center;">2.6 %</td>
 <td style="text-align: center;">1.02604</td>
@@ -537,7 +537,7 @@ Kee-Youn Yoo
 </tr>
 </tbody>
 </table>
-<p>Steel: <span class="math inline">E</span> 210 GPa, <span class="math inline">\alpha</span> <span class="math inline">1.2\times10^{-5}</span>; aluminium: 70 GPa, <span class="math inline">2.3\times10^{-5}</span>. Measured: the strip of Part C with each metal’s <span class="math inline">\delta</span>, <span class="math inline">\Delta t=10^{-3}</span>, half-rise time full / one-way. Small for metals — but a model error you can <strong>measure</strong>, not a belief. Part C uses <span class="math inline">\delta=0.5</span> (“what if”) to make it visible.</p>
+<p>Steel: <span class="math inline">E</span> 210 GPa, <span class="math inline">\alpha</span> <span class="math inline">1.2\times10^{-5}</span>; aluminum: 70 GPa, <span class="math inline">2.3\times10^{-5}</span>. Measured: the strip of Part C with each metal’s <span class="math inline">\delta</span>, <span class="math inline">\Delta t=10^{-3}</span>, half-rise time full / one-way. Small for metals — but a model error you can <strong>measure</strong>, not a belief. Part C uses <span class="math inline">\delta=0.5</span> (“what if”) to make it visible.</p>
 </section></section>
 <section>
 <section id="part-b-generalized-plane-strain-in-code" class="title-slide slide level1 center" data-background-color="#1f3864">
@@ -586,11 +586,11 @@ Kee-Youn Yoo
 </table>
 <p>Material data can be numbers or DG0 functions (<code>Material.regions</code>), so the same code runs layered sections.</p>
 </section>
-<section id="one-factorisation-two-right-hand-sides" class="slide level2">
-<h2>One factorisation, two right-hand sides</h2>
+<section id="one-factorization-two-right-hand-sides" class="slide level2">
+<h2>One factorization, two right-hand sides</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> assemble_matrix(a, bcs<span class="op">=</span>bcs)<span class="op">;</span> A.assemble()</span>
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>ksp <span class="op">=</span> PETSc.KSP().create(comm)<span class="op">;</span> ksp.setOperators(A)<span class="op">;</span> ksp.setType(<span class="st">"preonly"</span>)</span>
-<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>ksp.getPC().setType(<span class="st">"lu"</span>)<span class="op">;</span> ksp.getPC().setFactorSolverType(<span class="st">"mumps"</span>)     <span class="co"># factorised at the first solve</span></span>
+<span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>ksp.getPC().setType(<span class="st">"lu"</span>)<span class="op">;</span> ksp.getPC().setFactorSolverType(<span class="st">"mumps"</span>)     <span class="co"># factorized at the first solve</span></span>
 <span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> solve(lf_, e0_):                                   <span class="co"># load factor, e0</span></span>
 <span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>    lf.value, e0c.value <span class="op">=</span> lf_, e0_</span>
@@ -601,7 +601,7 @@ Kee-Youn Yoo
 <span id="cb1-11"><a href="" aria-hidden="true" tabindex="-1"></a>u0, u1 <span class="op">=</span> solve(<span class="fl">1.0</span>, <span class="fl">0.0</span>), solve(<span class="fl">0.0</span>, <span class="fl">1.0</span>)              <span class="co"># same KSP: the LU factors are reused</span></span>
 <span id="cb1-12"><a href="" aria-hidden="true" tabindex="-1"></a>e0 <span class="op">=</span> (N <span class="op">-</span> Nz(u0, <span class="fl">0.0</span>, <span class="fl">1.0</span>)) <span class="op">/</span> Nz(u1, <span class="fl">1.0</span>, <span class="fl">0.0</span>)</span>
 <span id="cb1-13"><a href="" aria-hidden="true" tabindex="-1"></a>uh.x.array[:] <span class="op">=</span> u0.x.array <span class="op">+</span> e0 <span class="op">*</span> u1.x.array</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p><code>LinearProblem</code> would assemble and factorise again for each case; for one extra unknown that doubles the cost, for many (Week 9: periodic cells) it matters.</p>
+<p><code>LinearProblem</code> would assemble and factorize again for each case; for one extra unknown that doubles the cost, for many (Week 9: periodic cells) it matters.</p>
 </section>
 <section id="a-curved-mesh-without-gmsh" class="slide level2">
 <h2>A curved mesh without Gmsh</h2>
@@ -746,7 +746,7 @@ Kee-Youn Yoo
 <span id="cb4-9"><a href="" aria-hidden="true" tabindex="-1"></a>bc_T <span class="op">=</span> fem.dirichletbc(fem.Constant(msh, dT), fem.locate_dofs_topological(W.sub(<span class="dv">0</span>), <span class="dv">1</span>, left), W.sub(<span class="dv">0</span>))</span>
 <span id="cb4-10"><a href="" aria-hidden="true" tabindex="-1"></a>bc_ux <span class="op">=</span> fem.dirichletbc(<span class="fl">0.0</span>, fem.locate_dofs_topological(W.sub(<span class="dv">1</span>).sub(<span class="dv">0</span>), <span class="dv">1</span>, left), W.sub(<span class="dv">1</span>).sub(<span class="dv">0</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li>Implicit Euler; the matrix does not change in time → assemble and factorise <strong>once</strong>, assemble only <span class="math inline">\mathbf b</span> per step.</li>
+<li>Implicit Euler; the matrix does not change in time → assemble and factorize <strong>once</strong>, assemble only <span class="math inline">\mathbf b</span> per step.</li>
 <li>The matrix is <strong>not symmetric</strong> (<span class="math inline">\theta</span> in the mechanics, <span class="math inline">\operatorname{tr}\boldsymbol\varepsilon</span> in the heat equation with different factors): LU, not CG.</li>
 <li>Output from the mixed function through forms: <code>w_n.sub(0)*ds(1)</code> for the mean <span class="math inline">\theta</span> on a boundary.</li>
 </ul>
@@ -846,9 +846,9 @@ Kee-Youn Yoo
 <section id="prompting-for-a-coupled-or-gps-model" class="slide level2 scrollable">
 <h2>Prompting for a coupled or GPS model</h2>
 <ol type="1">
-<li>State the reduction <strong>and</strong> the end condition: plane strain, plane stress, or GPS with <span class="math inline">N</span> (and <span class="math inline">N</span> for the modelled part, if symmetry is used).</li>
+<li>State the reduction <strong>and</strong> the end condition: plane strain, plane stress, or GPS with <span class="math inline">N</span> (and <span class="math inline">N</span> for the modeled part, if symmetry is used).</li>
 <li>State the supports and say whether they are meant to be statically determinate; give the boundary and initial conditions of every field.</li>
-<li>For a transient, state the time scheme and ask the model to factorise once.</li>
+<li>For a transient, state the time scheme and ask the model to factorize once.</li>
 <li>Ask for the <strong>checks</strong> with the code: a stress-free temperature field, the Lamé tube in GPS, a 1D transient with an exact series, a ratio that should equal <span class="math inline">1+\delta</span>.</li>
 <li>Run the checks before reading the physics.</li>
 </ol>
@@ -936,7 +936,7 @@ Kee-Youn Yoo
 </tr>
 <tr class="even">
 <td>Verification</td>
-<td>exact solutions with a nonzero answer; ratios that cancel discretisation error</td>
+<td>exact solutions with a nonzero answer; ratios that cancel discretization error</td>
 <td>Lamé in GPS, <span class="math inline">\alpha/2</span>, <span class="math inline">1+\delta</span></td>
 </tr>
 </tbody>

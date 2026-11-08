@@ -306,7 +306,7 @@ Kee-Youn Yoo
 </tr>
 <tr class="odd">
 <td>11</td>
-<td>Stokes, discretised</td>
+<td>Stokes, discretized</td>
 <td><strong>MUMPS LU</strong> on the indefinite matrix</td>
 </tr>
 <tr class="even">
@@ -322,7 +322,7 @@ Kee-Youn Yoo
 </tbody>
 </table>
 <div class="fragment">
-<p>Week 11 used LU everywhere. LU is exact and robust — and its cost grows faster than the problem: in 3D, 14 times more DOFs made today’s factorisation 135 times slower (0.98 s → 132 s). This week: <strong>why</strong> iterative solvers work for saddle points, and how to make them <span class="math inline">h</span>-independent.</p>
+<p>Week 11 used LU everywhere. LU is exact and robust — and its cost grows faster than the problem: in 3D, 14 times more DOFs made today’s factorization 135 times slower (0.98 s → 132 s). This week: <strong>why</strong> iterative solvers work for saddle points, and how to make them <span class="math inline">h</span>-independent.</p>
 </div>
 </section>
 <section>
@@ -371,8 +371,8 @@ A_{ij}=\mu\!\int\nabla\boldsymbol\phi_j:\nabla\boldsymbol\phi_i,\quad B_{kj}=-\!
 <p>Factor 4 per refinement, <span class="math inline">\propto h^{-2}</span>, like the Poisson stiffness matrix. MINRES without preconditioner: about 320, 770, 1480, 2670 iterations for <span class="math inline">N=8,\dots,64</span>.</p>
 </div>
 </section>
-<section id="a2-block-factorisation-and-the-schur-complement" class="slide level2">
-<h2>§A2 Block factorisation and the Schur complement</h2>
+<section id="a2-block-factorization-and-the-schur-complement" class="slide level2">
+<h2>§A2 Block factorization and the Schur complement</h2>
 <p><span class="math display">
 \begin{pmatrix}A&amp;B^\top\\B&amp;0\end{pmatrix}
 =\begin{pmatrix}I&amp;0\\BA^{-1}&amp;I\end{pmatrix}
@@ -725,7 +725,7 @@ S=BA^{-1}B^\top .
 </table>
 <p>MINRES, diag(BoomerAMG, Jacobi), <span class="math inline">N=32</span>. Same answers, more iterations: the unscaled block is spectrally equivalent with constants <span class="math inline">\propto\mu^{-1}</span>.</p>
 <div class="fragment">
-<p><strong>The tolerance is relative to the preconditioned residual</strong>, not the error. <span class="math inline">N=256</span>, rtol <span class="math inline">10^{-8}</span>: MINRES <span class="math inline">\|\mathbf u-\mathbf u_h\|_0=2.57\times10^{-8}</span>, LU <span class="math inline">2.38\times10^{-8}</span> — the algebraic error is already visible. Rule: tighten rtol until the discretisation error stops changing (Week 7, again).</p>
+<p><strong>The tolerance is relative to the preconditioned residual</strong>, not the error. <span class="math inline">N=256</span>, rtol <span class="math inline">10^{-8}</span>: MINRES <span class="math inline">\|\mathbf u-\mathbf u_h\|_0=2.57\times10^{-8}</span>, LU <span class="math inline">2.38\times10^{-8}</span> — the algebraic error is already visible. Rule: tighten rtol until the discretization error stops changing (Week 7, again).</p>
 </div>
 </section>
 <section id="c4-time-vs-dofs-2d-and-3d" class="slide level2">
@@ -769,7 +769,7 @@ S=BA^{-1}B^\top .
 <ul>
 <li>2D: sparse LU (nested dissection, <span class="math inline">O(n^{1.5})</span> flops) is hard to beat on a laptop.</li>
 <li>3D: separators are larger (<span class="math inline">O(n^2)</span> flops, <span class="math inline">O(n^{4/3})</span> memory) — LU and MINRES tie near <span class="math inline">1.5\times10^4</span> DOFs, and LU memory runs out before its time does.</li>
-<li>Single timings scatter by tens of percent between runs on a shared machine: compare growth factors over a wide range, not two neighbouring points.</li>
+<li>Single timings scatter by tens of percent between runs on a shared machine: compare growth factors over a wide range, not two neighboring points.</li>
 </ul>
 </div>
 </section>
@@ -897,7 +897,7 @@ S=BA^{-1}B^\top .
 <tr class="odd">
 <td><strong>Constant pressure</strong></td>
 <td>neither a pinned DOF nor a null space</td>
-<td>LU: a pressure shifted by an arbitrary constant, or a failed factorisation (Week 11)</td>
+<td>LU: a pressure shifted by an arbitrary constant, or a failed factorization (Week 11)</td>
 </tr>
 <tr class="even">
 <td><strong>Older API</strong></td>
@@ -907,7 +907,7 @@ S=BA^{-1}B^\top .
 </tbody>
 </table>
 <div class="fragment">
-<p>Verification habit: first the discretisation (Week 11’s MMS rates), then the solver — iterations vs <span class="math inline">h</span> and <span class="math inline">\mu</span>, and the answer against something you trust.</p>
+<p>Verification habit: first the discretization (Week 11’s MMS rates), then the solver — iterations vs <span class="math inline">h</span> and <span class="math inline">\mu</span>, and the answer against something you trust.</p>
 </div>
 </section>
 <section id="hw11-solver-iterations-and-time-due-before-the-week-13-lecture" class="slide level2">

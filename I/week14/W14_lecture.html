@@ -297,7 +297,7 @@ Kee-Youn Yoo
 <tr class="odd">
 <td>10</td>
 <td>θ-method, Crank–Nicolson, stability vs accuracy</td>
-<td>time discretisation of the momentum equation</td>
+<td>time discretization of the momentum equation</td>
 </tr>
 <tr class="even">
 <td>11</td>
@@ -443,8 +443,8 @@ Kee-Youn Yoo
 <h2>§A5 CFL and the cell Reynolds number</h2>
 <p><span class="math display">\mathrm{CFL}=\frac{|\mathbf u|\,\Delta t}{h},\qquad \mathrm{Re}_h=\frac{|\mathbf u|\,h}{\nu}\quad(\text{Week 13: }\mathrm{Pe}_h=\mathrm{Re}_h/2).</span></p>
 <ul>
-<li><strong>CFL</strong> compares the distance travelled in one step with the cell size. Explicit schemes need CFL <span class="math inline">\lesssim1</span> for <strong>stability</strong>; with the semi-implicit scheme CFL <span class="math inline">\lesssim1</span> is an <strong>accuracy</strong> guideline (a vortex should not jump over a cell per step).</li>
-<li><strong><span class="math inline">\mathrm{Re}_h</span></strong> decides whether the Galerkin discretisation of convection oscillates (Week 13). At <span class="math inline">\mathrm{Re}=100</span> on the meshes below <span class="math inline">\mathrm{Re}_h\approx10</span>–30 at the cylinder; P2 and the smooth flow keep the solution free of visible wiggles, but higher Re needs SUPG/PSPG or grad-div stabilisation.</li>
+<li><strong>CFL</strong> compares the distance traveled in one step with the cell size. Explicit schemes need CFL <span class="math inline">\lesssim1</span> for <strong>stability</strong>; with the semi-implicit scheme CFL <span class="math inline">\lesssim1</span> is an <strong>accuracy</strong> guideline (a vortex should not jump over a cell per step).</li>
+<li><strong><span class="math inline">\mathrm{Re}_h</span></strong> decides whether the Galerkin discretization of convection oscillates (Week 13). At <span class="math inline">\mathrm{Re}=100</span> on the meshes below <span class="math inline">\mathrm{Re}_h\approx10</span>–30 at the cylinder; P2 and the smooth flow keep the solution free of visible wiggles, but higher Re needs SUPG/PSPG or grad-div stabilization.</li>
 </ul>
 <div class="fragment">
 <p>DFG 2D-3: <span class="math inline">\nu=10^{-3}</span>, <span class="math inline">|\mathbf u|\lesssim2</span>, <span class="math inline">h_{\min}=r/3\dots r/10</span> (<span class="math inline">0.017\dots0.005</span>): CFL = 1 at <span class="math inline">\Delta t\approx h/2=8\times10^{-3}\dots2.5\times10^{-3}</span>.</p>

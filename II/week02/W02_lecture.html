@@ -319,7 +319,7 @@ Kee-Youn Yoo
 </section>
 <section id="orthotropic-materials" class="slide level2">
 <h2>Orthotropic materials</h2>
-<p>Three mirror planes of symmetry (wood, rolled sheet, unidirectional fibre composite). In plane stress, in the material axes <span class="math inline">(1,2)</span>, Voigt notation with <strong>engineering</strong> shear strain <span class="math inline">\gamma_{12}=2\varepsilon_{12}</span>: <span class="math display">
+<p>Three mirror planes of symmetry (wood, rolled sheet, unidirectional fiber composite). In plane stress, in the material axes <span class="math inline">(1,2)</span>, Voigt notation with <strong>engineering</strong> shear strain <span class="math inline">\gamma_{12}=2\varepsilon_{12}</span>: <span class="math display">
 \begin{pmatrix}\varepsilon_{11}\\\varepsilon_{22}\\\gamma_{12}\end{pmatrix}=
 \underbrace{\begin{pmatrix}1/E_1&amp;-\nu_{21}/E_2&amp;0\\-\nu_{12}/E_1&amp;1/E_2&amp;0\\0&amp;0&amp;1/G_{12}\end{pmatrix}}_{\mathbf S\ \text{(compliance)}}
 \begin{pmatrix}\sigma_{11}\\\sigma_{22}\\\sigma_{12}\end{pmatrix},\qquad \mathbf C=\mathbf S^{-1}.
@@ -331,7 +331,7 @@ Kee-Youn Yoo
 </section>
 <section id="material-axes-at-an-angle" class="slide level2">
 <h2>Material axes at an angle</h2>
-<p>Fibres at angle <span class="math inline">\theta</span> to <span class="math inline">x</span>: rotation <span class="math inline">\mathbf Q=\begin{pmatrix}\cos\theta&amp;-\sin\theta\\\sin\theta&amp;\cos\theta\end{pmatrix}</span> (columns = material axes).</p>
+<p>Fibers at angle <span class="math inline">\theta</span> to <span class="math inline">x</span>: rotation <span class="math inline">\mathbf Q=\begin{pmatrix}\cos\theta&amp;-\sin\theta\\\sin\theta&amp;\cos\theta\end{pmatrix}</span> (columns = material axes).</p>
 <div class="callout callout-note callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -365,7 +365,7 @@ Kee-Youn Yoo
 </div>
 </div>
 </div>
-<p>Fibre composite <span class="math inline">E_1=200</span>, <span class="math inline">E_2=20</span> GPa, <span class="math inline">\nu_{12}=0.3</span>, <span class="math inline">G_{12}=10</span> GPa: load along the fibres <span class="math inline">K_t=6.07</span>, across the fibres <span class="math inline">2.60</span>. Both are <strong>infinite-plate</strong> values: a finite plate gives something else.</p>
+<p>Fiber composite <span class="math inline">E_1=200</span>, <span class="math inline">E_2=20</span> GPa, <span class="math inline">\nu_{12}=0.3</span>, <span class="math inline">G_{12}=10</span> GPa: load along the fibers <span class="math inline">K_t=6.07</span>, across the fibers <span class="math inline">2.60</span>. Both are <strong>infinite-plate</strong> values: a finite plate gives something else.</p>
 </section>
 <section id="axisymmetry" class="slide level2">
 <h2>Axisymmetry</h2>
@@ -486,7 +486,7 @@ u_r=r\,\varepsilon_{\theta\theta}=\frac rE\big[\sigma_{\theta\theta}-\nu(\sigma_
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> comm.rank <span class="op">==</span> <span class="dv">0</span>:                                   <span class="co"># build the model on one rank only</span></span>
 <span id="cb1-3"><a href="" aria-hidden="true" tabindex="-1"></a>    s <span class="op">=</span> occ.addRectangle(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, L, L)<span class="op">;</span> d <span class="op">=</span> occ.addDisk(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, R, R)</span>
 <span id="cb1-4"><a href="" aria-hidden="true" tabindex="-1"></a>    occ.cut([(<span class="dv">2</span>, s)], [(<span class="dv">2</span>, d)])<span class="op">;</span> occ.synchronize()    <span class="co"># plate minus disk; object and tool are removed</span></span>
-<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>    ... addPhysicalGroup(<span class="dv">1</span>, curves, tag) <span class="cf">for</span> left<span class="op">/</span>bottom<span class="op">/</span>right<span class="op">/</span>top<span class="op">/</span>hole (<span class="bu">sorted</span> by centre of mass)</span>
+<span id="cb1-5"><a href="" aria-hidden="true" tabindex="-1"></a>    ... addPhysicalGroup(<span class="dv">1</span>, curves, tag) <span class="cf">for</span> left<span class="op">/</span>bottom<span class="op">/</span>right<span class="op">/</span>top<span class="op">/</span>hole (<span class="bu">sorted</span> by center of mass)</span>
 <span id="cb1-6"><a href="" aria-hidden="true" tabindex="-1"></a>    ... size field: h_hole on the hole <span class="op">-&gt;</span> h_far at distance L<span class="op">/</span><span class="dv">2</span></span>
 <span id="cb1-7"><a href="" aria-hidden="true" tabindex="-1"></a>    gmsh.model.mesh.generate(<span class="dv">2</span>)<span class="op">;</span> gmsh.model.mesh.setOrder(<span class="dv">2</span>)    <span class="co"># curved triangles</span></span>
 <span id="cb1-8"><a href="" aria-hidden="true" tabindex="-1"></a>md <span class="op">=</span> gmshio.model_to_mesh(gmsh.model, comm, <span class="dv">0</span>, gdim<span class="op">=</span><span class="dv">2</span>)            <span class="co"># MeshData: .mesh, .facet_tags</span></span>
@@ -550,13 +550,13 @@ u_r=r\,\varepsilon_{\theta\theta}=\frac rE\big[\sigma_{\theta\theta}-\nu(\sigma_
 </table>
 <ul>
 <li>Same stress in plane stress and plane strain (tractions only: the 2D stress field does not depend on <span class="math inline">E,\nu</span>); different displacement.</li>
-<li>3.085 is the converged value of a <strong>finite</strong> plate; Kirsch’s 3 is reached only as <span class="math inline">L/R\to\infty</span>. Two sources of difference from a reference: discretisation (mesh study) and model (size study). Report both.</li>
+<li>3.085 is the converged value of a <strong>finite</strong> plate; Kirsch’s 3 is reached only as <span class="math inline">L/R\to\infty</span>. Two sources of difference from a reference: discretization (mesh study) and model (size study). Report both.</li>
 </ul>
 </section>
 <section id="orthotropic-plate" class="slide level2">
 <h2>Orthotropic plate</h2>
 
-<img data-src="figs/w02_hole_stress.png" class="quarto-figure quarto-figure-center r-stretch" style="width:82.0%"><p><span class="math inline">L/R=10</span>: fibres along the load <span class="math inline">K_t=6.486</span> (Lekhnitskii 6.072), across <span class="math inline">2.654</span> (2.604). Stiff fibres pull the load past the hole: higher, narrower peak.</p>
+<img data-src="figs/w02_hole_stress.png" class="quarto-figure quarto-figure-center r-stretch" style="width:82.0%"><p><span class="math inline">L/R=10</span>: fibers along the load <span class="math inline">K_t=6.486</span> (Lekhnitskii 6.072), across <span class="math inline">2.654</span> (2.604). Stiff fibers pull the load past the hole: higher, narrower peak.</p>
 </section></section>
 <section>
 <section id="part-c-axisymmetry-in-code" class="title-slide slide level1 center" data-background-color="#1f3864">
@@ -624,7 +624,7 @@ u_r=r\,\varepsilon_{\theta\theta}=\frac rE\big[\sigma_{\theta\theta}-\nu(\sigma_
 <ul>
 <li>right model, right reference: the error falls at rate <span class="math inline">k+1</span> (P2: 3.01);</li>
 <li>right model, <strong>reference of another end condition</strong>: the error <strong>stalls</strong> at a constant on every mesh (lab §5);</li>
-<li>a few % “error” on a fine mesh is never “discretisation error” in a smooth problem like this one.</li>
+<li>a few % “error” on a fine mesh is never “discretization error” in a smooth problem like this one.</li>
 </ul>
 <p>The same holds for the plate: Kirsch’s 3 vs 3.085 is a model difference, which a size study (not a mesh study) shows.</p>
 </section></section>
@@ -675,7 +675,7 @@ u_r=r\,\varepsilon_{\theta\theta}=\frac rE\big[\sigma_{\theta\theta}-\nu(\sigma_
 <h2>Prompting for a 2D model</h2>
 <ol type="1">
 <li>State the <strong>reduction</strong>: plane stress, plane strain, or axisymmetric — and the condition in <span class="math inline">z</span> (free, fixed, closed ends).</li>
-<li>State the material data as measured: <span class="math inline">E_1,E_2,\nu_{12},G_{12}</span> and the fibre angle, and ask for <span class="math inline">\mathbf C=\mathbf S^{-1}</span> computed numerically.</li>
+<li>State the material data as measured: <span class="math inline">E_1,E_2,\nu_{12},G_{12}</span> and the fiber angle, and ask for <span class="math inline">\mathbf C=\mathbf S^{-1}</span> computed numerically.</li>
 <li>Ask for the <strong>checks</strong> with the code: mesh area, a reduction test (<span class="math inline">E_1=E_2</span> gives the isotropic result), an exact solution with its convergence rate, a force balance.</li>
 <li>Run the checks before reading the physics.</li>
 </ol>
@@ -703,7 +703,7 @@ u_r=r\,\varepsilon_{\theta\theta}=\frac rE\big[\sigma_{\theta\theta}-\nu(\sigma_
 </tr>
 <tr class="even">
 <td>2</td>
-<td>Orthotropic plate with a hole: plate size, fibre angle, quarter vs full model</td>
+<td>Orthotropic plate with a hole: plate size, fiber angle, quarter vs full model</td>
 <td style="text-align: center;">40</td>
 </tr>
 <tr class="odd">

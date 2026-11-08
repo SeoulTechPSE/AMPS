@@ -321,7 +321,7 @@ Kee-Youn Yoo
 </section>
 <section id="a1-the-gluing-problem" class="slide level2 scrollable">
 <h2>§A1 The gluing problem</h2>
-<p>On each cell <span class="math inline">K</span> we have an element <span class="math inline">(K,\mathcal P_K,\mathcal N_K)</span>. A <strong>global</strong> function is defined cell by cell: <span class="math display">u|_K=\sum_i u_{K,i}\,\phi_{K,i}\qquad\text{for every } K\in\mathcal T.</span> Which coefficients must agree between neighbouring cells so that <span class="math inline">u</span> is continuous?</p>
+<p>On each cell <span class="math inline">K</span> we have an element <span class="math inline">(K,\mathcal P_K,\mathcal N_K)</span>. A <strong>global</strong> function is defined cell by cell: <span class="math display">u|_K=\sum_i u_{K,i}\,\phi_{K,i}\qquad\text{for every } K\in\mathcal T.</span> Which coefficients must agree between neighboring cells so that <span class="math inline">u</span> is continuous?</p>
 <div class="fragment">
 <div title="Lemma — Continuity (triangles)">
 <div class="callout callout-important callout-titled callout-style-default">
@@ -461,7 +461,7 @@ Kee-Youn Yoo
 <p><strong>Proof.</strong> Let <span class="math inline">u\in\mathcal P_k</span> vanish at the <span class="math inline">k+1</span> closure nodes of <span class="math inline">e</span>. Then <span class="math inline">u|_e</span> is a degree-<span class="math inline">k</span> polynomial in one variable with <span class="math inline">k+1</span> distinct zeros, so <span class="math inline">u|_e\equiv0</span> (1D unisolvence, Week 2). The vertex case is trivial. <span class="math inline">\square</span></p>
 </div>
 <div class="fragment">
-<p><strong>Consequence.</strong> If two neighbours <strong>share</strong> the closure DOFs of their common edge, their traces on that edge are the <strong>same</strong> polynomial → <span class="math inline">u</span> is continuous. Sharing is exactly what the global numbering must do.</p>
+<p><strong>Consequence.</strong> If two neighbors <strong>share</strong> the closure DOFs of their common edge, their traces on that edge are the <strong>same</strong> polynomial → <span class="math inline">u</span> is continuous. Sharing is exactly what the global numbering must do.</p>
 </div>
 </section>
 <section id="a4-c1-geometric-decomposition-hermite-vs-argyris" class="slide level2">
@@ -793,7 +793,7 @@ Kee-Youn Yoo
 </section>
 <section id="c2-the-edge-orientation-problem-kge3" class="slide level2">
 <h2>§C2 The edge-orientation problem (<span class="math inline">k\ge3</span>)</h2>
-<p>An edge with two DOFs: local DOF 3 lies at <span class="math inline">1/3</span> of the way <strong>along the local edge</strong> from its lower to its higher <strong>local</strong> vertex. Two neighbours may run along the shared edge in <strong>opposite</strong> directions.</p>
+<p>An edge with two DOFs: local DOF 3 lies at <span class="math inline">1/3</span> of the way <strong>along the local edge</strong> from its lower to its higher <strong>local</strong> vertex. Two neighbors may run along the shared edge in <strong>opposite</strong> directions.</p>
 
 <img data-src="figs/w03_edge_orientation.png" class="quarto-figure quarto-figure-center r-stretch" style="width:78.0%"><div class="fragment">
 <p><strong>Fix:</strong> order the DOFs of a global edge from its lower to its higher <strong>global</strong> vertex. In a cell where the local direction disagrees, reverse them.</p>
@@ -926,7 +926,7 @@ Kee-Youn Yoo
 <h2>§C5 Parallel: owned and ghost DOFs</h2>
 
 <img data-src="figs/w03_partition.png" class="quarto-figure quarto-figure-center r-stretch" style="width:62.0%"><ul>
-<li>Each rank <strong>owns</strong> some cells and DOFs and keeps <strong>ghost</strong> copies of its neighbours’ DOFs (needed to assemble its own cells).</li>
+<li>Each rank <strong>owns</strong> some cells and DOFs and keeps <strong>ghost</strong> copies of its neighbors’ DOFs (needed to assemble its own cells).</li>
 <li><code>index_map.size_local</code> (owned) · <code>num_ghosts</code> · <code>size_global</code> = <span class="math inline">\sum_{\rm ranks}</span> <code>size_local</code>. Local numbering: owned first, then ghosts.</li>
 <li>The partition depends on the partitioner and the number of ranks: <strong>never</strong> hard-code local counts.</li>
 </ul>

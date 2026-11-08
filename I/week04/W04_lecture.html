@@ -395,7 +395,7 @@ Kee-Youn Yoo
 </div>
 </div>
 </div>
-<p>Well defined and in <span class="math inline">V_h</span>: neighbouring cells evaluate the <strong>same</strong> shared DOFs (Week 3, <span class="math inline">C^0</span> decomposition), so the pieces match.</p>
+<p>Well defined and in <span class="math inline">V_h</span>: neighboring cells evaluate the <strong>same</strong> shared DOFs (Week 3, <span class="math inline">C^0</span> decomposition), so the pieces match.</p>
 
 <img data-src="figs/w04_interp_1d.png" class="quarto-figure quarto-figure-center r-stretch" style="width:85.0%"><div class="fragment">
 <p>For Lagrange: <span class="math inline">\mathcal I_h u=\sum_j u(x_j)\,\phi_j</span> — the coefficient vector is just <span class="math inline">u</span> at the DOF coordinates. That is <code>u_h.interpolate(...)</code>.</p>
@@ -746,7 +746,7 @@ Kee-Youn Yoo
 <h2>§B2 Interpolating a Python function</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="" aria-hidden="true" tabindex="-1"></a>u.interpolate(<span class="kw">lambda</span> x: np.sin(np.pi <span class="op">*</span> x[<span class="dv">0</span>]) <span class="op">*</span> np.cos(np.pi <span class="op">*</span> x[<span class="dv">1</span>]))   <span class="co"># x has shape (3, n_points)</span></span>
 <span id="cb2-2"><a href="" aria-hidden="true" tabindex="-1"></a>w.interpolate(<span class="kw">lambda</span> x: np.vstack((x[<span class="dv">0</span>], <span class="op">-</span>x[<span class="dv">1</span>])))                       <span class="co"># vector space: return (gdim, n_points)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>DOLFINx passes the <strong>physical coordinates of all interpolation points at once</strong>; the callable must be vectorised.</p>
+<p>DOLFINx passes the <strong>physical coordinates of all interpolation points at once</strong>; the callable must be vectorized.</p>
 <div class="fragment">
 <table class="caption-top">
 <colgroup>
@@ -968,7 +968,7 @@ Kee-Youn Yoo
 </tr>
 <tr class="even">
 <td><span class="math inline">\mathcal I_hu</span> for a formula <span class="math inline">u</span></td>
-<td><code>u.interpolate(lambda x: ...)</code> (NumPy, vectorised)</td>
+<td><code>u.interpolate(lambda x: ...)</code> (NumPy, vectorized)</td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\mathcal I_h</span> of another FE function</td>

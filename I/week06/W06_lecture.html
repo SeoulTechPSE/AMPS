@@ -1018,7 +1018,7 @@ Kee-Youn Yoo
 </section>
 <section id="c2-mms-with-all-three-conditions" class="slide level2">
 <h2>§C2 MMS with all three conditions</h2>
-<p><span class="math inline">\tilde u=1+\sin(\pi x)e^{y}+xy^2</span> — no special boundary behaviour needed: <strong>all boundary data are computed from <span class="math inline">\tilde u</span></strong>.</p>
+<p><span class="math inline">\tilde u=1+\sin(\pi x)e^{y}+xy^2</span> — no special boundary behavior needed: <strong>all boundary data are computed from <span class="math inline">\tilde u</span></strong>.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> ufl.FacetNormal(msh)</span>
 <span id="cb5-2"><a href="" aria-hidden="true" tabindex="-1"></a>f   <span class="op">=</span> <span class="op">-</span>ufl.div(ufl.grad(u_ex))</span>
 <span id="cb5-3"><a href="" aria-hidden="true" tabindex="-1"></a>g_N <span class="op">=</span> ufl.dot(ufl.grad(u_ex), n)                     <span class="co"># Neumann data on top and bottom (normal from UFL)</span></span>

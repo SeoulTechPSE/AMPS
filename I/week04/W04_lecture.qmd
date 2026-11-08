@@ -85,7 +85,7 @@ For Lagrange elements $N_i(v)=v(x_i)$: $\mathcal I_K v$ is the polynomial that a
 $\mathcal I_h u\in V_h$ with $(\mathcal I_h u)|_K=\mathcal I_K u$ for every $K\in\mathcal T_h$.
 :::
 
-Well defined and in $V_h$: neighbouring cells evaluate the **same** shared DOFs (Week 3, $C^0$ decomposition), so the pieces match.
+Well defined and in $V_h$: neighboring cells evaluate the **same** shared DOFs (Week 3, $C^0$ decomposition), so the pieces match.
 
 ![](figs/w04_interp_1d.png){width="85%" fig-align="center"}
 
@@ -283,7 +283,7 @@ u.interpolate(lambda x: np.sin(np.pi * x[0]) * np.cos(np.pi * x[1]))   # x has s
 w.interpolate(lambda x: np.vstack((x[0], -x[1])))                       # vector space: return (gdim, n_points)
 ```
 
-DOLFINx passes the **physical coordinates of all interpolation points at once**; the callable must be vectorised.
+DOLFINx passes the **physical coordinates of all interpolation points at once**; the callable must be vectorized.
 
 ::: {.fragment}
 | Mistake | What happens (0.11) |
@@ -400,7 +400,7 @@ On Colab: write to `/tmp/fnx/` or Drive, then download and open in ParaView.
 | Math | DOLFINx 0.11 |
 |---|---|
 | $u_h=\sum u_j\phi_j$ | `u = fem.Function(V)`; `u.x.array` (owned + ghosts) |
-| $\mathcal I_hu$ for a formula $u$ | `u.interpolate(lambda x: ...)` (NumPy, vectorised) |
+| $\mathcal I_hu$ for a formula $u$ | `u.interpolate(lambda x: ...)` (NumPy, vectorized) |
 | $\mathcal I_h$ of another FE function | `interpolate(v)`; other mesh: `create_interpolation_data` + `interpolate_nonmatching` |
 | $\mathcal I_h$ of an expression ($\nabla u$, $\kappa\nabla u$) | `fem.Expression(expr, V.element.interpolation_points)` |
 | piecewise data | `interpolate(f, cells0=cells)` |

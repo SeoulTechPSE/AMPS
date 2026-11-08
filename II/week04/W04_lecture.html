@@ -434,7 +434,7 @@ p_{\rm lim}=\frac{2\sigma_0}{\sqrt3}\ln\frac ba=75.74\ \text{MPa}\qquad\text{—
 <span id="cb2-10"><a href="" aria-hidden="true" tabindex="-1"></a>    s, pp, C, pl <span class="op">=</span> mat.update(deps.x.array.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>), sig_n.x.array.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>), p_n.x.array)</span>
 <span id="cb2-11"><a href="" aria-hidden="true" tabindex="-1"></a>    sig.x.array[:] <span class="op">=</span> s.ravel()<span class="op">;</span> p.x.array[:] <span class="op">=</span> pp<span class="op">;</span> Ct.x.array[:] <span class="op">=</span> C.ravel()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
-<li><code>Du</code> is the displacement <strong>increment</strong> since the last converged step; <code>update</code> is vectorised over all points (<code>j2.py</code>, NumPy only).</li>
+<li><code>Du</code> is the displacement <strong>increment</strong> since the last converged step; <code>update</code> is vectorized over all points (<code>j2.py</code>, NumPy only).</li>
 <li>The material law knows nothing about DOLFINx: you can test it in an ordinary notebook cell.</li>
 </ul>
 </section>
@@ -522,7 +522,7 @@ J(\delta\mathbf u,\mathbf v)=\int_\Omega\big(\mathbb C^{\rm alg}\boldsymbol\vare
 </tr>
 </tbody>
 </table>
-<p>The same <code>Tube</code> runs the 2D quarter section and the 1D radial model. The 1D model with 400–800 cells is the <strong>reference</strong> for the 2D one — a different discretisation of the same problem, not a different program.</p>
+<p>The same <code>Tube</code> runs the 2D quarter section and the 1D radial model. The 1D model with 400–800 cells is the <strong>reference</strong> for the 2D one — a different discretization of the same problem, not a different program.</p>
 </section></section>
 <section>
 <section id="part-c-verification" class="title-slide slide level1 center" data-background-color="#1f3864">
@@ -752,7 +752,7 @@ J(\delta\mathbf u,\mathbf v)=\int_\Omega\big(\mathbb C^{\rm alg}\boldsymbol\vare
 </tr>
 </tbody>
 </table>
-<p><code>rtol=1e-12</code> here. 2D comes out <strong>above</strong> <span class="math inline">p_{\rm lim}</span> (a displacement model is too stiff): <span class="math inline">+7.5\times10^{-4}</span>, <span class="math inline">+6.9\times10^{-5}</span>, <span class="math inline">+5.2\times10^{-6}</span> — a discretisation error. At the default <code>rtol=1e-8</code> the same steps give 1D 75.73799 (<span class="math inline">-4.7\times10^{-5}</span>; other step sequences <span class="math inline">-2</span> to <span class="math inline">-12\times10^{-5}</span>, not monotone in the step count): the lifting puts the prescribed jump into the first residual, so <code>ref</code> grows to <span class="math inline">6\times10^5</span>–<span class="math inline">2\times10^7</span> and final residuals of <span class="math inline">2</span>–<span class="math inline">9\times10^{-3}</span> pass. The pressure read from the reaction carries that error.</p>
+<p><code>rtol=1e-12</code> here. 2D comes out <strong>above</strong> <span class="math inline">p_{\rm lim}</span> (a displacement model is too stiff): <span class="math inline">+7.5\times10^{-4}</span>, <span class="math inline">+6.9\times10^{-5}</span>, <span class="math inline">+5.2\times10^{-6}</span> — a discretization error. At the default <code>rtol=1e-8</code> the same steps give 1D 75.73799 (<span class="math inline">-4.7\times10^{-5}</span>; other step sequences <span class="math inline">-2</span> to <span class="math inline">-12\times10^{-5}</span>, not monotone in the step count): the lifting puts the prescribed jump into the first residual, so <code>ref</code> grows to <span class="math inline">6\times10^5</span>–<span class="math inline">2\times10^7</span> and final residuals of <span class="math inline">2</span>–<span class="math inline">9\times10^{-3}</span> pass. The pressure read from the reaction carries that error.</p>
 </section>
 <section id="the-plastic-zone" class="slide level2">
 <h2>The plastic zone</h2>

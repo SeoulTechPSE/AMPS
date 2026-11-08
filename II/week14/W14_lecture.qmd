@@ -65,7 +65,7 @@ Each time scheme multiplies the mode by its own factor $g$ per step ($a=\Delta t
 |---|---|---|
 | backward Euler (BE) | $f'(c^{n+1})-\varepsilon^2\Delta c^{n+1}$ | $1/(1-\Delta t\sigma)$ |
 | convex splitting (CS) | $(c^{n+1})^3-c^n-\varepsilon^2\Delta c^{n+1}$ | $(1+a)/(1+ab)$ |
-| linear stabilised (S) | $f'(c^n)+S(c^{n+1}-c^n)-\varepsilon^2\Delta c^{n+1}$ | $(1+a(1+S))/(1+a(S+b))$ |
+| linear stabilized (S) | $f'(c^n)+S(c^{n+1}-c^n)-\varepsilon^2\Delta c^{n+1}$ | $(1+a(1+S))/(1+a(S+b))$ |
 
 A code is verified when it reproduces **its own** $g$; the scheme is accurate when $g\approx e^{\sigma\Delta t}$.
 
@@ -73,30 +73,30 @@ A code is verified when it reproduces **its own** $g$; the scheme is accurate wh
 
 ![](figs/w14_growth.png){width=72% fig-align="center"}
 
-Strip $128\times2$, $\varepsilon=0.05$, $k=4\pi$ ($\sigma=95.57$). Every scheme is first order in $\Delta t$; the FE rate sits on its own discrete rate to 0.03 %. Stabilisation costs accuracy: $-4$ % at $\Delta t=10^{-4}$ (BE +0.5 %, CS −1.1 %).
+Strip $128\times2$, $\varepsilon=0.05$, $k=4\pi$ ($\sigma=95.57$). Every scheme is first order in $\Delta t$; the FE rate sits on its own discrete rate to 0.03 %. Stabilization costs accuracy: $-4$ % at $\Delta t=10^{-4}$ (BE +0.5 %, CS −1.1 %).
 
 ## The last 0.03 %: the mesh's wavenumber
 
 - On a uniform P1/Q1 mesh $\cos kx$ is an eigenvector of the mass and stiffness matrices, with $k_h^2=\frac{6}{h^2}\frac{1-\cos kh}{2+\cos kh}=k^2\big(1-\frac{(kh)^2}{12}+\dots\big)$ instead of $k^2$.
 - Per step, the FE factor differs from $g(k)$ by $1.0\times10^{-5}$, $2.5\times10^{-6}$, $6.3\times10^{-7}$ (64, 128, 256 cells: second order) — and from $g(k_h)$ by at most $6.3\times10^{-9}$ for all schemes and steps.
 - What is left is the cubic term the linear analysis drops: an initial amplitude $10^{-5}$ instead of $10^{-4}$ reduces it from $1.3\times10^{-9}$ to $1.3\times10^{-11}$ — the factor 100 of a term in (amplitude)².
-- Code, scheme and spatial discretisation are separated **exactly**: every part of the error has a formula.
+- Code, scheme and spatial discretization are separated **exactly**: every part of the error has a formula.
 
 ## Three schemes, three properties
 
-| | BE | CS (Eyre) | stabilised |
+| | BE | CS (Eyre) | stabilized |
 |---|---|---|---|
 | system | nonlinear (Newton) | nonlinear (Newton) | **linear** |
 | solvable for every $\Delta t$ | no ($\Delta t\sigma<1$) | yes | yes |
 | energy decreases for every $\Delta t$ | no | yes (proof: HW13 Q1) | yes for $S\ge\frac12\max|f''|$ |
-| matrix | changes every iteration | changes every iteration | **constant** — factorise once |
+| matrix | changes every iteration | changes every iteration | **constant** — factorize once |
 | growth error at $\Delta t=10^{-4}$ | +0.5 % | −1.1 % | −4.1 % |
 
 ## Large time steps: the energy
 
 ![](figs/w14_energy.png){width=100% fig-align="center"}
 
-Green: $\Delta t=10^{-2}$ — BE leaves the scale after a failed Newton step, CS lags, the stabilised scheme hardly moves.
+Green: $\Delta t=10^{-2}$ — BE leaves the scale after a failed Newton step, CS lags, the stabilized scheme hardly moves.
 
 ## Large time steps: the field at $t=0.05$
 
@@ -107,13 +107,13 @@ Green: $\Delta t=10^{-2}$ — BE leaves the scale after a failed Newton step, CS
 $64\times64$, $\varepsilon=0.02$; reference $E(0.05)=0.12970$ (BE, $\Delta t=10^{-4}$). The reference itself, checked: $\Delta t=5\times10^{-5}$, $2.5\times10^{-5}$ give 0.12981, 0.12987 (order 1.0), extrapolated 0.12993 — the
 reference is 0.17 % off in time. The mesh matters more: $32^2$ / $128^2$ give 0.13223 / 0.12902 (about 0.5 % at $64^2$). All runs below share the mesh: they compare the **time schemes** only.
 
-| $\Delta t$ | BE | CS | stabilised |
+| $\Delta t$ | BE | CS | stabilized |
 |---|:---:|:---:|:---:|
 | $10^{-3}$ | 0.13407 | 0.13765 | 0.14442 |
 | $10^{-2}$ | **1 Newton failure**, $E\to2.7\times10^5$, ends at 0.0793 | 0.17215, monotone | 0.24899 — frozen, monotone |
 
 - BE fails **loudly** — if the reason is checked. Unchecked, the loop continues from garbage and ends *below* the reference.
-- CS and the stabilised scheme fail **quietly**: energy stability guarantees that nothing blows up, not that anything is right.
+- CS and the stabilized scheme fail **quietly**: energy stability guarantees that nothing blows up, not that anything is right.
 - Use large steps where the dynamics are slow (late coarsening), with an adaptive $\Delta t$, and measure the accuracy separately.
 
 ## The equilibrium interface
@@ -129,7 +129,7 @@ Started twice as wide; convex splitting, $\Delta t=10^{-3}$ to $t=0.4$, then $10
 | profile error (nodes), $t=2$ | 5.7e-3 | 1.5e-3 | 3.8e-4 | 9.4e-5 |
 | $\gamma$ error, $t=2$ | +1.04 % | +0.27 % | +0.067 % | +0.017 % |
 
-- At $t=0.4$ the profile error **does not fall with the mesh**: not a discretisation error — the interface is still relaxing (diffusion through the bulk is slow). Relaxed ($t=2$; to $t=10$ nothing changes), profile and $\gamma$ are second order (2.0).
+- At $t=0.4$ the profile error **does not fall with the mesh**: not a discretization error — the interface is still relaxing (diffusion through the bulk is slow). Relaxed ($t=2$; to $t=10$ nothing changes), profile and $\gamma$ are second order (2.0).
 - A test against an equilibrium needs the equilibrium. $64\times64$ at $\varepsilon=0.02$ has 1.8 cells per interface width: fine for the pattern, 1 % in the interfacial energy.
 
 # Part B · Flory–Huggins {background-color="#1f3864"}
@@ -161,13 +161,13 @@ One step of $\Delta t=10^{-3}$ from the start: BE **reason −4** after 2 iterat
 
 ## Where the time goes
 
-A solve has three parts with different costs and different parallel behaviour:
+A solve has three parts with different costs and different parallel behavior:
 
 | part | cost | parallel |
 |---|---|---|
 | assembly | $O(n)$, local per cell | ideal (no communication but the ghost update) |
 | preconditioner setup | LU: $O(n^{1.5\ldots2})$ in 3D; AMG: $O(n)$ with a large constant | LU poorly, AMG reasonably |
-| solve | LU: triangular solves; Krylov: iterations × (product + reductions) | Krylov: one neighbour exchange and global reductions per iteration |
+| solve | LU: triangular solves; Krylov: iterations × (product + reductions) | Krylov: one neighbor exchange and global reductions per iteration |
 
 - The **first** call includes the JIT compilation of the forms (seconds): warm up before timing.
 - Time with `comm.Barrier(); MPI.Wtime()` and report the **maximum** over ranks.
@@ -189,21 +189,21 @@ Setup + solve time (iterations), 2 ranks:
 | 40 (68921) | 3.982 s (1) | 0.757 s (8) | 0.104 s (79) | — |
 
 - Iterations: Jacobi and matrix-free CG grow like $N\propto h^{-1}$ (condition number $h^{-2}$), GAMG stays at 7–8, LU is exact. On these sizes Jacobi is still the fastest — multigrid wins as $n$ grows.
-- Matrix-free CG stores no matrix (0 against $1.8\times10^6$ nonzeros at $N=40$) but assembles the action of the form in Python at every iteration: slow here. Production matrix-free codes use compiled, sum-factorised kernels (high order).
+- Matrix-free CG stores no matrix (0 against $1.8\times10^6$ nonzeros at $N=40$) but assembles the action of the form in Python at every iteration: slow here. Production matrix-free codes use compiled, sum-factorized kernels (high order).
 - Uniform hexahedra and $f\propto$ a product of sines: the right-hand side is an eigenvector of the discrete operator and CG converges in **one** iteration — a benchmark that measures nothing.
 
-## Communication: ghosts and neighbours
+## Communication: ghosts and neighbors
 
 $N=64$ (275 k unknowns), vertices per rank:
 
-| ranks | owned vertices | ghost vertices | ghost / owned | neighbours |
+| ranks | owned vertices | ghost vertices | ghost / owned | neighbors |
 |:---:|:---:|:---:|:---:|:---:|
 | 1 | 274625 | 0 | 0.000 | 0 |
 | 2 | 137312 | 6356 | 0.046 | 1 |
 | 4 | 68656 | 6931 | 0.101 | 3 |
 | 8 | 34328 | 5676 | 0.165 | 7 |
 
-- Each matrix–vector product exchanges the ghost values with the neighbours; each inner product is a global reduction.
+- Each matrix–vector product exchanges the ghost values with the neighbors; each inner product is a global reduction.
 - Ghost fraction $\propto$ surface/volume $\sim p^{1/3}/N$: it grows with the rank count and falls with the problem size — keep $\gtrsim10^4$–$10^5$ unknowns per rank.
 
 ## Strong scaling on a laptop
@@ -225,18 +225,18 @@ Laptop, $N=64$ (275 k unknowns), `OMP_NUM_THREADS=1`:
 - This laptop (Apple M1: 4 performance + 4 efficiency cores, fanless, MPICH over shared memory) is slower with 4 and 8 ranks than with 1–2. We measured that ranks launched by `mpirun` ran about 2× slower each already at 4 ranks even for pure Python loops — the slowdown comes from the machine and its MPI launch, before any DOLFINx code runs.
 - Colab gives 2 virtual CPUs. Scaling studies belong on a cluster with identical cores — and **measure, don't assume**.
 
-## Reuse one factorisation
+## Reuse one factorization
 
-The stabilised scheme's matrix is constant: assemble and factorise it **once**, then every step is a right-hand side and two triangular solves.
+The stabilized scheme's matrix is constant: assemble and factorize it **once**, then every step is a right-hand side and two triangular solves.
 
 | per step, 2 ranks | $64	imes64$ | $128	imes128$ |
 |---|:---:|:---:|
 | backward Euler (Newton) | 72.4 ms | 264.1 ms |
-| stabilised, Newton | 44.2 ms | 117.3 ms |
-| stabilised, linear, re-factorised | 39.6 ms | 110.1 ms |
-| stabilised, **one factorisation** | 8.8 ms | 16.4 ms |
+| stabilized, Newton | 44.2 ms | 117.3 ms |
+| stabilized, linear, re-factorized | 39.6 ms | 110.1 ms |
+| stabilized, **one factorization** | 8.8 ms | 16.4 ms |
 
-Same energy to all printed digits for the three stabilised variants. Backward Euler cannot reuse anything: its Jacobian contains $3c^2$. Cost per unit of simulated time = (time per step)/$\Delta t$ — weigh it against the accuracy per step (HW13 Q6).
+Same energy to all printed digits for the three stabilized variants. Backward Euler cannot reuse anything: its Jacobian contains $3c^2$. Cost per unit of simulated time = (time per step)/$\Delta t$ — weigh it against the accuracy per step (HW13 Q6).
 
 ## Math → DOLFINx 0.11
 
@@ -247,7 +247,7 @@ Same energy to all printed digits for the three stabilised variants. Backward Eu
 | constant matrix | `A = assemble_matrix(form(a)); A.assemble()`; `ksp.setOperators(A)` once; per step `assemble_vector(b, form(L))`, `ksp.solve(b, x)` |
 | matrix-free operator | `PETSc.Mat().createPython(sizes, Shell())`, `mult`: `assemble_vector(y, form(action(a, w)))` into a ghosted vector |
 | timings | `comm.Barrier(); t = MPI.Wtime()`; the maximum over ranks; warm up the JIT |
-| ghosts | `msh.topology.index_map(0).num_ghosts`, `.owners` (neighbour ranks) |
+| ghosts | `msh.topology.index_map(0).num_ghosts`, `.owners` (neighbor ranks) |
 
 # Part D · LLM · HW13 {background-color="#1f3864"}
 
@@ -256,7 +256,7 @@ Same energy to all printed digits for the three stabilised variants. Backward Eu
 | Pitfall | Measured symptom (this week) |
 |---|---|
 | A failed Newton step not checked | $E\to2.7\times10^5$, the run continues and ends below the reference |
-| "Energy-stable" taken for "accurate" | stabilised scheme frozen at $\Delta t=10^{-2}$ ($E$ 0.249 vs 0.130) |
+| "Energy-stable" taken for "accurate" | stabilized scheme frozen at $\Delta t=10^{-2}$ ($E$ 0.249 vs 0.130) |
 | `len(dofs)` with `dofs` from `collapse()` | 1: a "random" start that is one constant — nothing happens |
 | A log free energy with fully implicit Newton | an iterate outside $(0,1)$: NaN, reason −4 |
 | A profile compared with the equilibrium before it has relaxed | an error that does not fall with the mesh (2.8e-3 on 100–400 cells) |
@@ -275,11 +275,11 @@ ghosts · accuracy per cost · an LLM-generated Cahn–Hilliard script with defe
 | Concept | Key point | DOLFINx 0.11 |
 |---|---|---|
 | Known answers | linear growth rate (each scheme's own $g$), tanh interface, binodal | `mode(k)`, `tanh_profile`, `fh_binodal` |
-| Schemes | BE (accurate, conditionally solvable), CS (stable), stabilised (stable, linear) | `scheme="be" / "cs" / "stab"` |
+| Schemes | BE (accurate, conditionally solvable), CS (stable), stabilized (stable, linear) | `scheme="be" / "cs" / "stab"` |
 | Stability ≠ accuracy | large steps: stable, failing or frozen | check the reason, compare with a reference |
 | Cost | assembly / setup / solve; JIT; maxima over ranks | `MPI.Wtime`, `Barrier` |
 | Solvers | LU $\to$ AMG as $n$ grows; Jacobi iterations $\propto h^{-1}$ | `pc_type`: `lu`, `gamg`, `jacobi`; `createPython` |
 | Parallel | ghosts $\sim$ surface/volume; iterations independent of ranks | `index_map.num_ghosts`, `.owners` |
-| Reuse | constant matrix → factorise once | `assemble_matrix` once, `ksp.solve` per step |
+| Reuse | constant matrix → factorize once | `assemble_matrix` once, `ksp.solve` per step |
 
 **Next week:** project workshop — individual code reviews and 5-minute progress presentations.

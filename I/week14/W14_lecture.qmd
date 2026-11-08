@@ -42,7 +42,7 @@ Lab notebook: `W14_lab.ipynb` · Homework: `W14_HW13.ipynb` (due before Week 15)
 
 | Week | Ingredient | Used today |
 |---|---|---|
-| 10 | θ-method, Crank–Nicolson, stability vs accuracy | time discretisation of the momentum equation |
+| 10 | θ-method, Crank–Nicolson, stability vs accuracy | time discretization of the momentum equation |
 | 11 | Taylor–Hood P2/P1, inf-sup, pressure constant | the spatial pair |
 | 12 | saddle-point solvers | avoided — by splitting |
 | 13 | convection, Péclet number | the convection term, now nonlinear: cell Reynolds number |
@@ -121,10 +121,10 @@ $$\rho(\mathbf w\cdot\nabla)\mathbf u^{n+\frac12},\qquad \mathbf w=\tfrac32\math
 
 $$\mathrm{CFL}=\frac{|\mathbf u|\,\Delta t}{h},\qquad \mathrm{Re}_h=\frac{|\mathbf u|\,h}{\nu}\quad(\text{Week 13: }\mathrm{Pe}_h=\mathrm{Re}_h/2).$$
 
-- **CFL** compares the distance travelled in one step with the cell size. Explicit schemes need CFL $\lesssim1$ for **stability**; with the semi-implicit scheme
+- **CFL** compares the distance traveled in one step with the cell size. Explicit schemes need CFL $\lesssim1$ for **stability**; with the semi-implicit scheme
   CFL $\lesssim1$ is an **accuracy** guideline (a vortex should not jump over a cell per step).
-- **$\mathrm{Re}_h$** decides whether the Galerkin discretisation of convection oscillates (Week 13). At $\mathrm{Re}=100$ on the meshes below $\mathrm{Re}_h\approx10$–30 at the cylinder; P2 and the
-  smooth flow keep the solution free of visible wiggles, but higher Re needs SUPG/PSPG or grad-div stabilisation.
+- **$\mathrm{Re}_h$** decides whether the Galerkin discretization of convection oscillates (Week 13). At $\mathrm{Re}=100$ on the meshes below $\mathrm{Re}_h\approx10$–30 at the cylinder; P2 and the
+  smooth flow keep the solution free of visible wiggles, but higher Re needs SUPG/PSPG or grad-div stabilization.
 
 ::: {.fragment}
 DFG 2D-3: $\nu=10^{-3}$, $|\mathbf u|\lesssim2$, $h_{\min}=r/3\dots r/10$ ($0.017\dots0.005$): CFL = 1 at $\Delta t\approx h/2=8\times10^{-3}\dots2.5\times10^{-3}$.

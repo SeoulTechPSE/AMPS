@@ -499,7 +499,7 @@ Kee-Youn Yoo
 </section>
 <section id="rotation-vector-and-exponential-map" class="slide level2">
 <h2>Rotation vector and exponential map</h2>
-<p>Rotation <span class="math inline">\Lambda\in SO(3)</span> of the cross-section, parametrised by <span class="math inline">\boldsymbol\theta</span> (axis × angle), <span class="math inline">\varphi=|\boldsymbol\theta|</span>, <span class="math inline">S=\widehat{\boldsymbol\theta}</span> (<span class="math inline">S\mathbf a=\boldsymbol\theta\times\mathbf a</span>):</p>
+<p>Rotation <span class="math inline">\Lambda\in SO(3)</span> of the cross-section, parametrized by <span class="math inline">\boldsymbol\theta</span> (axis × angle), <span class="math inline">\varphi=|\boldsymbol\theta|</span>, <span class="math inline">S=\widehat{\boldsymbol\theta}</span> (<span class="math inline">S\mathbf a=\boldsymbol\theta\times\mathbf a</span>):</p>
 <p><span class="math display">
 \Lambda=I+\frac{\sin\varphi}{\varphi}S+\frac{1-\cos\varphi}{\varphi^2}S^2,\qquad
 T=I+\frac{1-\cos\varphi}{\varphi^2}S+\frac{\varphi-\sin\varphi}{\varphi^3}S^2
@@ -508,7 +508,7 @@ T=I+\frac{1-\cos\varphi}{\varphi^2}S+\frac{\varphi-\sin\varphi}{\varphi^3}S^2
 <p><span class="math display">
 \boldsymbol\Gamma=\Lambda^\top(\boldsymbol t_0+\mathbf u')-\boldsymbol t_0\ \ (\text{axial},\ \text{2 shears}),\qquad \mathbf K=T^\top\boldsymbol\theta'\ \ (\text{twist},\ \text{2 curvatures})
 </span></p>
-<p><span class="math inline">\Psi=\tfrac12\boldsymbol\Gamma\cdot C_N\boldsymbol\Gamma+\tfrac12\mathbf K\cdot C_M\mathbf K</span>, <span class="math inline">C_N=\operatorname{diag}(ES,GS,GS)</span>, <span class="math inline">C_M=\operatorname{diag}(GJ,EI,EI)</span>. Small <span class="math inline">\boldsymbol\theta</span>: <span class="math inline">\Lambda\approx I+S</span> and the strains of Part B return. <span class="math inline">\varphi\to0</span>: regularise with <span class="math inline">\sqrt{\boldsymbol\theta\cdot\boldsymbol\theta+10^{-12}}</span>.</p>
+<p><span class="math inline">\Psi=\tfrac12\boldsymbol\Gamma\cdot C_N\boldsymbol\Gamma+\tfrac12\mathbf K\cdot C_M\mathbf K</span>, <span class="math inline">C_N=\operatorname{diag}(ES,GS,GS)</span>, <span class="math inline">C_M=\operatorname{diag}(GJ,EI,EI)</span>. Small <span class="math inline">\boldsymbol\theta</span>: <span class="math inline">\Lambda\approx I+S</span> and the strains of Part B return. <span class="math inline">\varphi\to0</span>: regularize with <span class="math inline">\sqrt{\boldsymbol\theta\cdot\boldsymbol\theta+10^{-12}}</span>.</p>
 </section>
 <section id="energy-residual-snes" class="slide level2">
 <h2>Energy → residual → SNES</h2>
@@ -529,7 +529,7 @@ T=I+\frac{1-\cos\varphi}{\varphi^2}S+\frac{\varphi-\sin\varphi}{\varphi^3}S^2
 <h2>Three exact answers</h2>
 <ul>
 <li><strong>Circle.</strong> End moment <span class="math inline">M</span> about <span class="math inline">-\mathbf e_y</span>, no force: <span class="math inline">\boldsymbol\Gamma=0</span>, <span class="math inline">\mathbf K=(0,M/EI,0)</span> — an arc, for any <span class="math inline">ES</span>, <span class="math inline">GS</span>. <span class="math inline">M=2\pi EI/L</span> closes it.</li>
-<li><strong>Helix.</strong> <span class="math inline">EI=GJ</span>, dead end moment <span class="math inline">\mathbf m</span>: the spatial curvature is <span class="math inline">\mathbf m/EI</span>, so <span class="math inline">\boldsymbol\theta(s)=s\,\mathbf m/EI</span> <strong>exactly</strong> (linear in <span class="math inline">s</span>!) and the centre line is a helix about <span class="math inline">\mathbf m</span>.</li>
+<li><strong>Helix.</strong> <span class="math inline">EI=GJ</span>, dead end moment <span class="math inline">\mathbf m</span>: the spatial curvature is <span class="math inline">\mathbf m/EI</span>, so <span class="math inline">\boldsymbol\theta(s)=s\,\mathbf m/EI</span> <strong>exactly</strong> (linear in <span class="math inline">s</span>!) and the center line is a helix about <span class="math inline">\mathbf m</span>.</li>
 <li><strong>Elastica.</strong> Dead tip force: shooting on <span class="math inline">EI\varphi'=F(x_{\rm tip}-x)</span> (inextensible), or with <span class="math inline">\varepsilon=N/ES</span>, <span class="math inline">\gamma=Q/GS</span> (Reissner). With <span class="math inline">ES=GS</span>: <span class="math inline">\varepsilon\mathbf d_1+\gamma\mathbf d_2=\frac F{ES}(0,-1)</span> — a <strong>uniform</strong> extra translation, <span class="math inline">w_{\rm Reissner}=w_{\rm elastica}+FL/ES</span> exactly.</li>
 </ul>
 <p>For a rotation about a fixed axis, <span class="math inline">T^\top\mathbf M=\mathbf M</span>: the simple load term <span class="math inline">\mathbf M\cdot\boldsymbol\theta(L)</span> has the same equilibrium as a true dead moment (HW7 Q1c).</p>
@@ -589,7 +589,7 @@ T=I+\frac{1-\cos\varphi}{\varphi^2}S+\frac{\varphi-\sin\varphi}{\varphi^3}S^2
 </tbody>
 </table>
 <ul>
-<li>With the reduced rule <span class="math inline">\boldsymbol\Gamma</span> can vanish at the quadrature points: <span class="math inline">\boldsymbol\theta</span> is then <strong>exact</strong> (<span class="math inline">10^{-15}</span>), and <span class="math inline">\mathbf u</span> is the centre line integrated by the midpoint / 2-point Gauss rule.</li>
+<li>With the reduced rule <span class="math inline">\boldsymbol\Gamma</span> can vanish at the quadrature points: <span class="math inline">\boldsymbol\theta</span> is then <strong>exact</strong> (<span class="math inline">10^{-15}</span>), and <span class="math inline">\mathbf u</span> is the center line integrated by the midpoint / 2-point Gauss rule.</li>
 <li>P2/P1 is locking-free in the linear theory only: in a curved state <span class="math inline">\boldsymbol\Gamma</span> is not a polynomial, and the stiff force term locks. P1/P1 full: elastica <span class="math inline">w/L</span> 0.209 instead of 0.302.</li>
 </ul>
 </section>

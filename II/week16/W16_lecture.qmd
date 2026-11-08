@@ -55,7 +55,7 @@ No quiz this week. The final report (Quarto) and `project.ipynb` are due **one w
 | Lesson | Where we met it |
 |---|---|
 | **The element must suit the physics**: low-order elements lock (thin, incompressible), equal-order flow elements violate inf-sup | Weeks 1, 7, 8, 9, 11 |
-| **Stable is not accurate**: an energy-stable scheme or a stabilised advection term can be far from the solution | Weeks 6, 12, 14 |
+| **Stable is not accurate**: an energy-stable scheme or a stabilized advection term can be far from the solution | Weeks 6, 12, 14 |
 | **Nonlinear solves need a path**: load or parameter continuation, a line search that fits the problem, the reason of every step | Weeks 1, 4, 10, 11, 14 |
 | **The first answer of a converged solver is not yet a result**: the converged reason, a mesh study, a balance | every week |
 | **Parallel bugs are partition bugs**: random numbers per rank, unreduced sums, ghost values, arbitrary facet sides, collective destructors | Weeks 9, 10, 14, 15 |
@@ -64,7 +64,7 @@ No quiz this week. The final report (Quarto) and `project.ipynb` are due **one w
 
 | Rung | Question it answers | Tool |
 |---|---|---|
-| 1 · Exact or manufactured solution | is the discretisation implemented as derived? | predicted vs observed rates, errors against the exact expression |
+| 1 · Exact or manufactured solution | is the discretization implemented as derived? | predicted vs observed rates, errors against the exact expression |
 | 2 · A known limit or benchmark | is it the right model? | analytical limits, published benchmarks, with a citation |
 | 3 · A balance | does the discrete solution conserve what the model conserves? | consistent fluxes, residual reactions |
 | 4 · `-np 1` = `-np 2` | is the code correct in parallel? | `record`, `compare_np` |
@@ -83,7 +83,7 @@ What the generated scripts in the homework got wrong — and what caught it:
 | a partition-dependent construct | the same run with `-np 1` and `-np 2` |
 | a claim of "unconditionally stable" or "verified" | the reason and the energy at every step, a check that can fail |
 
-**The pattern:** LLM code fails quietly. The defence is a test whose answer you know **before** you run it — the habit this course asked for in every homework.
+**The pattern:** LLM code fails quietly. The defense is a test whose answer you know **before** you run it — the habit this course asked for in every homework.
 
 # Part B · What comes next {background-color="#1f3864"}
 

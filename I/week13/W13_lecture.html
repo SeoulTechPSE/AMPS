@@ -269,7 +269,7 @@ Kee-Youn Yoo
 </tr>
 <tr class="odd">
 <td><strong>D</strong></td>
-<td>LLM pitfalls with stabilised methods · HW12</td>
+<td>LLM pitfalls with stabilized methods · HW12</td>
 <td style="text-align: center;">15 min</td>
 </tr>
 </tbody>
@@ -290,7 +290,7 @@ Kee-Youn Yoo
 <tr class="header">
 <th>Week</th>
 <th>Operator</th>
-<th>What made the discretisation work</th>
+<th>What made the discretization work</th>
 </tr>
 </thead>
 <tbody>
@@ -409,7 +409,7 @@ Kee-Youn Yoo
 <p><span class="math inline">\xi(z)\approx z/3</span> for small <span class="math inline">z</span> (no diffusion added when the mesh resolves the layer), <span class="math inline">\xi(z)\to1</span> for <span class="math inline">z\to\infty</span> (full upwind).</p>
 </div>
 <div class="fragment">
-<p>In 2D, isotropic artificial diffusion also smears <strong>across</strong> the streamlines (crosswind), where no stabilisation was needed. Brooks &amp; Hughes (1982): add the diffusion <strong>only along <span class="math inline">\mathbf b</span></strong>, and do it in a consistent way.</p>
+<p>In 2D, isotropic artificial diffusion also smears <strong>across</strong> the streamlines (crosswind), where no stabilization was needed. Brooks &amp; Hughes (1982): add the diffusion <strong>only along <span class="math inline">\mathbf b</span></strong>, and do it in a consistent way.</p>
 </div>
 </section>
 <section id="a5-supg-streamline-upwind-petrovgalerkin" class="slide level2">
@@ -434,7 +434,7 @@ Kee-Youn Yoo
 <ul>
 <li><strong>Petrov–Galerkin</strong>: the test function is <span class="math inline">v_h+\tau\,\mathbf b\cdot\nabla v_h</span> — upwind-weighted along the streamline.</li>
 <li><strong>Consistent</strong>: the added term is the element <strong>residual</strong> times <span class="math inline">\mathbf b\cdot\nabla v_h</span>; it vanishes for the exact solution, so Galerkin orthogonality <span class="math inline">a_{\text{SUPG}}(u-u_h,v_h)=0</span> holds.</li>
-<li>Stabilisation acts <strong>only along <span class="math inline">\mathbf b</span></strong>: <span class="math inline">\tau(\mathbf b\cdot\nabla u_h,\mathbf b\cdot\nabla v_h)</span> is diffusion in the streamline direction.</li>
+<li>Stabilization acts <strong>only along <span class="math inline">\mathbf b</span></strong>: <span class="math inline">\tau(\mathbf b\cdot\nabla u_h,\mathbf b\cdot\nabla v_h)</span> is diffusion in the streamline direction.</li>
 <li>For P1, <span class="math inline">\Delta u_h=0</span> inside each cell; for P2 and higher, the term <span class="math inline">-\varepsilon\Delta u_h</span> must stay.</li>
 <li>1D, P1: SUPG with this <span class="math inline">\tau</span> = the optimal artificial diffusion of §A4.</li>
 </ul>
@@ -657,8 +657,8 @@ Kee-Youn Yoo
 </div>
 </section></section>
 <section>
-<section id="part-d-llms-and-stabilised-methods-hw12" class="title-slide slide level1 center">
-<h1>Part D — LLMs and Stabilised Methods · HW12</h1>
+<section id="part-d-llms-and-stabilized-methods-hw12" class="title-slide slide level1 center">
+<h1>Part D — LLMs and Stabilized Methods · HW12</h1>
 
 </section>
 <section id="d1-where-llm-generated-advectiondiffusion-code-goes-wrong" class="slide level2">
@@ -693,7 +693,7 @@ Kee-Youn Yoo
 <td>every method “converges at 0.5”: the layer hides the difference (§C2)</td>
 </tr>
 <tr class="even">
-<td><strong>Refinement instead of stabilisation</strong></td>
+<td><strong>Refinement instead of stabilization</strong></td>
 <td>“increase N until the wiggles go away”</td>
 <td><span class="math inline">h&lt;2\varepsilon/|\mathbf b|</span>: millions of cells per direction</td>
 </tr>

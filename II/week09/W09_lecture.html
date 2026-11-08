@@ -290,7 +290,7 @@ Kee-Youn Yoo
 <span id="cb1-2"><a href="" aria-hidden="true" tabindex="-1"></a>msh <span class="op">=</span> mesh.create_mesh(comm, cells, el, X)            <span class="co"># X: (n, 3) points, cells: (m, 3); rank 0 passes the arrays, the others empty arrays</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <ul>
 <li>A cylinder, a roof, a plate tilted in space: map a structured parameter grid <span class="math inline">(s,t)\mapsto(x,y,z)</span>; a closed tube merges the seam.</li>
-<li><strong>Non-manifold</strong> surfaces work: in an I-beam the web edge <em>is</em> the flange centre line — three cells meet at one edge (shared vertices).</li>
+<li><strong>Non-manifold</strong> surfaces work: in an I-beam the web edge <em>is</em> the flange center line — three cells meet at one edge (shared vertices).</li>
 <li>On such a mesh <code>ufl.grad(u)</code> is a <span class="math inline">3\times3</span> <strong>tangential</strong> gradient (derivatives along the surface only).</li>
 <li>Flat facets: a curved shell is approximated by flat triangles → a geometry error <span class="math inline">O(h^2)</span> (measured on the cylinder, Part B).</li>
 </ul>
@@ -376,7 +376,7 @@ Kee-Youn Yoo
 <p><strong>Check the solver</strong></p>
 </div>
 <div class="callout-content">
-<p>Without the drilling term MUMPS stops with KSP reason <strong>−11</strong> (factorisation failed) — <code>LinearProblem.solve()</code> does <strong>not</strong> raise, the field is NaN. Read <code>problem.solver.getConvergedReason()</code>.</p>
+<p>Without the drilling term MUMPS stops with KSP reason <strong>−11</strong> (factorization failed) — <code>LinearProblem.solve()</code> does <strong>not</strong> raise, the field is NaN. Read <code>problem.solver.getConvergedReason()</code>.</p>
 </div>
 </div>
 </div>
@@ -486,7 +486,7 @@ Kee-Youn Yoo
 </section>
 <section id="the-cell-problem" class="slide level2">
 <h2>The cell problem</h2>
-<p>A periodic microstructure (fibres in a matrix, pores in an electrode, inclusions in a gel) with period <span class="math inline">\ell\ll L</span>: at each macroscopic point the strain is <span class="math inline">\mathbf E+\boldsymbol\varepsilon(\mathbf v)</span>, with a <strong>periodic</strong> fluctuation <span class="math inline">\mathbf v</span> on the cell <span class="math inline">Y</span>:</p>
+<p>A periodic microstructure (fibers in a matrix, pores in an electrode, inclusions in a gel) with period <span class="math inline">\ell\ll L</span>: at each macroscopic point the strain is <span class="math inline">\mathbf E+\boldsymbol\varepsilon(\mathbf v)</span>, with a <strong>periodic</strong> fluctuation <span class="math inline">\mathbf v</span> on the cell <span class="math inline">Y</span>:</p>
 <p><span class="math display">
 \int_Y\mathbb C(\mathbf y)\big(\mathbf E+\boldsymbol\varepsilon(\mathbf v)\big):\boldsymbol\varepsilon(\mathbf w)\,dY=0\quad\forall\mathbf w\ \text{periodic},\qquad
 \mathbb C^{\hom}\mathbf E=\langle\boldsymbol\sigma\rangle=\frac1{|Y|}\int_Y\mathbb C(\mathbf E+\boldsymbol\varepsilon(\mathbf v))\,dY

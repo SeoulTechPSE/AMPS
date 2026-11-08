@@ -35,7 +35,7 @@ format:
 | **D** | Cohesive springs on every facet (the source) · LLM pitfalls · HW9 | 20 min |
 
 ::: {.box}
-Lab notebook: `W10_lab.ipynb` (≈ 80 min) · Homework: `W10_HW9.ipynb` (due before Week 11) · Interfaces in chemical engineering: particle–binder debonding in battery electrodes, coating delamination, fibre–matrix interfaces in membranes and composites
+Lab notebook: `W10_lab.ipynb` (≈ 80 min) · Homework: `W10_HW9.ipynb` (due before Week 11) · Interfaces in chemical engineering: particle–binder debonding in battery electrodes, coating delamination, fiber–matrix interfaces in membranes and composites
 :::
 
 # Part A · Cohesive zones {background-color="#1f3864"}
@@ -154,7 +154,7 @@ $$
 \mathbf K\mathbf a=-\mathbf R,\ \ \mathbf K\mathbf b=\mathbf f,\ \ \Delta\lambda=\frac{\hat\delta-g(\mathbf u)-\mathbf g\cdot\mathbf a}{\mathbf g\cdot\mathbf b},\ \ \Delta\mathbf u=\mathbf a+\Delta\lambda\,\mathbf b .
 $$
 
-Two solves with one factorisation per Newton step — Week 3's global unknown by static condensation again. $g$ is linear in $\mathbf u$: its vector $\mathbf g$ is assembled once.
+Two solves with one factorization per Newton step — Week 3's global unknown by static condensation again. $g$ is linear in $\mathbf u$: its vector $\mathbf g$ is assembled once.
 The residual and Jacobian come from the `NonlinearProblem` (`solver.computeFunction`, `solver.computeJacobian`).
 
 **Never stop exactly at the peak:** there the interface stiffness $T'$ is zero, one half of the strip is a free rigid body, $\mathbf K$ is singular — the next step started from it diverged. A step grid that
@@ -195,7 +195,7 @@ Both ends of the curve are checked by an independent model: the start by the per
 ## The source's intrinsic model: compliance grows with refinement
 
 Source chapter 1: DG everywhere, the exponential law on **every** interior facet (stronger in the bulk, $K_{\rm bulk}=295$, weaker on the interface), Nitsche for the supports.
-Linearised initial stiffness (left clamped as in the source, reference 5.95; plotted on the next slide):
+Linearized initial stiffness (left clamped as in the source, reference 5.95; plotted on the next slide):
 
 | $h$ | 0.12 | 0.06 | 0.03 | 0.015 |
 |---|:---:|:---:|:---:|:---:|
@@ -204,7 +204,7 @@ Linearised initial stiffness (left clamped as in the source, reference 5.95; plo
 | same, $1000\,K$ | 6.004 | 5.949 | 5.940 | — |
 
 Each facet is a spring in series with a cell: the added compliance $\propto1/(Kh)$ — doubles with every halving of $h$ (0.114, 0.211, 0.404, 0.797). An intrinsic law on all facets needs
-$K\,h/E\gg1$; with the source's $K$ it is 1.8. The source's "elastic stiffness 2.6 N/mm ✅" is a mesh-dependent artefact; chapter 2's "4.18 N/mm, stiffer because CG matches nodes" is the '+' trap
+$K\,h/E\gg1$; with the source's $K$ it is 1.8. The source's "elastic stiffness 2.6 N/mm ✅" is a mesh-dependent artifact; chapter 2's "4.18 N/mm, stiffer because CG matches nodes" is the '+' trap
 (reproduced on 0.11: 4.43 with the slightly different Gmsh mesh), with a different left support than chapter 1 (5.95 vs 5.87 for perfect bond).
 
 ## Artificial compliance

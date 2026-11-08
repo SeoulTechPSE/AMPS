@@ -217,7 +217,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">AI-based Materials and Process Simulation I</h1>
-  <p class="subtitle">Week 09 — Nonlinear Problems II: Well-posedness · Globalisation · Continuation · PETSc SNES in DOLFINx · HW8</p>
+  <p class="subtitle">Week 09 — Nonlinear Problems II: Well-posedness · Globalization · Continuation · PETSc SNES in DOLFINx · HW8</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -347,7 +347,7 @@ Kee-Youn Yoo
 <ul>
 <li>For a linear <span class="math inline">\mathcal A</span> this <strong>is</strong> Lax–Milgram (coercivity <span class="math inline">\alpha</span>, continuity <span class="math inline">L</span>).</li>
 <li>Proof: <span class="math inline">u\mapsto u-\rho R^{-1}(\mathcal A(u)-\ell)</span> is a contraction for <span class="math inline">0&lt;\rho&lt;2\alpha/L^2</span> (<span class="math inline">R</span> = Riesz map) — a Picard-type iteration.</li>
-<li>Typical example: a flux that depends on the <strong>gradient</strong>, <span class="math inline">\mathcal A(u)=-\nabla\cdot\mathbf a(\nabla u)</span> with <span class="math inline">(\mathbf a(\xi)-\mathbf a(\eta))\cdot(\xi-\eta)\ge\alpha|\xi-\eta|^2</span> (regularised power-law fluids, nonlinear elasticity with small strains).</li>
+<li>Typical example: a flux that depends on the <strong>gradient</strong>, <span class="math inline">\mathcal A(u)=-\nabla\cdot\mathbf a(\nabla u)</span> with <span class="math inline">(\mathbf a(\xi)-\mathbf a(\eta))\cdot(\xi-\eta)\ge\alpha|\xi-\eta|^2</span> (regularized power-law fluids, nonlinear elasticity with small strains).</li>
 </ul>
 </div>
 </section>
@@ -360,7 +360,7 @@ Kee-Youn Yoo
 <p>(Works for <span class="math inline">q=q(u)</span> with Dirichlet data. Not for <span class="math inline">q(x,u)</span>, not for Robin conditions.)</p>
 </div><div class="column" style="width:50%;">
 <p><strong>Bratu / Frank-Kamenetskii</strong> <span class="math inline">-\Delta u=\lambda e^u</span>, <span class="math inline">u=0</span></p>
-<p>Steady thermal explosion: heat release <span class="math inline">\propto e^{u}</span> (linearised Arrhenius), conduction to a cold wall; <span class="math inline">\lambda</span> = Frank-Kamenetskii parameter.</p>
+<p>Steady thermal explosion: heat release <span class="math inline">\propto e^{u}</span> (linearized Arrhenius), conduction to a cold wall; <span class="math inline">\lambda</span> = Frank-Kamenetskii parameter.</p>
 <ul>
 <li>the reaction term <strong>helps</strong> <span class="math inline">u</span> grow — the opposite of monotone;</li>
 <li>there is a critical <span class="math inline">\lambda^*</span>: <strong>two</strong> solutions for <span class="math inline">0&lt;\lambda&lt;\lambda^*</span>, one at <span class="math inline">\lambda^*</span>, <strong>none</strong> for <span class="math inline">\lambda&gt;\lambda^*</span> (no steady state: ignition);</li>
@@ -396,8 +396,8 @@ Kee-Youn Yoo
 <p>Two remedies: make the step smaller (<strong>damping / line search</strong>) or make <span class="math inline">\|\delta u^0\|</span> smaller (<strong>continuation</strong>).</p>
 </div>
 </section>
-<section id="a4-globalisation-line-search-on-a-merit-function" class="slide level2">
-<h2>§A4 Globalisation: line search on a merit function</h2>
+<section id="a4-globalization-line-search-on-a-merit-function" class="slide level2">
+<h2>§A4 Globalization: line search on a merit function</h2>
 <p>Merit function <span class="math inline">\phi(u)=\tfrac12\|F(u)\|^2</span> (discrete residual vector). Newton direction <span class="math inline">d=-J^{-1}F</span>: <span class="math display">\nabla\phi\cdot d=(J^\top F)\cdot(-J^{-1}F)=-\|F\|^2&lt;0 \quad\Rightarrow\quad d \text{ is a descent direction.}</span></p>
 <div class="fragment">
 <p><strong>Backtracking (Armijo):</strong> try <span class="math inline">\alpha=1,\ \alpha_1,\ \alpha_2,\dots</span> until <span class="math inline">\|F(u+\alpha d)\|^2\le(1-2c\,\alpha)\|F(u)\|^2</span> (<span class="math inline">c=10^{-4}</span>); take <span class="math inline">u\leftarrow u+\alpha d</span>.</p>
@@ -723,8 +723,8 @@ Kee-Youn Yoo
 </ul>
 </div>
 </section>
-<section id="b6-stopping-tests-and-the-discretisation-error" class="slide level2">
-<h2>§B6 Stopping tests and the discretisation error</h2>
+<section id="b6-stopping-tests-and-the-discretization-error" class="slide level2">
+<h2>§B6 Stopping tests and the discretization error</h2>
 <p><code>snes_rtol</code> is relative to <span class="math inline">\|F(u^0)\|</span> — it depends on the guess and on the scaling of the equation. Same problem, P2, <span class="math inline">u^0=g</span> on <span class="math inline">\partial\Omega</span>:</p>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -764,7 +764,7 @@ Kee-Youn Yoo
 <p><img data-src="figs/w09_rtol.png" style="width:100.0%"></p>
 </div></div>
 <div class="fragment">
-<p>Rule: algebraic error ≪ discretisation error <strong>on the finest mesh</strong> — tight <code>rtol</code>, an <code>atol</code> in the units of <span class="math inline">F</span>, and check <span class="math inline">\|F\|</span> at exit, not just the reason.</p>
+<p>Rule: algebraic error ≪ discretization error <strong>on the finest mesh</strong> — tight <code>rtol</code>, an <code>atol</code> in the units of <span class="math inline">F</span>, and check <span class="math inline">\|F\|</span> at exit, not just the reason.</p>
 </div>
 </section></section>
 <section>
@@ -862,7 +862,7 @@ Kee-Youn Yoo
 </section>
 <section id="c3-passing-the-fold-a-custom-newton-solver" class="slide level2">
 <h2>§C3 Passing the fold: a custom Newton solver</h2>
-<p>Unknowns <span class="math inline">(u,\lambda)</span>, constraint <span class="math inline">\int_\Omega u\,dx=m</span>, step in <span class="math inline">m</span>. Block elimination of the bordered system (§A5) with <strong>one</strong> factorisation of <span class="math inline">J</span>: <span class="math display">J a=F,\quad Jz=F_\lambda,\qquad \delta\lambda=\frac{\ell\cdot a-c}{\ell\cdot z},\qquad \delta u=a-\delta\lambda\,z .</span></p>
+<p>Unknowns <span class="math inline">(u,\lambda)</span>, constraint <span class="math inline">\int_\Omega u\,dx=m</span>, step in <span class="math inline">m</span>. Block elimination of the bordered system (§A5) with <strong>one</strong> factorization of <span class="math inline">J</span>: <span class="math display">J a=F,\quad Jz=F_\lambda,\qquad \delta\lambda=\frac{\ell\cdot a-c}{\ell\cdot z},\qquad \delta u=a-\delta\lambda\,z .</span></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="" aria-hidden="true" tabindex="-1"></a>Fc, Jc <span class="op">=</span> fem.form(F), fem.form(ufl.derivative(F, uh, w))</span>
 <span id="cb4-2"><a href="" aria-hidden="true" tabindex="-1"></a>Flc <span class="op">=</span> fem.form(<span class="op">-</span>ufl.exp(uh) <span class="op">*</span> v <span class="op">*</span> ufl.dx)                         <span class="co"># dF/dlam</span></span>
 <span id="cb4-3"><a href="" aria-hidden="true" tabindex="-1"></a>ell <span class="op">=</span> assemble_vector(fem.form(v <span class="op">*</span> ufl.dx))<span class="op">;</span> ...                  <span class="co"># d(int u)/du, ghostUpdate, set_bc</span></span>
@@ -1061,7 +1061,7 @@ Kee-Youn Yoo
 </tr>
 <tr class="even">
 <td>Verification</td>
-<td>algebraic error ≪ discretisation error; benchmark numbers</td>
+<td>algebraic error ≪ discretization error; benchmark numbers</td>
 <td>tight <code>rtol</code>, <span class="math inline">\|F\|</span> history, <code>-np 2</code></td>
 </tr>
 </tbody>
