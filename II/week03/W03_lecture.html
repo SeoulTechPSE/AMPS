@@ -503,28 +503,41 @@ Kee-Youn Yoo
 <p>1D strip in uniaxial strain, <span class="math inline">\sigma_{xx}=0</span> (free end): <span class="math inline">\varepsilon_{xx}=\beta\theta/(\lambda+2\mu)</span>, so the heat equation becomes <span class="math display">
 \rho c\,(1+\delta)\,\dot\theta=k\,\theta''\qquad\Rightarrow\qquad \text{diffusivity } \frac{\kappa}{1+\delta},\ \ \kappa=\frac{k}{\rho c}
 </span></p>
-<table class="caption-top">
+<table class="caption-top" style="width:100%;">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+<col style="width: 21%">
+</colgroup>
 <thead>
 <tr class="header">
-<th>Material (<span class="math inline">T_0=293</span> K)</th>
+<th><span class="math inline">T_0=293</span> K</th>
 <th style="text-align: center;"><span class="math inline">\delta</span></th>
-<th style="text-align: center;">one-way model: time scale off by</th>
+<th style="text-align: center;">one-way: time scale off by</th>
+<th style="text-align: center;">measured <span class="math inline">t_{50}</span> ratio</th>
+<th style="text-align: center;"><span class="math inline">1+\delta</span></th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>steel (<span class="math inline">E</span> 210 GPa, <span class="math inline">\alpha</span> <span class="math inline">1.2\times10^{-5}</span>)</td>
+<td>steel</td>
 <td style="text-align: center;">0.0114</td>
 <td style="text-align: center;">1.1 %</td>
+<td style="text-align: center;">1.01138</td>
+<td style="text-align: center;">1.01139</td>
 </tr>
 <tr class="even">
-<td>aluminium (<span class="math inline">E</span> 70 GPa, <span class="math inline">\alpha</span> <span class="math inline">2.3\times10^{-5}</span>)</td>
+<td>aluminium</td>
 <td style="text-align: center;">0.0261</td>
 <td style="text-align: center;">2.6 %</td>
+<td style="text-align: center;">1.02604</td>
+<td style="text-align: center;">1.02607</td>
 </tr>
 </tbody>
 </table>
-<p>Small for metals — but it is a model error you can <strong>measure</strong>, not a belief. Part C uses <span class="math inline">\delta=0.5</span> (“what if”) to make it visible.</p>
+<p>Steel: <span class="math inline">E</span> 210 GPa, <span class="math inline">\alpha</span> <span class="math inline">1.2\times10^{-5}</span>; aluminium: 70 GPa, <span class="math inline">2.3\times10^{-5}</span>. Measured: the strip of Part C with each metal’s <span class="math inline">\delta</span>, <span class="math inline">\Delta t=10^{-3}</span>, half-rise time full / one-way. Small for metals — but a model error you can <strong>measure</strong>, not a belief. Part C uses <span class="math inline">\delta=0.5</span> (“what if”) to make it visible.</p>
 </section></section>
 <section>
 <section id="part-b-generalized-plane-strain-in-code" class="title-slide slide level1 center" data-background-color="#1f3864">

@@ -303,7 +303,7 @@ the faint background in the ligament is AT2's diffuse damage.
 | Long-time limit with the wrong reduced modulus ($E/(1-\nu^2)$ for a free bar) | a 10 % "discrepancy" that is the reference's |
 | Mesh coarser than $\ell$ along the crack path | the crack band and $F_{\max}$ are mesh artefacts |
 | Notch as an initial value of $d$ / as one line of nodes | erased by the first solve / false first peak, $F_{\max}$ −11.5 %, iterations at the cap |
-| Staggered loop with a silent iteration cap | non-converged steps plotted as results |
+| Staggered loop with a silent iteration cap | non-converged steps plotted as results: cap 50 ($\ell=0.02$, $h=0.01$) — same $F_{\max}$ (the peak step converges), but 3 later steps stop at the cap and the crack energy is $1.483\,G_ca$ instead of 1.426 |
 | All of $\int\gamma(d)$ reported as crack energy | AT2's diffuse damage ($0.08$–$0.10\,G_ca$ here) counted as crack |
 
 ## Prompting for a viscoelastic or phase-field model

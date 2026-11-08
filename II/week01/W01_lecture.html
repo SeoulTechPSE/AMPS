@@ -544,6 +544,7 @@ a(\mathbf u,\mathbf v)=\int_\Omega\boldsymbol\sigma(\mathbf u):\boldsymbol\varep
 <h2>Near-nullspace: measured</h2>
 
 <img data-src="figs/w01_gamg_iterations.png" class="quarto-figure quarto-figure-center r-stretch" style="width:60.0%"><p>P1, <code>-np 2</code>, relative tolerance <span class="math inline">10^{-10}</span>: <strong>22, 23, 28, 30</strong> iterations with the rigid-body modes; <strong>59, 89, 112, 128</strong> without (567 → 139 587 DOFs).</p>
+<p>Only the three translations: <strong>59, 89, 112, 128</strong> — exactly as without. The block size 3 of the matrix already implies them; the information GAMG is missing is the <strong>rotations</strong>.</p>
 </section>
 <section id="reaction-forces-two-ways" class="slide level2">
 <h2>Reaction forces: two ways</h2>

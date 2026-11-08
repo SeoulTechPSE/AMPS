@@ -809,9 +809,13 @@ J(\delta\mathbf u,\mathbf v)=\int_\Omega\big(\mathbb C^{\rm alg}\boldsymbol\vare
 <td>Prescribed displacement put into the boundary DOFs before the first solve</td>
 <td>first 2D step diverges (50 iterations); lifting with the converged tangent: 1 iteration</td>
 </tr>
+<tr class="even">
+<td>History <span class="math inline">(\boldsymbol\sigma_n,p_n)</span> updated after every Newton correction, not once per converged step</td>
+<td>every step converges and <span class="math inline">\max f=5.7\times10^{-14}</span>, but <span class="math inline">u_r=26.11</span> mm, not 4.519 (1D, <span class="math inline">0.95\,p_{\rm lim}</span>); twice the load steps: 46.07 mm (correct code: relative change <span class="math inline">6.9\times10^{-5}</span>)</td>
+</tr>
 </tbody>
 </table>
-<p>The fix is the same each time: a test whose exact answer you know <strong>before</strong> you run — <span class="math inline">f=0</span>, a finite difference, Lamé, <span class="math inline">p_y</span>, <span class="math inline">p_{\rm lim}</span>.</p>
+<p>The fix is the same each time: a test whose exact answer you know <strong>before</strong> you run — <span class="math inline">f=0</span>, a finite difference, Lamé, <span class="math inline">p_y</span>, <span class="math inline">p_{\rm lim}</span> — or, for the history, a change of the load steps.</p>
 </section>
 <section id="prompting-for-a-plasticity-model" class="slide level2 scrollable">
 <h2>Prompting for a plasticity model</h2>

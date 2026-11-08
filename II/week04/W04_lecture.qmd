@@ -358,8 +358,9 @@ Nothing crashed, the curve looked smooth and the iterations converged. One line 
 | First-yield formula of $\nu=\tfrac12$ used for $\nu=0.3$ | 11 plastic points at "0.999 $p_y$"; the true $p_y$ is 0.93 % lower |
 | Pressure control beyond the limit load | no equilibrium: the step does not converge — silently, unless the code returns a flag |
 | Prescribed displacement put into the boundary DOFs before the first solve | first 2D step diverges (50 iterations); lifting with the converged tangent: 1 iteration |
+| History $(\boldsymbol\sigma_n,p_n)$ updated after every Newton correction, not once per converged step | every step converges and $\max f=5.7\times10^{-14}$, but $u_r=26.11$ mm, not 4.519 (1D, $0.95\,p_{\rm lim}$); twice the load steps: 46.07 mm (correct code: relative change $6.9\times10^{-5}$) |
 
-The fix is the same each time: a test whose exact answer you know **before** you run — $f=0$, a finite difference, Lamé, $p_y$, $p_{\rm lim}$.
+The fix is the same each time: a test whose exact answer you know **before** you run — $f=0$, a finite difference, Lamé, $p_y$, $p_{\rm lim}$ — or, for the history, a change of the load steps.
 
 ## Prompting for a plasticity model
 

@@ -165,12 +165,13 @@ $$
 \rho c\,(1+\delta)\,\dot\theta=k\,\theta''\qquad\Rightarrow\qquad \text{diffusivity } \frac{\kappa}{1+\delta},\ \ \kappa=\frac{k}{\rho c}
 $$
 
-| Material ($T_0=293$ K) | $\delta$ | one-way model: time scale off by |
-|---|:---:|:---:|
-| steel ($E$ 210 GPa, $\alpha$ $1.2\times10^{-5}$) | 0.0114 | 1.1 % |
-| aluminium ($E$ 70 GPa, $\alpha$ $2.3\times10^{-5}$) | 0.0261 | 2.6 % |
+| $T_0=293$ K | $\delta$ | one-way: time scale off by | measured $t_{50}$ ratio | $1+\delta$ |
+|---|:---:|:---:|:---:|:---:|
+| steel | 0.0114 | 1.1 % | 1.01138 | 1.01139 |
+| aluminium | 0.0261 | 2.6 % | 1.02604 | 1.02607 |
 
-Small for metals — but it is a model error you can **measure**, not a belief. Part C uses $\delta=0.5$ ("what if") to make it visible.
+Steel: $E$ 210 GPa, $\alpha$ $1.2\times10^{-5}$; aluminium: 70 GPa, $2.3\times10^{-5}$. Measured: the strip of Part C with each metal's $\delta$, $\Delta t=10^{-3}$, half-rise time full / one-way. Small for metals — but a model error you can
+**measure**, not a belief. Part C uses $\delta=0.5$ ("what if") to make it visible.
 
 # Part B · Generalized plane strain in code {background-color="#1f3864"}
 
