@@ -34,6 +34,13 @@
     .card p { margin: 0; color: var(--muted); }
     ul { padding-left: 1.2em; color: var(--muted); }
     a { color: var(--accent); }
+    .book { display: flex; gap: 22px; align-items: flex-start; }
+    .book img { width: 168px; height: auto; flex: none; border-radius: 4px;
+                box-shadow: 0 4px 16px rgba(11, 23, 38, .25); }
+    .book h3 { margin: 2px 0 2px; font-size: 1.15rem; }
+    .book .bsub { margin: 0 0 10px; color: var(--muted); font-style: italic; }
+    .book p { margin: 0 0 8px; color: var(--muted); }
+    @media (max-width: 560px) { .book { flex-direction: column; } .book img { width: 60%; max-width: 220px; } }
     footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line);
              color: var(--muted); font-size: .9rem; }
   </style>
@@ -61,6 +68,20 @@
       <p>Elasticity, plasticity, viscoelasticity and fracture, dynamics, beams, plates and shells, homogenization, cohesive interfaces,
          natural convection, reactive flow, porous media, phase separation and parallel performance — term projects A–J</p>
     </a>
+
+    <h2>Textbook</h2>
+    <div class="book">
+      <img src="assets/book_cover.jpg" alt="Cover of the textbook Finite Element Simulation of Materials and Processes"
+           width="168" height="240">
+      <div>
+        <h3>Finite Element Simulation of Materials and Processes</h3>
+        <p class="bsub">Verification-first modeling with FEniCSx and an LLM at your side</p>
+        <p>The textbook grown from these two courses: 26 chapters in four parts, from weak forms to research case studies,
+           with every number produced by the code it describes. First complete draft, November 2026.</p>
+        <p>The cover shows results computed with the book's own code: phase separation, the vortex street behind a cylinder,
+           natural convection and a soft actuator bent by its chamber pressure.</p>
+      </div>
+    </div>
 
     <h2>Getting started</h2>
     <ul>
