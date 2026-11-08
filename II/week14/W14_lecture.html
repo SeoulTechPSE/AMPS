@@ -271,7 +271,16 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 <section id="each-scheme-against-its-own-prediction" class="slide level2">
 <h2>Each scheme against its own prediction</h2>
 
-<img data-src="figs/w14_growth.png" class="quarto-figure quarto-figure-center r-stretch" style="width:72.0%"><p>Strip <span class="math inline">128\times2</span>, <span class="math inline">\varepsilon=0.05</span>, <span class="math inline">k=4\pi</span> (<span class="math inline">\sigma=95.57</span>). Every scheme is first order in <span class="math inline">\Delta t</span>; the FE rate sits on its own discrete rate to 0.03 % (the spatial error). Stabilisation costs accuracy: <span class="math inline">-4</span> % at <span class="math inline">\Delta t=10^{-4}</span> (BE +0.5 %, CS −1.1 %).</p>
+<img data-src="figs/w14_growth.png" class="quarto-figure quarto-figure-center r-stretch" style="width:72.0%"><p>Strip <span class="math inline">128\times2</span>, <span class="math inline">\varepsilon=0.05</span>, <span class="math inline">k=4\pi</span> (<span class="math inline">\sigma=95.57</span>). Every scheme is first order in <span class="math inline">\Delta t</span>; the FE rate sits on its own discrete rate to 0.03 %. Stabilisation costs accuracy: <span class="math inline">-4</span> % at <span class="math inline">\Delta t=10^{-4}</span> (BE +0.5 %, CS −1.1 %).</p>
+</section>
+<section id="the-last-0.03-the-meshs-wavenumber" class="slide level2">
+<h2>The last 0.03 %: the mesh’s wavenumber</h2>
+<ul>
+<li>On a uniform P1/Q1 mesh <span class="math inline">\cos kx</span> is an eigenvector of the mass and stiffness matrices, with <span class="math inline">k_h^2=\frac{6}{h^2}\frac{1-\cos kh}{2+\cos kh}=k^2\big(1-\frac{(kh)^2}{12}+\dots\big)</span> instead of <span class="math inline">k^2</span>.</li>
+<li>Per step, the FE factor differs from <span class="math inline">g(k)</span> by <span class="math inline">1.0\times10^{-5}</span>, <span class="math inline">2.5\times10^{-6}</span>, <span class="math inline">6.3\times10^{-7}</span> (64, 128, 256 cells: second order) — and from <span class="math inline">g(k_h)</span> by at most <span class="math inline">6.3\times10^{-9}</span> for all schemes and steps.</li>
+<li>What is left is the cubic term the linear analysis drops: an initial amplitude <span class="math inline">10^{-5}</span> instead of <span class="math inline">10^{-4}</span> reduces it from <span class="math inline">1.3\times10^{-9}</span> to <span class="math inline">1.3\times10^{-11}</span> — the factor 100 of a term in (amplitude)².</li>
+<li>Code, scheme and spatial discretisation are separated <strong>exactly</strong>: every part of the error has a formula.</li>
+</ul>
 </section>
 <section id="three-schemes-three-properties" class="slide level2">
 <h2>Three schemes, three properties</h2>
@@ -335,7 +344,7 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 <img data-src="figs/w14_fields.png" class="quarto-figure quarto-figure-center r-stretch" style="width:82.0%"></section>
 <section id="large-time-steps-what-the-figures-say" class="slide level2">
 <h2>Large time steps: what the figures say</h2>
-<p><span class="math inline">64\times64</span>, <span class="math inline">\varepsilon=0.02</span>; reference <span class="math inline">E(0.05)=0.12970</span> (BE, <span class="math inline">\Delta t=10^{-4}</span>):</p>
+<p><span class="math inline">64\times64</span>, <span class="math inline">\varepsilon=0.02</span>; reference <span class="math inline">E(0.05)=0.12970</span> (BE, <span class="math inline">\Delta t=10^{-4}</span>). The reference itself, checked: <span class="math inline">\Delta t=5\times10^{-5}</span>, <span class="math inline">2.5\times10^{-5}</span> give 0.12981, 0.12987 (order 1.0), extrapolated 0.12993 — the reference is 0.17 % off in time. The mesh matters more: <span class="math inline">32^2</span> / <span class="math inline">128^2</span> give 0.13223 / 0.12902 (about 0.5 % at <span class="math inline">64^2</span>). All runs below share the mesh: they compare the <strong>time schemes</strong> only.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 16%">
@@ -375,6 +384,7 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 <section id="the-equilibrium-interface" class="slide level2">
 <h2>The equilibrium interface</h2>
 <p>A 1D interface relaxes to <span class="math inline">c=\tanh\frac{x}{\sqrt2\varepsilon}</span> with interfacial energy <span class="math inline">\gamma=\frac{2\sqrt2}{3}\varepsilon</span> — a second known answer.</p>
+<p>Started twice as wide; convex splitting, <span class="math inline">\Delta t=10^{-3}</span> to <span class="math inline">t=0.4</span>, then <span class="math inline">10^{-2}</span> to <span class="math inline">t=2</span>:</p>
 <table class="caption-top">
 <thead>
 <tr class="header">
@@ -394,15 +404,32 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 <td style="text-align: center;">14</td>
 </tr>
 <tr class="even">
-<td><span class="math inline">\gamma</span> error</td>
-<td style="text-align: center;">+1.06 %</td>
-<td style="text-align: center;">+0.28 %</td>
-<td style="text-align: center;">+0.083 %</td>
-<td style="text-align: center;">+0.033 %</td>
+<td>profile error (nodes), <span class="math inline">t=0.4</span></td>
+<td style="text-align: center;">5.1e-3</td>
+<td style="text-align: center;">2.8e-3</td>
+<td style="text-align: center;">2.8e-3</td>
+<td style="text-align: center;">2.8e-3</td>
+</tr>
+<tr class="odd">
+<td>profile error (nodes), <span class="math inline">t=2</span></td>
+<td style="text-align: center;">5.7e-3</td>
+<td style="text-align: center;">1.5e-3</td>
+<td style="text-align: center;">3.8e-4</td>
+<td style="text-align: center;">9.4e-5</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\gamma</span> error, <span class="math inline">t=2</span></td>
+<td style="text-align: center;">+1.04 %</td>
+<td style="text-align: center;">+0.27 %</td>
+<td style="text-align: center;">+0.067 %</td>
+<td style="text-align: center;">+0.017 %</td>
 </tr>
 </tbody>
 </table>
-<p>Second order in <span class="math inline">\gamma</span>. A 2D run of <span class="math inline">64\times64</span> at <span class="math inline">\varepsilon=0.02</span> has 1.8 cells per interface width — fine for the pattern, about 1 % in the interfacial energy.</p>
+<ul>
+<li>At <span class="math inline">t=0.4</span> the profile error <strong>does not fall with the mesh</strong>: not a discretisation error — the interface is still relaxing (diffusion through the bulk is slow). Relaxed (<span class="math inline">t=2</span>; to <span class="math inline">t=10</span> nothing changes), profile and <span class="math inline">\gamma</span> are second order (2.0).</li>
+<li>A test against an equilibrium needs the equilibrium. <span class="math inline">64\times64</span> at <span class="math inline">\varepsilon=0.02</span> has 1.8 cells per interface width: fine for the pattern, 1 % in the interfacial energy.</li>
+</ul>
 </section></section>
 <section>
 <section id="part-b-floryhuggins" class="title-slide slide level1 center" data-background-color="#1f3864">
@@ -424,7 +451,8 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 <section id="floryhuggins-the-separated-blend" class="slide level2">
 <h2>Flory–Huggins: the separated blend</h2>
 
-<img data-src="figs/w14_fh.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><p><span class="math inline">\chi=3</span>, <span class="math inline">64\times64</span>, <span class="math inline">\Delta t</span> ramped <span class="math inline">10^{-5}\to10^{-3}</span>: nodal <span class="math inline">\phi</span> 5th/95th percentiles 0.0711 / 0.9309 against the binodal 0.0707 / 0.9293; mass drift <span class="math inline">7\times10^{-16}</span>. One step of <span class="math inline">\Delta t=10^{-3}</span> from the start: BE <strong>reason −4</strong> (a Newton iterate leaves <span class="math inline">(0,1)</span>, the logarithm is NaN), CS converges in 2 iterations.</p>
+<img data-src="figs/w14_fh.png" class="quarto-figure quarto-figure-center r-stretch" style="width:88.0%"><p><span class="math inline">\chi=3</span>, <span class="math inline">64\times64</span>, <span class="math inline">\Delta t</span> ramped <span class="math inline">10^{-5}\to10^{-3}</span>, <span class="math inline">t=0.166</span>: the composition of each phase — the maximum of a smoothed density of the nodal <span class="math inline">\phi</span> (Gaussian kernel, width <span class="math inline">10^{-3}</span>; a histogram peak moves by <span class="math inline">\sim10^{-3}</span> with the bins) — is 0.0720 / 0.9294 against the binodal 0.0707 / 0.9293; 28 % / 43 % of the nodes lie within 0.002 of it (65 % / 78 % at <span class="math inline">t=1.5</span>, textbook). Mass drift <span class="math inline">1\times10^{-15}</span>. Single nodes overshoot (0.0684 / 0.9337: no maximum principle, small curved domains) — extremes or percentiles of the nodal values are a poor test.</p>
+<p>One step of <span class="math inline">\Delta t=10^{-3}</span> from the start: BE <strong>reason −4</strong> after 2 iterations, CS converges in 2. The first two BE iterates stay in <span class="math inline">[0.18, 0.84]</span>; the <strong>third</strong> Newton update overshoots to <span class="math inline">[-2.26, 3.87]</span> — 1877 of 4225 nodes outside <span class="math inline">(0,1)</span>, the logarithm is NaN.</p>
 </section></section>
 <section>
 <section id="part-c-parallel-performance" class="title-slide slide level1 center" data-background-color="#1f3864">
@@ -752,6 +780,14 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 <tr class="even">
 <td>A log free energy with fully implicit Newton</td>
 <td>an iterate outside <span class="math inline">(0,1)</span>: NaN, reason −4</td>
+</tr>
+<tr class="odd">
+<td>A profile compared with the equilibrium before it has relaxed</td>
+<td>an error that does not fall with the mesh (2.8e-3 on 100–400 cells)</td>
+</tr>
+<tr class="even">
+<td>Phases judged by nodal extremes or percentiles</td>
+<td>overshoot beyond the binodal (0.0684 / 0.9337) — use the maximum of a smoothed density</td>
 </tr>
 <tr class="odd">
 <td>A sine right-hand side on a uniform mesh</td>
