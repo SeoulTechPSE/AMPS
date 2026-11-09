@@ -666,7 +666,79 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 <ul>
 <li>The iterations do not change with the rank count (GAMG 8, Jacobi 127): the algorithm scales; the machine does not.</li>
 <li>This laptop (Apple M1: 4 performance + 4 efficiency cores, fanless, MPICH over shared memory) is slower with 4 and 8 ranks than with 1–2. We measured that ranks launched by <code>mpirun</code> ran about 2× slower each already at 4 ranks even for pure Python loops — the slowdown comes from the machine and its MPI launch, before any DOLFINx code runs.</li>
-<li>Colab gives 2 virtual CPUs. Scaling studies belong on a cluster with identical cores — and <strong>measure, don’t assume</strong>.</li>
+<li>Colab gives 2 virtual CPUs. The same script on a two-socket workstation: next slides — <strong>measure, don’t assume</strong>.</li>
+</ul>
+</section>
+<section id="strong-scaling-on-a-workstation" class="slide level2">
+<h2>Strong scaling on a workstation</h2>
+
+<img data-src="figs/w14_scaling_ws.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
+<section id="workstation-what-the-measurement-says" class="slide level2">
+<h2>Workstation: what the measurement says</h2>
+<p>2 × Intel Xeon Gold 6430 (2 sockets × 32 cores, one memory per socket), each rank pinned to a core (<code>mpirun -bind-to core</code>), <code>OMP_NUM_THREADS=1</code>, same script and problem:</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">ranks</th>
+<th style="text-align: center;">GAMG: assembly / setup / solve [s]</th>
+<th style="text-align: center;">LU (<span class="math inline">N=40</span>): setup [s]</th>
+<th style="text-align: center;">Jacobi: solve [s]</th>
+<th style="text-align: center;">GAMG / Jacobi its</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">5.17 / 1.48 / 0.432</td>
+<td style="text-align: center;">2.44</td>
+<td style="text-align: center;">1.045</td>
+<td style="text-align: center;">8 / 127</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">1.32 / 0.774 / 0.114</td>
+<td style="text-align: center;">2.35</td>
+<td style="text-align: center;">0.264</td>
+<td style="text-align: center;">8 / 127</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">16</td>
+<td style="text-align: center;">0.383 / 0.350 / 0.038</td>
+<td style="text-align: center;">1.36</td>
+<td style="text-align: center;">0.087</td>
+<td style="text-align: center;">8 / 127</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">64</td>
+<td style="text-align: center;">0.185 / 0.179 / 0.016</td>
+<td style="text-align: center;">1.33</td>
+<td style="text-align: center;">0.031</td>
+<td style="text-align: center;">8 / 127</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Same iterations; now the machine scales too: from 1 to 64 ranks the GAMG solve is 27×, assembly 28×, Jacobi 34× faster — but the GAMG setup only 8×, the LU setup 1.8×, and at 64 ranks each rank owns only 4,300 unknowns.</li>
+<li>One workstation core is not faster than the laptop’s. The memory is the limit: 14 GB/s for one rank; all ranks together 66 GB/s at 8, 81 at 32, 164 at 64 — the jump at 64 is the second socket’s memory.</li>
+</ul>
+</section>
+<section id="the-same-ranks-two-placements" class="slide level2">
+<h2>The same ranks, two placements</h2>
+
+<img data-src="figs/w14_placement.png" class="quarto-figure quarto-figure-center r-stretch" style="width:100.0%"></section>
+<section id="placement-what-the-measurement-says" class="slide level2">
+<h2>Placement: what the measurement says</h2>
+<ul>
+<li>Each rank recorded its CPUs and NUMA node: <code>-bind-to core</code> fills the cores in order — all 32 ranks on socket 0; <code>-map-by socket</code> puts 16 + 16.</li>
+<li>Same 32 ranks: memory bandwidth 82 → 146 GB/s, GAMG solve 0.024 → 0.018 s (26 % faster); 16 ranks: 72 → 132 GB/s, 28 % faster.</li>
+<li>Nothing in the solver changed, only where its ranks run. A scaling claim needs the machine, the placement and a measurement.</li>
 </ul>
 </section>
 <section id="reuse-one-factorization" class="slide level2">
@@ -799,7 +871,11 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 </tr>
 <tr class="odd">
 <td>Scaling measured on a laptop</td>
-<td>4 ranks slower than 1</td>
+<td>4 ranks slower than 1 (a workstation: 27× faster at 64 ranks)</td>
+</tr>
+<tr class="even">
+<td>Ranks placed in order on a two-socket machine</td>
+<td>one socket’s memory: 26 % slower solve at 32 ranks than spread over both</td>
 </tr>
 </tbody>
 </table>

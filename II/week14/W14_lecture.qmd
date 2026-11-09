@@ -223,7 +223,35 @@ Laptop, $N=64$ (275 k unknowns), `OMP_NUM_THREADS=1`:
 
 - The iterations do not change with the rank count (GAMG 8, Jacobi 127): the algorithm scales; the machine does not.
 - This laptop (Apple M1: 4 performance + 4 efficiency cores, fanless, MPICH over shared memory) is slower with 4 and 8 ranks than with 1–2. We measured that ranks launched by `mpirun` ran about 2× slower each already at 4 ranks even for pure Python loops — the slowdown comes from the machine and its MPI launch, before any DOLFINx code runs.
-- Colab gives 2 virtual CPUs. Scaling studies belong on a cluster with identical cores — and **measure, don't assume**.
+- Colab gives 2 virtual CPUs. The same script on a two-socket workstation: next slides — **measure, don't assume**.
+
+## Strong scaling on a workstation
+
+![](figs/w14_scaling_ws.png){width=100% fig-align="center"}
+
+## Workstation: what the measurement says
+
+2 × Intel Xeon Gold 6430 (2 sockets × 32 cores, one memory per socket), each rank pinned to a core (`mpirun -bind-to core`), `OMP_NUM_THREADS=1`, same script and problem:
+
+| ranks | GAMG: assembly / setup / solve [s] | LU ($N=40$): setup [s] | Jacobi: solve [s] | GAMG / Jacobi its |
+|:---:|:---:|:---:|:---:|:---:|
+| 1 | 5.17 / 1.48 / 0.432 | 2.44 | 1.045 | 8 / 127 |
+| 4 | 1.32 / 0.774 / 0.114 | 2.35 | 0.264 | 8 / 127 |
+| 16 | 0.383 / 0.350 / 0.038 | 1.36 | 0.087 | 8 / 127 |
+| 64 | 0.185 / 0.179 / 0.016 | 1.33 | 0.031 | 8 / 127 |
+
+- Same iterations; now the machine scales too: from 1 to 64 ranks the GAMG solve is 27×, assembly 28×, Jacobi 34× faster — but the GAMG setup only 8×, the LU setup 1.8×, and at 64 ranks each rank owns only 4,300 unknowns.
+- One workstation core is not faster than the laptop's. The memory is the limit: 14 GB/s for one rank; all ranks together 66 GB/s at 8, 81 at 32, 164 at 64 — the jump at 64 is the second socket's memory.
+
+## The same ranks, two placements
+
+![](figs/w14_placement.png){width=100% fig-align="center"}
+
+## Placement: what the measurement says
+
+- Each rank recorded its CPUs and NUMA node: `-bind-to core` fills the cores in order — all 32 ranks on socket 0; `-map-by socket` puts 16 + 16.
+- Same 32 ranks: memory bandwidth 82 → 146 GB/s, GAMG solve 0.024 → 0.018 s (26 % faster); 16 ranks: 72 → 132 GB/s, 28 % faster.
+- Nothing in the solver changed, only where its ranks run. A scaling claim needs the machine, the placement and a measurement.
 
 ## Reuse one factorization
 
@@ -263,7 +291,8 @@ Same energy to all printed digits for the three stabilized variants. Backward Eu
 | Phases judged by nodal extremes or percentiles | overshoot beyond the binodal (0.0684 / 0.9337) — use the maximum of a smoothed density |
 | A sine right-hand side on a uniform mesh | CG converges in 1 iteration |
 | Timing the first call | includes the JIT compilation |
-| Scaling measured on a laptop | 4 ranks slower than 1 |
+| Scaling measured on a laptop | 4 ranks slower than 1 (a workstation: 27× faster at 64 ranks) |
+| Ranks placed in order on a two-socket machine | one socket's memory: 26 % slower solve at 32 ranks than spread over both |
 
 ## HW13 (due before Week 15)
 
