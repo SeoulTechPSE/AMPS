@@ -276,7 +276,7 @@ c_t=\nabla\cdot(M\nabla\mu),\qquad\mu=f'(c)-\varepsilon^2\Delta c,\qquad E(c)=\i
 <section id="the-last-0.03-the-meshs-wavenumber" class="slide level2">
 <h2>The last 0.03 %: the mesh’s wavenumber</h2>
 <ul>
-<li>On a uniform P1/Q1 mesh <span class="math inline">\cos kx</span> is an eigenvector of the mass and stiffness matrices, with <span class="math inline">k_h^2=\frac{6}{h^2}\frac{1-\cos kh}{2+\cos kh}=k^2\big(1-\frac{(kh)^2}{12}+\dots\big)</span> instead of <span class="math inline">k^2</span>.</li>
+<li>On a uniform P1/Q1 mesh <span class="math inline">\cos kx</span> is an eigenvector of the mass and stiffness matrices, with <span class="math inline">k_h^2=\frac{6}{h^2}\frac{1-\cos kh}{2+\cos kh}=k^2\big(1+\frac{(kh)^2}{12}+\dots\big)</span> instead of <span class="math inline">k^2</span> — slightly larger: consistent mass overestimates eigenvalues.</li>
 <li>Per step, the FE factor differs from <span class="math inline">g(k)</span> by <span class="math inline">1.0\times10^{-5}</span>, <span class="math inline">2.5\times10^{-6}</span>, <span class="math inline">6.3\times10^{-7}</span> (64, 128, 256 cells: second order) — and from <span class="math inline">g(k_h)</span> by at most <span class="math inline">6.3\times10^{-9}</span> for all schemes and steps.</li>
 <li>What is left is the cubic term the linear analysis drops: an initial amplitude <span class="math inline">10^{-5}</span> instead of <span class="math inline">10^{-4}</span> reduces it from <span class="math inline">1.3\times10^{-9}</span> to <span class="math inline">1.3\times10^{-11}</span> — the factor 100 of a term in (amplitude)².</li>
 <li>Code, scheme and spatial discretization are separated <strong>exactly</strong>: every part of the error has a formula.</li>
@@ -483,7 +483,7 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 </tr>
 <tr class="even">
 <td>preconditioner setup</td>
-<td>LU: <span class="math inline">O(n^{1.5\ldots2})</span> in 3D; AMG: <span class="math inline">O(n)</span> with a large constant</td>
+<td>LU: <span class="math inline">O(n^{1.5})</span> in 2D, <span class="math inline">O(n^2)</span> in 3D; AMG: <span class="math inline">O(n)</span> with a large constant</td>
 <td>LU poorly, AMG reasonably</td>
 </tr>
 <tr class="odd">
@@ -726,7 +726,7 @@ f(\phi)=\frac{\phi}{N_1}\ln\phi+\frac{1-\phi}{N_2}\ln(1-\phi)+\chi\,\phi(1-\phi)
 </table>
 <ul>
 <li>Same iterations; now the machine scales too: from 1 to 64 ranks the GAMG solve is 27×, assembly 28×, Jacobi 34× faster — but the GAMG setup only 8×, the LU setup 1.8×, and at 64 ranks each rank owns only 4,300 unknowns.</li>
-<li>One workstation core is not faster than the laptop’s. The memory is the limit: 14 GB/s for one rank; all ranks together 66 GB/s at 8, 81 at 32, 164 at 64 — the jump at 64 is the second socket’s memory.</li>
+<li>For finite element work one workstation core is not faster than the laptop’s (its compute loop is even quicker, 0.064 s against 0.090 s, but assembly is slower). The memory is the limit: 14 GB/s for one rank; all ranks together 66 GB/s at 8, 81 at 32, 164 at 64 — the jump at 64 is the second socket’s memory.</li>
 </ul>
 </section>
 <section id="the-same-ranks-two-placements" class="slide level2">

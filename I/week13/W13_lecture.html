@@ -598,7 +598,7 @@ Kee-Youn Yoo
 </table>
 <div class="fragment">
 <ul>
-<li>Once the mesh resolves the layer (<span class="math inline">\mathrm{Pe}_h\lesssim1</span>), Galerkin is the best method — SUPG’s <span class="math inline">\xi(\mathrm{Pe}_h)\approx\mathrm{Pe}_h/3</span> switches itself off.</li>
+<li>Once the mesh nearly resolves the layer (<span class="math inline">\mathrm{Pe}_h\approx2</span> for <span class="math inline">\varepsilon=10^{-2}</span>, cell diameter as <span class="math inline">h</span>), Galerkin is as accurate as SUPG — SUPG does not switch off, it adds less stabilization: <span class="math inline">\xi(2)\approx0.54</span> instead of nearly 1.</li>
 <li>SUPG overshoots by 13–14 % <strong>at</strong> the layer for <span class="math inline">\varepsilon\le10^{-4}</span> (exact <span class="math inline">\max u&lt;1</span>): accurate away from layers, not monotone at them.</li>
 <li>Making Galerkin work by refinement needs <span class="math inline">h&lt;2\varepsilon/|\mathbf b|</span>: for <span class="math inline">\varepsilon=10^{-6}</span>, <span class="math inline">|\mathbf b|\approx3.6</span>, about <span class="math inline">1.8\times10^6</span> cells per direction.</li>
 </ul>

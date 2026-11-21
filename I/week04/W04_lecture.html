@@ -414,7 +414,7 @@ Kee-Youn Yoo
 <p><strong>Definition — <span class="math inline">H^k</span> seminorm and norm</strong></p>
 </div>
 <div class="callout-content">
-<p><span class="math display">|u|_{H^k(\Omega)}^2=\sum_{|\alpha|=k}\int_\Omega|D^\alpha u|^2\,dx,\qquad \|u\|_{H^k(\Omega)}^2=\sum_{j=0}^k|u|_{H^j(\Omega)}^2 .</span> <span class="math inline">H^k(\Omega)</span> = functions with finite <span class="math inline">\|\cdot\|_{H^k}</span> (derivatives in the weak sense — Week 7).</p>
+<p><span class="math display">|u|_{H^k(\Omega)}^2=\sum_{i_1,\dots,i_k=1}^{n}\int_\Omega\Big|\frac{\partial^ku}{\partial x_{i_1}\cdots\partial x_{i_k}}\Big|^2dx,\qquad \|u\|_{H^k(\Omega)}^2=\sum_{j=0}^k|u|_{H^j(\Omega)}^2 ,</span> summed over every ordered choice of directions: for <span class="math inline">k=2</span> in 2D, <span class="math inline">\int(u_{xx}^2+2u_{xy}^2+u_{yy}^2)</span> — the Hessian entry by entry, as UFL computes it. The multi-index form <span class="math inline">\sum_{|\alpha|=k}\|D^\alpha u\|^2</span> counts <span class="math inline">u_{xy}</span> once; the two differ by a constant factor, so rates are the same. <span class="math inline">H^k(\Omega)</span> = functions with finite <span class="math inline">\|\cdot\|_{H^k}</span> (derivatives in the weak sense — Week 7).</p>
 </div>
 </div>
 </div>

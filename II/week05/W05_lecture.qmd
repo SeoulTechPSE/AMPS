@@ -72,7 +72,7 @@ $$
 \hat\sigma=s\hat E(s)\,\hat\varepsilon\quad\Rightarrow\quad \hat J(s)=\frac{1}{s^2\hat E(s)},\qquad s\hat E(s)=E_\infty+\sum_i\frac{E_is}{s+1/\tau_i}=\frac{N(s)}{D(s)}
 $$
 
-$J(t)=$ residues at $s=0$ and at the roots of $N$ (the **retardation** times, different from the $\tau_i$). Checks: $J(0)=1/E_0=0.055556$,
+$J(t)=$ residues at $s=0$ and at the roots $s_k=-1/\tau'_k$ of $N$; the $\tau'_k$ are the **retardation** times, different from the $\tau_i$. Checks: $J(0)=1/E_0=0.055556$,
 $J(\infty)=1/E_\infty=0.1$, $J(10)=0.0999542$ — and a $10^5$-step integration agrees to $10^{-12}$.
 
 `visco.Prony.relax(t)`, `visco.Prony.creep(t)`: both exact, NumPy only.

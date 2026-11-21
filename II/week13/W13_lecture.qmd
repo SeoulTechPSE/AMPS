@@ -67,7 +67,7 @@ $$
 
 ## Free fluid over a porous bed
 
-Porous layer $0<y<a$, free fluid $a<y<1$. **One domain:** a single Brinkman equation with $1/K=0$ in the fluid.
+Porous layer $0<y<a$, free fluid $a<y<1$. **One domain:** a single Brinkman equation with $1/K=0$ and $\mu_e=\mu$ in the fluid.
 
 - Integrating by parts on each side: the weak form imposes **continuity of $u$** (the space) **and of the shear stress** $\mu_e\partial_yu$ (natural) at $y=a$ — nothing to write.
 - Beavers–Joseph describe the same interface by a slip $\partial_yu=\frac{\alpha}{\sqrt K}(u_i-u_D)$. The Brinkman layer below the interface acts exactly as such a slip with $\alpha=\sqrt{\mu_e/\mu}$ — measured: $\alpha=0.998$ for $K=10^{-3}$, $10^{-4}$ (HW12 Q3).

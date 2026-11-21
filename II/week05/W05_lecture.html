@@ -315,7 +315,7 @@ Kee-Youn Yoo
 <p><span class="math display">
 \hat\sigma=s\hat E(s)\,\hat\varepsilon\quad\Rightarrow\quad \hat J(s)=\frac{1}{s^2\hat E(s)},\qquad s\hat E(s)=E_\infty+\sum_i\frac{E_is}{s+1/\tau_i}=\frac{N(s)}{D(s)}
 </span></p>
-<p><span class="math inline">J(t)=</span> residues at <span class="math inline">s=0</span> and at the roots of <span class="math inline">N</span> (the <strong>retardation</strong> times, different from the <span class="math inline">\tau_i</span>). Checks: <span class="math inline">J(0)=1/E_0=0.055556</span>, <span class="math inline">J(\infty)=1/E_\infty=0.1</span>, <span class="math inline">J(10)=0.0999542</span> — and a <span class="math inline">10^5</span>-step integration agrees to <span class="math inline">10^{-12}</span>.</p>
+<p><span class="math inline">J(t)=</span> residues at <span class="math inline">s=0</span> and at the roots <span class="math inline">s_k=-1/\tau'_k</span> of <span class="math inline">N</span>; the <span class="math inline">\tau'_k</span> are the <strong>retardation</strong> times, different from the <span class="math inline">\tau_i</span>. Checks: <span class="math inline">J(0)=1/E_0=0.055556</span>, <span class="math inline">J(\infty)=1/E_\infty=0.1</span>, <span class="math inline">J(10)=0.0999542</span> — and a <span class="math inline">10^5</span>-step integration agrees to <span class="math inline">10^{-12}</span>.</p>
 <p><code>visco.Prony.relax(t)</code>, <code>visco.Prony.creep(t)</code>: both exact, NumPy only.</p>
 </section>
 <section id="one-time-step-of-a-branch" class="slide level2">

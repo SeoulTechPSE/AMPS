@@ -2294,7 +2294,7 @@ window.Quarto = {
 <section id="model" class="level2">
 <h2 class="anchored" data-anchor-id="model">Model</h2>
 <p>2D channel of height <span class="math inline">H</span> (or axisymmetric/3D as a stretch), sensor patch of length <span class="math inline">L_s</span> on the bottom wall. Stokes or Navier–Stokes flow (low Reynolds number), analyte concentration <span class="math inline">c</span> in the liquid, bound surface concentration <span class="math inline">B</span> on the patch: <span class="math display">
-\partial_tc+\mathbf u\cdot\nabla c=D\Delta c,\qquad \partial_tB=k_{\rm on}c\,(b_m-B)-k_{\rm off}B\ \text{ on the patch},\qquad -D\partial_nc=-\partial_tB\ \text{ on the patch},
+\partial_tc+\mathbf u\cdot\nabla c=D\Delta c,\qquad \partial_tB=k_{\rm on}c\,(b_m-B)-k_{\rm off}B\ \text{ on the patch},\qquad -D\partial_nc=\partial_tB\ \text{ on the patch},
 </span> <span class="math inline">c=c_0</span> at the inlet, natural outflow, no flux on the other walls. The surface ODE lives on the boundary: a field on the patch facets (a submesh or a boundary-only DG0 space) or one unknown per patch dof.</p>
 <p><strong>Design outputs:</strong> <span class="math inline">B(t)</span> averaged over the patch; the time to reach 50 % of the equilibrium signal against the flow rate; the Damköhler number at which transport starts to dominate.</p>
 </section>

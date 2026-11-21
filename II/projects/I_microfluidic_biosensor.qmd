@@ -23,7 +23,7 @@ diffusion with reactions, SUPG).
 2D channel of height $H$ (or axisymmetric/3D as a stretch), sensor patch of length $L_s$ on the bottom wall. Stokes or Navier–Stokes flow (low
 Reynolds number), analyte concentration $c$ in the liquid, bound surface concentration $B$ on the patch:
 $$
-\partial_tc+\mathbf u\cdot\nabla c=D\Delta c,\qquad \partial_tB=k_{\rm on}c\,(b_m-B)-k_{\rm off}B\ \text{ on the patch},\qquad -D\partial_nc=-\partial_tB\ \text{ on the patch},
+\partial_tc+\mathbf u\cdot\nabla c=D\Delta c,\qquad \partial_tB=k_{\rm on}c\,(b_m-B)-k_{\rm off}B\ \text{ on the patch},\qquad -D\partial_nc=\partial_tB\ \text{ on the patch},
 $$
 $c=c_0$ at the inlet, natural outflow, no flux on the other walls. The surface ODE lives on the boundary: a field on the patch facets (a submesh or a
 boundary-only DG0 space) or one unknown per patch dof.

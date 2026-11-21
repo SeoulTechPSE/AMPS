@@ -235,7 +235,7 @@ $\varepsilon=10^{-6}$, P1, $N=16\to128$: Galerkin $\max u_h$ 2681 → 49; upwind
 | $10^{-6}$ | 11.2 / 49.1 | $1.5\times10^{-3}$ / 1.0 | $4.8\times10^{-6}$ / 2.00 / 1.141 |
 
 ::: {.fragment}
-- Once the mesh resolves the layer ($\mathrm{Pe}_h\lesssim1$), Galerkin is the best method — SUPG's $\xi(\mathrm{Pe}_h)\approx\mathrm{Pe}_h/3$ switches itself off.
+- Once the mesh nearly resolves the layer ($\mathrm{Pe}_h\approx2$ for $\varepsilon=10^{-2}$, cell diameter as $h$), Galerkin is as accurate as SUPG — SUPG does not switch off, it adds less stabilization: $\xi(2)\approx0.54$ instead of nearly 1.
 - SUPG overshoots by 13–14 % **at** the layer for $\varepsilon\le10^{-4}$ (exact $\max u<1$): accurate away from layers, not monotone at them.
 - Making Galerkin work by refinement needs $h<2\varepsilon/|\mathbf b|$: for $\varepsilon=10^{-6}$, $|\mathbf b|\approx3.6$, about $1.8\times10^6$ cells per direction.
 :::
